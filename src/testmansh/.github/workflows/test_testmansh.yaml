@@ -1,9 +1,6 @@
 ---
-# Template: 4.1.0
-name: "Lint / Bash"
-
-env:
-  DEV_CICD_DEBUG: ""
+# Template: 3.0.0
+name: "Test / Bash"
 
 on:
   pull_request:
@@ -14,9 +11,10 @@ on:
       - "feature/**"
     paths:
       - "src/**"
+      - "test/**"
 
 jobs:
-  lint-bash:
+  test-batscore:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -30,7 +28,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: "./bin/dev-build-bash"
 
-      - name: "Lint app"
+      - name: "Run tests"
         shell: 'script -q -e -c "bash {0}"'
-        run: "./bin/dev-lint-bash"
+        run: "./bin/dev-test-testmansh"
 ...

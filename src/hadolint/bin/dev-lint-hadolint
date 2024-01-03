@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #######################################
-# Lint Dockerfile code
+# Lint code: dockerfiles
 #
 # * Check is done using hadolint
-# * Version: 3.0.0
+# * Version: 3.1.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -35,10 +35,23 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   exit 1
 
 #
+# Globals
+#
+
+# Dev / Enable debugging? Set to YES to enable
+export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
+# Lint / Dockerfile / Configuration
+export DEV_LIB_HADOLINT_CFG="${DEV_PATH_ROOT}/.hadolint.yaml"
+# Lint / Dockerfile / Sources
+export DEV_CICD_LINT_DOCKERFILE_SOURCE="${DEV_CICD_LINT_DOCKERFILE_SOURCE:-$DEV_PATH_SRC}"
+# Lib / Dockerfile / Command
+export DEV_LIB_HADOLINT_BIN="${DEV_LIB_HADOLINT_BIN:-/usr/local/bin/hadolint}"
+
+#
 # Functions
 #
 
-function dev_lint_dockerfile() {
+function dev_lint_hadolint() {
   bl64_dbg_app_show_function "$@"
   local target="$*"
   local current=''
@@ -56,6 +69,16 @@ function dev_lint_dockerfile() {
   done
 }
 
+function dev_lint_initialize() {
+  bl64_dbg_app_show_function "$@"
+  local sources="$*"
+  if [[ -z "$sources" ]]; then
+    bl64_check_directory "$DEV_CICD_LINT_DOCKERFILE_SOURCE" ||
+      return $?
+  fi
+  bl64_check_command_search_path "$DEV_LIB_HADOLINT_BIN"
+}
+
 #
 # Main
 #
@@ -63,14 +86,9 @@ function dev_lint_dockerfile() {
 declare dev_lint_target="${*:-}"
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+dev_lint_initialize "$dev_lint_target" || exit $?
 
-bl64_check_export 'DEV_LIB_HADOLINT_CFG' &&
-  bl64_check_export 'DEV_CICD_LINT_DOCKERFILE_SOURCE' &&
-  bl64_check_export 'DEV_LIB_HADOLINT_BIN' &&
-  bl64_check_directory "$DEV_CICD_LINT_DOCKERFILE_SOURCE" &&
-  bl64_check_command_search_path "$DEV_LIB_HADOLINT_BIN" ||
-  exit $?
-
-bl64_msg_show_batch_start 'lint-dockerfile'
-dev_lint_dockerfile "$dev_lint_target"
-bl64_msg_show_batch_finish $? 'lint-dockerfile'
+bl64_msg_all_enable_verbose
+bl64_msg_show_batch_start 'dev-lint-hadolint'
+dev_lint_hadolint "$dev_lint_target"
+bl64_msg_show_batch_finish $? 'dev-lint-hadolint'
