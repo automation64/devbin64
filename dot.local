@@ -10,8 +10,8 @@
 #
 
 # Project base location. Adjust to your local GIT repo
-DEV_ROOT="$(pwd)"
-export DEV_ROOT
+DEV_PATH_ROOT="$(pwd)"
+export DEV_PATH_ROOT
 
 # CICD / Debug flag for bin/ scripts
 DEV_CICD_DEBUG=""
