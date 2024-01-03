@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#######################################
+# Create local resources from templates
+#
+# * Use to create local resources after repository bootstrap
+# * Required on local cloned repository only (i.e.: not on CICD environments)
+# * Resources are created from templates:
+#   * dot.local -> .local
+#   * dot.secrets -> .secrets
+# * Version: 1.0.0
+#
+#######################################
+# Copyright [2023] [serdigital64@gmail.com]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+#
+# Imports
+#
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || exit 1
+
+#
+# Functions
+#
+
+function dev_lib_create() {
+  local target="$1"
+  if [[ ! -f "$target" ]]; then
+    grep -v 'ACTION REQUIRED: this is a template file' "dot${target}" >"$target" ||
+      return $?
+  fi
+  return 0
+}
+
+#
+# Main
+#
+
+declare dev_lib_target=''
+
+[[ -z "$DEV_BASE_LOCAL" || -z "$DEV_BASE_SECRETS" ]] && dev_set_error 'unable to determine local resource names' && exit 1
+
+dev_lib_target="$DEV_BASE_LOCAL"
+dev_lib_create "$dev_lib_target" &&
+  dev_lib_target="$DEV_BASE_SECRETS" &&
+  dev_lib_create "$dev_lib_target"
