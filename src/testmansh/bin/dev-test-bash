@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#
+# Run test-cases
+#
+# * Test cases are done using bats-core
+# * TestManSH is used to manage test environment
+# * Tests are located in the default path "test/batscore"
+# * Template: 2.0.2
+#
+
+#
+# Imports
+#
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || exit 1
+# shellcheck source=lib/bl64/bashlib64-core.bash
+source "${DEV_CICD_BASHLIB64}/bashlib64-core.bash" || exit 1
+
+#
+# Main
+#
+
+[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+
+bl64_check_export 'DEV_LIB_TESTMANSH_BIN' &&
+  bl64_check_export 'DEV_CICD_TEST_CONTAINER' ||
+  exit $?
+
+bl64_msg_all_enable_verbose
+bl64_msg_show_batch_start 'test-bash'
+"$DEV_LIB_TESTMANSH_BIN" -b -o -e "$DEV_CICD_TEST_CONTAINER"
+bl64_msg_show_batch_finish $? 'test-bash'
