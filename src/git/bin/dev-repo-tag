@@ -26,7 +26,7 @@
 #
 
 # shellcheck source=bin/dev-set
-source ./bin/dev-set || exit 1
+source ./bin/dev-set || echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1
 # shellcheck source=lib/bl64/bashlib64.bash
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" || exit 1
 
