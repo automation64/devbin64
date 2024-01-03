@@ -10,13 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - DevOps tools migrated from CodeSkel64 project:
-  - container/dev-auth -> src/container/dev-auth-container
+  - Container
+  - Installer64
+  - BashLib64
 
 ## [0.1.0]
 
 ### Added
 
-- DevOps tools migrated from CodeSkel64 project:
-  - git/repo-code -> src/devbin64/dev-bootstrap
+- Repository bootstrap
+  - dev-bootstrap
 
 [0.1.0]: https://github.com/automation64/devbin64/releases/tag/0.1.0

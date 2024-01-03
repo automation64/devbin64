@@ -40,13 +40,13 @@ export DEV_BASE_ENV='.env'
 
 function dev_set_error() {
   local msg="$1"
-  echo "dev-set:Error: ${msg}" 2>&1
+  echo "dev:Error: ${msg}" 2>&1
   return 0
 }
 
 function dev_set_message() {
   local msg="$1"
-  [[ -n "$DEV_SET_VERBOSE" ]] && echo "dev-set: ${msg}"
+  [[ -n "$DEV_SET_VERBOSE" ]] && echo "dev: ${msg}"
   return 0
 }
 
