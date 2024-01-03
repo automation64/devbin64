@@ -41,6 +41,9 @@ export DEV_LIB_INSTALLER64_TARGET='inst64'
 export DEV_PATH_ROOT="$(pwd)"
 export DEV_PATHS_MODE='0755'
 export DEV_PATHS='bin build docs lib src test tmp var'
+export DEV_BASE_DOT_LOCAL='dot.local'
+export DEV_BASE_DOT_SECRETS='dot.secrets'
+export DEV_BASE_ENV='.env'
 
 #
 # Functions
@@ -78,15 +81,15 @@ DEV_BASE_TEST="test"
 export DEV_BASE_TEST
 DEV_BASE_SRC="src"
 export DEV_BASE_SRC
-DEV_BASE_DOT_LOCAL='dot.local'
+DEV_BASE_DOT_LOCAL='%s'
 export DEV_BASE_DOT_LOCAL
 DEV_BASE_LOCAL='.local'
 export DEV_BASE_LOCAL
-DEV_BASE_DOT_SECRETS='dot.secrets'
+DEV_BASE_DOT_SECRETS='%s'
 export DEV_BASE_DOT_SECRETS
 DEV_BASE_SECRETS='.secrets'
 export DEV_BASE_SECRETS
-DEV_BASE_ENV='.env'
+DEV_BASE_ENV='%s'
 export DEV_BASE_ENV
 
 # Base path for builds
@@ -141,6 +144,9 @@ export DEV_LIB_BASHLIB64_TARGET
 # Project specific variables
 #
 ' \
+    "$DEV_BASE_DOT_LOCAL" \
+    "$DEV_BASE_DOT_SECRETS" \
+    "$DEV_BASE_ENV" \
     "$DEV_LIB_INSTALLER64_OWNER" \
     "$DEV_LIB_INSTALLER64_TARGET" \
     "$DEV_LIB_BASHLIB64_TARGET" \
