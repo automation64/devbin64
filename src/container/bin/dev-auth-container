@@ -2,7 +2,7 @@
 #######################################
 # Authentication for dev-time resources
 #
-# * Version: 1.0.0
+# * Version: 1.1.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -31,6 +31,24 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 #
+# Globals
+#
+
+# Dev / Enable debugging? Set to YES to enable
+export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
+# Auth / Docker / User
+DEV_AUTH_DOCKER_USER="${DEV_AUTH_DOCKER_USER:-}"
+export DEV_AUTH_DOCKER_USER
+DEV_AUTH_DOCKER_PASSWORD="${DEV_AUTH_DOCKER_PASSWORD:-}"
+export DEV_AUTH_DOCKER_PASSWORD
+# Auth / Docker / Registry
+DEV_AUTH_DOCKER_REGISTRY="${DEV_AUTH_DOCKER_REGISTRY:-}"
+export DEV_AUTH_DOCKER_REGISTRY
+# Auth / Docker / Registry Type
+DEV_AUTH_DOCKER_TYPE="${DEV_AUTH_DOCKER_TYPE:-GITHUB}"
+export DEV_AUTH_DOCKER_TYPE
+
+#
 # Functions
 #
 
@@ -57,25 +75,27 @@ function dev_auth_docker() {
   esac
 }
 
+function dev_auth_initialize() {
+  bl64_check_export 'DEV_AUTH_DOCKER_USER' &&
+    bl64_check_export 'DEV_AUTH_DOCKER_REGISTRY' &&
+    bl64_cnt_setup || return $?
+
+  if [[ "$DEV_AUTH_DOCKER_TYPE" == 'GITHUB' ]]; then
+    bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
+      return $?
+  else
+    bl64_check_export 'DEV_AUTH_DOCKER_PASSWORD' ||
+      return $?
+  fi
+  return 0
+}
+
 #
 # Main
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-
-bl64_check_export 'DEV_AUTH_DOCKER_USER' &&
-  bl64_check_export 'DEV_AUTH_DOCKER_REGISTRY' &&
-  bl64_check_export 'DEV_AUTH_DOCKER_TYPE' &&
-  bl64_cnt_setup || exit $?
-
-if [[ "$DEV_AUTH_DOCKER_TYPE" == 'GITHUB' ]]; then
-  bl64_check_export 'DEV_LIB_GITHUB_BIN' &&
-    bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
-    exit $?
-else
-  bl64_check_export 'DEV_AUTH_DOCKER_PASSWORD' ||
-    exit $?
-fi
+dev_auth_initialize || exit $?
 
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'auth-docker'

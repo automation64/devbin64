@@ -27,12 +27,14 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source=lib/bl64/bashlib64.bash
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 #
 # Globals
 #
 
+# Dev / Enable debugging? Set to YES to enable
+export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 export DEV_PACK_STORE="${DEV_PACK_STORE:-}"
 # Release / GitHub / Repository Owner
 export DEV_CICD_RELEASE_REPO_OWNER="${DEV_CICD_RELEASE_REPO_OWNER:-}"
@@ -122,6 +124,14 @@ function dev_release() {
   return $status
 }
 
+function dev_release_initialize() {
+  bl64_dbg_app_show_function
+  bl64_check_parameter 'dev_release_tag' &&
+    bl64_check_export 'DEV_CICD_RELEASE_REPO_OWNER' &&
+    bl64_check_export 'DEV_CICD_RELEASE_REPO_NAME' &&
+    bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN"
+}
+
 #
 # Main
 #
@@ -129,11 +139,7 @@ function dev_release() {
 declare dev_release_tag="${1:-}"
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_check_parameter 'dev_release_tag' &&
-  bl64_check_export 'DEV_CICD_RELEASE_REPO_OWNER' &&
-  bl64_check_export 'DEV_CICD_RELEASE_REPO_NAME' &&
-  bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
-  exit $?
+dev_release_initialize || exit $?
 
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'release'
