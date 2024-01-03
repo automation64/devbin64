@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #######################################
-# Run test-cases
+# Dev / Test / TestManSH / Test bash scripts
 #
 # * Test cases are done using bats-core
 # * TestManSH is used to manage test environment
