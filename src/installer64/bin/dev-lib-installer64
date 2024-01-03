@@ -2,7 +2,7 @@
 #
 # Update dev-time external tool: Installer64
 #
-# * Template: 2.0.0
+# * Version: 2.0.0
 #
 
 #
@@ -17,7 +17,7 @@ source ./bin/dev-set || exit 1
 #
 
 export INST64_INSTALLER64_TARGET="$DEV_LIB_INSTALLER64_TARGET"
-cd "$DEV_LIB" &&
+cd "$DEV_PATH_LIB" &&
   curl -LO "$DEV_LIB_INSTALLER64_URL" &&
   chmod 755 'install-installer64' &&
   './install-installer64' &&

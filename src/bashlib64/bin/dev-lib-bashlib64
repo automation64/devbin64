@@ -2,7 +2,7 @@
 #
 # Update dev-time external tool: BashLib64
 #
-# * Template: 3.0.0
+# * Version: 3.0.0
 #
 
 #
@@ -20,5 +20,5 @@ source ./bin/dev-set || exit 1
   echo 'error: Installer64 not found. Use the dev-lib-instaler64 script to deploy it)' &&
   exit 1
 
-export INST64_BASHLIB64_TARGET="$DEV_CICD_BASHLIB64"
+export INST64_BASHLIB64_TARGET="$DEV_LIB_BASHLIB64_TARGET"
 "${DEV_LIB_INSTALLER64_TARGET}/install-bashlib64"

@@ -4,7 +4,7 @@
 #
 # * Check is done using shellcheck
 # * TestManSH is used to manage linting environment
-# * Template: 6.0.0
+# * Version: 6.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -29,10 +29,10 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || exit 1
 # shellcheck source-path=lib/bl64
-source "${DEV_CICD_BASHLIB64}/bashlib64-module-txt.bash" &&
-  source "${DEV_CICD_BASHLIB64}/bashlib64-module-fmt.bash" &&
-  source "${DEV_CICD_BASHLIB64}/bashlib64-module-fs.bash" &&
-  source "${DEV_CICD_BASHLIB64}/bashlib64-core.bash" ||
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" ||
   exit 1
 
 #

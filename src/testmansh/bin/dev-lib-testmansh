@@ -2,7 +2,7 @@
 #
 # Update dev-time external tool: TestManSH
 #
-# * Template: 4.0.0
+# * Version: 4.0.0
 #
 
 #
@@ -12,7 +12,7 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || exit 1
 # shellcheck source=lib/bl64/bashlib64.bash
-source "${DEV_CICD_BASHLIB64}/bashlib64.bash" || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" || exit 1
 
 #
 # Functions

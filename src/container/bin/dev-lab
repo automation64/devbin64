@@ -2,7 +2,7 @@
 #######################################
 # Open sandbox environment
 #
-# * Template: 1.4.0
+# * Version: 1.4.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -27,7 +27,7 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || exit 1
 # shellcheck source=lib/bl64/bashlib64.bash
-source "${DEV_CICD_BASHLIB64}/bashlib64.bash" || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" || exit 1
 
 #
 # Functions
@@ -44,8 +44,8 @@ function dev_lab_open() {
   bl64_cnt_run_interactive \
     --entrypoint="$dev_lab_entrypoint" \
     --workdir="$dev_lab_path_project" \
-    --mount "type=bind,source=${DEV_SRC},target=${dev_lab_path_source},readonly" \
-    --mount "type=bind,source=${DEV_ROOT},target=${dev_lab_path_project},readonly" \
+    --mount "type=bind,source=${DEV_PATH_SRC},target=${dev_lab_path_source},readonly" \
+    --mount "type=bind,source=${DEV_PATH_ROOT},target=${dev_lab_path_project},readonly" \
     "${DEV_CICD_LAB_REGISTRY}/${dev_lab_image}"
 }
 

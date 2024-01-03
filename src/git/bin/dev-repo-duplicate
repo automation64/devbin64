@@ -6,7 +6,7 @@
 # * Duplication will add and remove files from destination as needed
 # * Excluded from duplication: GIT metadata (.git) and temporary locations (tmp, lib)
 # * Operation is done using rsync tool
-# * Template: 3.0.0
+# * Version: 3.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -31,7 +31,7 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || exit 1
 # shellcheck source=lib/bl64/bashlib64.bash
-source "${DEV_CICD_BASHLIB64}/bashlib64.bash" || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" || exit 1
 
 #
 # Functions
