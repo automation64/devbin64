@@ -38,7 +38,7 @@ function dev_auth_cosign_ghtoken() {
   bl64_dbg_app_show_function
   bl64_msg_show_task 'Cosign login with GitHub token'
   bl64_dbg_app_trace_start
-  "$DEV_LIB_GH_BIN" \
+  "$DEV_LIB_GITHUB_BIN" \
     auth token |
     "$DEV_LIB_COSIGN_BIN" \
       login \
@@ -82,8 +82,8 @@ bl64_check_export 'DEV_AUTH_COSIGN_USER' &&
   exit $?
 
 if [[ "$DEV_AUTH_COSIGN_TYPE" == 'GITHUB' ]]; then
-  bl64_check_export 'DEV_LIB_GH_BIN' &&
-    bl64_check_command_search_path "$DEV_LIB_GH_BIN" ||
+  bl64_check_export 'DEV_LIB_GITHUB_BIN' &&
+    bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
     exit $?
 else
   bl64_check_export 'DEV_AUTH_COSIGN_PASSWORD' ||

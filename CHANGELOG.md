@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Container
   - Installer64
   - BashLib64
+  - GitHub
 
 ## [0.1.0]
 

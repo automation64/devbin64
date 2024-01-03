@@ -37,7 +37,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
 function dev_auth_docker_ghtoken() {
   bl64_dbg_app_show_function
   bl64_msg_show_task 'Docker login with GitHub token'
-  "$DEV_LIB_GH_BIN" auth token |
+  "$DEV_LIB_GITHUB_BIN" auth token |
     bl64_cnt_login_stdin \
       "$DEV_AUTH_DOCKER_USER" "$DEV_AUTH_DOCKER_REGISTRY"
 }
@@ -69,8 +69,8 @@ bl64_check_export 'DEV_AUTH_DOCKER_USER' &&
   bl64_cnt_setup || exit $?
 
 if [[ "$DEV_AUTH_DOCKER_TYPE" == 'GITHUB' ]]; then
-  bl64_check_export 'DEV_LIB_GH_BIN' &&
-    bl64_check_command_search_path "$DEV_LIB_GH_BIN" ||
+  bl64_check_export 'DEV_LIB_GITHUB_BIN' &&
+    bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
     exit $?
 else
   bl64_check_export 'DEV_AUTH_DOCKER_PASSWORD' ||

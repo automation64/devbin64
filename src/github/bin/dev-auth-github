@@ -34,9 +34,11 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 #
 
 # Lib / GitHub / Command
-export DEV_LIB_GH_BIN="${DEV_LIB_GH_BIN:-/usr/bin/gh}"
+export DEV_LIB_GITHUB_BIN="${DEV_LIB_GITHUB_BIN:-/usr/bin/gh}"
 # Auth / GitHub / Scopes
-export DEV_AUTH_GH_SCOPES="${DEV_AUTH_GH_SCOPES:-}"
+export DEV_AUTH_GITHUB_SCOPES="${DEV_AUTH_GITHUB_SCOPES:-}"
+# Auth / GitHub / Token
+export GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 
 #
 # Functions
@@ -44,9 +46,10 @@ export DEV_AUTH_GH_SCOPES="${DEV_AUTH_GH_SCOPES:-}"
 
 function dev_auth_github() {
   bl64_dbg_app_show_function
-  "$DEV_LIB_GH_BIN" \
+  [[ -z "$GITHUB_TOKEN" ]] && bl64_msg_show_warning 'variable GITHUB_TOKEN is unset, using interactive login'
+  "$DEV_LIB_GITHUB_BIN" \
     auth login \
-    --scopes "$DEV_AUTH_GH_SCOPES"
+    --scopes "$DEV_AUTH_GITHUB_SCOPES"
 }
 
 #
@@ -54,10 +57,11 @@ function dev_auth_github() {
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_check_command_search_path "$DEV_LIB_GH_BIN" ||
+bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
   exit $?
 
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-auth-github'
 dev_auth_github
 bl64_msg_show_batch_finish $? 'dev-auth-github'
+
