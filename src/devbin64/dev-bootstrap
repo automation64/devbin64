@@ -201,6 +201,52 @@ function dev_git_dot_secrets_create() {
     chmod "$DEV_PATHS_MODE" "$DEV_BASE_DOT_SECRETS"
 }
 
+function dev_git_gitignore_create() {
+  echo "Task: create gitignore file (.gitignore)"
+  [[ -r '.gitignore' ]] &&
+    echo 'Warning: file already create, no further action will be taken' 2>&1 &&
+    return 0
+  # shellcheck disable=SC2016
+  printf '
+#
+# GIT Ignore
+#
+# * Template version: 1.1.0
+#
+
+# VScode
+.vscode
+*.code-workspace
+
+# Code build
+build/*
+
+# Dev-time tools
+lib/*
+
+# Dev-time temporary files
+tmp/*
+
+# Secrets
+.secrets
+
+# Local variables
+.local
+
+# Keep placeholder for empty directories
+!/**/.gitkeep
+
+#
+# Project specific exclusions
+#
+' \
+    >'.gitignore' &&
+  touch \
+    'build/.gitkeep' \
+    'lib/.gitkeep' \
+    'tmp/.gitkeep'
+}
+
 function dev_git_dot_env_load() {
   echo "Task: load environment file (${DEV_BASE_ENV})"
   # shellcheck disable=SC1090
@@ -266,6 +312,7 @@ dev_git_dir_create &&
   dev_git_dot_local_create &&
   dev_git_dot_secrets_create &&
   dev_git_dot_env_load &&
+  dev_git_gitignore_create &&
   dev_git_installer64_deploy &&
   dev_git_bashlib64_deploy
 dev_git_status=$?
