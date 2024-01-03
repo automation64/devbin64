@@ -39,7 +39,7 @@ export DEV_BASE_SECRETS=.secrets
 function dev_lib_create() {
   local target="$1"
   if [[ ! -f "$target" ]]; then
-    echo "dev-lib-local:Task: creating resource (${target})"
+    echo "dev-lib-local:Task: create resource (${target})"
     grep -v 'ACTION REQUIRED: this is a template file' "dot${target}" >"$target" ||
       return $?
   else

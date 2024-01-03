@@ -46,12 +46,12 @@ function dev_set_error() {
 
 function dev_set_message() {
   local msg="$1"
-  [[ "$DEV_SET_VERBOSE" == 'verbose' ]] && echo "dev-set: ${msg}"
+  [[ -n "$DEV_SET_VERBOSE" ]] && echo "dev-set: ${msg}"
   return 0
 }
 
 function dev_set_load_local() {
-  dev_set_message "Task: Load local environment variables ($(pwd)/${DEV_BASE_LOCAL})"
+  dev_set_message "Task: load local environment variables ($(pwd)/${DEV_BASE_LOCAL})"
   # shellcheck source=./.local
   source "$DEV_BASE_LOCAL" ||
     {
@@ -60,7 +60,7 @@ function dev_set_load_local() {
     }
   DEV_BASE_SECRETS="${DEV_PATH_ROOT}/${DEV_BASE_SECRETS}"
   if [[ -f "$DEV_BASE_SECRETS" ]]; then
-    dev_set_message "Task: Load local secrets (${DEV_BASE_SECRETS})"
+    dev_set_message "Task: load local secrets (${DEV_BASE_SECRETS})"
     # shellcheck source=./.secrets
     source "${DEV_BASE_SECRETS}" ||
       {
@@ -113,7 +113,7 @@ function dev_set_check_root() {
 }
 
 function dev_set_load_env() {
-  dev_set_message "Load project environment variables (${DEV_BASE_ENV})"
+  dev_set_message "Task: load project environment variables (${DEV_BASE_ENV})"
   # shellcheck source=./.env
   source "$DEV_BASE_ENV" ||
     {
@@ -126,7 +126,7 @@ function dev_set_load_env() {
 # Main
 #
 
-[[ ! -f 'bin/dev-set' ]] && dev_set_error "script must be run from the project's root path" && exit 1
+[[ ! -f '.env' ]] && dev_set_error "script must be run from the project's root path" && return 1
 [[ -n "$DEV_CICD_DEBUG" ]] && set -x
 
 # shellcheck disable=SC2154
@@ -144,6 +144,5 @@ fi
 
 # shellcheck disable=SC2015
 dev_set_check_root &&
-  dev_set_load_env &&
-  dev_set_message 'dev environment variables loading completed OK' ||
-  { dev_set_error 'failed to load Dev environment variables'; exit 1; }
+  dev_set_load_env ||
+  { dev_set_error 'failed to load Dev environment variables'; return 1; }
