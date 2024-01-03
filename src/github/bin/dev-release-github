@@ -2,7 +2,7 @@
 #######################################
 # Release application version
 #
-# * Version: 1.1.0
+# * Version: 1.2.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -34,6 +34,14 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" || exit 1
 #
 
 export DEV_PACK_STORE="${DEV_PACK_STORE:-}"
+# Release / GitHub / Repository Owner
+export DEV_CICD_RELEASE_REPO_OWNER="${DEV_CICD_RELEASE_REPO_OWNER:-}"
+# Release / GitHub / Repository Name
+export DEV_CICD_RELEASE_REPO_NAME="${DEV_CICD_RELEASE_REPO_NAME:-}"
+# Lib / GitHub / Command
+export DEV_LIB_GH_BIN="${DEV_LIB_GH_BIN:-/usr/bin/gh}"
+# Repo / Main branch name
+DEV_CICD_BRANCH_MAIN="${DEV_CICD_BRANCH_MAIN:-main}"
 
 #
 # Functions
@@ -122,8 +130,6 @@ declare dev_release_tag="${1:-}"
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_check_parameter 'dev_release_tag' &&
-  bl64_check_export 'DEV_LIB_GH_BIN' &&
-  bl64_check_export 'DEV_CICD_BRANCH_MAIN' &&
   bl64_check_export 'DEV_CICD_RELEASE_REPO_OWNER' &&
   bl64_check_export 'DEV_CICD_RELEASE_REPO_NAME' &&
   bl64_check_command_search_path "$DEV_LIB_GH_BIN" ||
