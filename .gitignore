@@ -1,21 +1,22 @@
+
 #
 # GIT Ignore
 #
-# * Template version: 1.0.1
+# * Template version: 1.1.0
 #
-
-.tmp/*
-.var/*
 
 # VScode
 .vscode
 *.code-workspace
 
-# Builds for prod/dev/test
+# Code build
 build/*
 
-# Dev libs. Dynamic content update at dev time
+# Dev-time tools
 lib/*
+
+# Dev-time temporary files
+tmp/*
 
 # Secrets
 .secrets
