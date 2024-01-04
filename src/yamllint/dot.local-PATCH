@@ -1,5 +1,0 @@
-# delete-me # Add to the dot.local file
-
-# Lint / YAML / Command
-DEV_LIB_YAMLLINT_BIN="/usr/bin/yamllint"
-export DEV_LIB_YAMLLINT_BIN
