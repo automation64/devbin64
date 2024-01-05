@@ -34,8 +34,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Lint / YAML / Target
 export DEV_LINT_YAMLLINT_TARGET="${DEV_LINT_YAMLLINT_TARGET:-$DEV_PATH_SRC}"
 # Lib / YAML / Command

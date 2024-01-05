@@ -2,7 +2,7 @@
 #######################################
 # Dev / Auth / Cosign / Login
 #
-# * Version: 1.1.0
+# * Version: 1.2.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,6 +26,9 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-github &&
+  source ./bin/dev-env-cosign || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
@@ -34,10 +37,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
 # Globals
 #
 
-# Lib / Cosign / Command
-export DEV_LIB_COSIGN_BIN="${DEV_LIB_COSIGN_BIN:-/usr/local/bin/cosign}"
-# Lib / GitHub / Command
-export DEV_LIB_GITHUB_BIN="${DEV_LIB_GITHUB_BIN:-/usr/bin/gh}"
 # Auth / Cosign / Server
 export DEV_AUTH_COSIGN_SERVER="${DEV_AUTH_COSIGN_SERVER:-}"
 # Auth / Cosign / Server Type
