@@ -29,6 +29,8 @@
 # Globals
 #
 
+# CICD / Debug flag for bin/ scripts. Set to YES to enable
+export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 export DEV_BASE_LOCAL='.local'
 export DEV_BASE_SECRETS='.secrets'
 
