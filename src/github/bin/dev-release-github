@@ -33,8 +33,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 export DEV_PACK_STORE="${DEV_PACK_STORE:-}"
 # Release / GitHub / Repository Owner
 export DEV_CICD_RELEASE_REPO_OWNER="${DEV_CICD_RELEASE_REPO_OWNER:-}"

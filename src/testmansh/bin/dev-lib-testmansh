@@ -39,8 +39,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-api.bash" &&
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Lib / TestmanSH / Source
 export DEV_LIB_TESTMANSH_REPO='https://raw.githubusercontent.com/automation64/testmansh/main/testmansh'
 # Lib / TestmanSH / Target

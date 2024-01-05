@@ -36,8 +36,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Test / Bash / Container
 DEV_CICD_TEST_CONTAINER="${DEV_CICD_TEST_CONTAINER:-}"
 export DEV_CICD_TEST_CONTAINER

@@ -31,8 +31,6 @@ source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Lib / Installer64 / Source
 export DEV_LIB_INSTALLER64_URL='https://raw.githubusercontent.com/automation64/installer64/main/src/install-installer64'
 # Lib / Installer64 / Target

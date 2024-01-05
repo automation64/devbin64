@@ -18,8 +18,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Lib / Cosign / Target
 export DEV_LIB_COSIGN_TARGET="${DEV_LIB_COSIGN_TARGET:-${DEV_PATH_LIB}/cosign}"
 # Lib / Cosign / Command

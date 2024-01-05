@@ -32,8 +32,6 @@
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 export DEV_FILES_MODE='0644'
 export DEV_LIB_BASHLIB64_TARGET='bl64'
 export DEV_LIB_INSTALLER64_OWNER='automation64/installer64'

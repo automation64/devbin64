@@ -34,8 +34,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Globals
 #
 
-# Dev / Enable debugging? Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Dev / Changelog
 export DEV_CICD_CHANGELOG="${DEV_CICD_CHANGELOG:-CHANGELOG.md}"0
 # GIT / Main branch name
