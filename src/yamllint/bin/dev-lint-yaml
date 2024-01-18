@@ -3,7 +3,7 @@
 # Dev / Lint / YAMLLint / Lint yaml files
 #
 # * Check is done using yamllint
-# * Version: 2.0.0
+# * Version: 2.1.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -27,6 +27,8 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-yamllint || exit 1
 # shellcheck source=lib/bl64/bashlib64-core.bash
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
@@ -34,27 +36,28 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Globals
 #
 
-# Lint / YAML / Target
-export DEV_LINT_YAMLLINT_TARGET="${DEV_LINT_YAMLLINT_TARGET:-$DEV_PATH_SRC}"
-# Lib / YAML / Command
-export DEV_LIB_YAMLLINT_BIN="${DEV_LIB_YAMLLINT_BIN:-/usr/bin/yamllint}"
-# Lib / YAML / Configuration
-export DEV_LIB_YAMLLINT_CFG="${DEV_PATH_ROOT}/.yamllint"
 export YAMLLINT_CONFIG_FILE="$DEV_LIB_YAMLLINT_CFG"
 
 #
 # Functions
 #
 
-function dev_lint_yaml(){
+function dev_lint_yaml() {
   bl64_dbg_app_show_function "$@"
   local dev_lint_target="$*"
   local dev_lint_current=''
   for dev_lint_current in $dev_lint_target; do
     bl64_msg_show_phase "lint YAML target (${dev_lint_current})"
-    "$DEV_LIB_YAMLLINT_BIN" --config-file "$DEV_LIB_YAMLLINT_CFG" "$dev_lint_current" ||
+    "$DEV_LIB_YAMLLINT_BIN" \
+      --config-file "$DEV_LIB_YAMLLINT_CFG" \
+      "$dev_lint_current" ||
       return $?
   done
+}
+
+function dev_lint_initialize() {
+  bl64_dbg_app_show_function
+  bl64_check_command_search_path "$DEV_LIB_YAMLLINT_BIN"
 }
 
 #
@@ -65,13 +68,7 @@ declare dev_lint_target="${*:-$DEV_LINT_YAMLLINT_TARGET}"
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 
-bl64_check_parameter 'dev_lint_target' &&
-  bl64_check_export 'DEV_LIB_YAMLLINT_CFG' &&
-  bl64_check_export 'DEV_LINT_YAMLLINT_TARGET' &&
-  bl64_check_export 'DEV_LIB_YAMLLINT_BIN' &&
-  bl64_check_command_search_path "$DEV_LIB_YAMLLINT_BIN" ||
-  exit $?
-
 bl64_msg_show_batch_start 'dev-lint-yaml'
-dev_lint_yaml "$dev_lint_target"
+dev_lint_initialize &&
+  dev_lint_yaml "$dev_lint_target"
 bl64_msg_show_batch_finish $? 'dev-lint-yaml'
