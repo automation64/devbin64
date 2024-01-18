@@ -16,6 +16,9 @@ _DevBin64_ is a collection devops scripts for maintaining code repositories and 
 
 ## Usage
 
+- Once `devbin64` has been deployed DevOps scripts will be available at `<PROJECT>/bin`
+- Scripts can be invoded anytime as needed to fullfill routine and/or CICD DevOps tasks
+
 ## Deployment
 
 ### Requirements
@@ -24,6 +27,35 @@ _DevBin64_ is a collection devops scripts for maintaining code repositories and 
 - Curl, Tar and GZip: used to download and unpack packages
 
 ### Installation
+
+- Create and initialize a new empty GIT repository
+
+```shell
+mkdir NEW-PROJECT &&
+cd NEW-PROJECT &&
+git init
+# Add remotes if needed
+```
+
+- Download the latest version of the `dev-bootstrap` script to the new repository
+- Run the boostrap process
+
+```shell
+bash ./dev-bootstrap
+```
+
+- (optional) declare local variables and secrets in:
+  - `dot.local`
+  - `dot.secrets`
+
+- Review changes and complete first commit
+
+```shell
+git status
+git add .
+git commit -m 'dev: initialized repository'
+# Push if using remotes
+```
 
 ## Contributing
 

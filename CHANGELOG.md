@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0]
+
+### Added
+
+- DevBin64
+  - dev-lib-base: install base tools: Installer64 and Bashlib64
+- TestManSH
+  - dev-env-testmansh: added shared vars
+- Bash
+  - dev-env-bash: added shared vars
+
+### Changed
+
+- Bash
+  - dev-build-bash: migrated global vars to dev-env-bash
+- TestManSH
+  - dev-lint-testmansh: migrated global vars to dev-env-testmansh
+  - dev-test-testmansh: added container and test cases as parameters
+  - test_testmansh.yaml: removed obsolete script call
+
+### Fixed
+
+- DevBin64
+  - dev-bootstrap: added missing default for local debug variable
+  - dev-set: added missing trace setting
+
 ## [0.3.0]
 
 ### Changed
@@ -37,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repository bootstrap
   - dev-bootstrap
 
+[0.4.0]: https://github.com/automation64/installer64/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/automation64/installer64/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/automation64/installer64/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/automation64/devbin64/releases/tag/0.1.0
