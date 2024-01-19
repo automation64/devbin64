@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bash
   - dev-build-bash: migrated global vars to dev-env-bash
+- Container
+  - dev-lab-container: migrated global vars to dev-env-container
 - TestManSH
   - dev-lint-testmansh: migrated global vars to dev-env-testmansh
   - dev-test-testmansh: added container and test cases as parameters
