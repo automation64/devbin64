@@ -9,12 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Ansible-Lint
+  - dev-lint-ansiblelint-collections: added script
+  - dev-env-ansiblelint: added script
 - DevBin64
   - dev-lib-base: install base tools: Installer64 and Bashlib64
 - TestManSH
   - dev-env-testmansh: added shared vars
 - Bash
   - dev-env-bash: added shared vars
+- YAMLLint
+  - dev-env-yamllint: added shared vars
 
 ### Changed
 
@@ -24,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-lint-testmansh: migrated global vars to dev-env-testmansh
   - dev-test-testmansh: added container and test cases as parameters
   - test_testmansh.yaml: removed obsolete script call
+- YAMLLint
+  - dev-lint-yamllint: migrated global vars to dev-env-yamllint
+  - dev-lint-yaml: renamed to dev-lint-yamllint
 
 ### Fixed
 
