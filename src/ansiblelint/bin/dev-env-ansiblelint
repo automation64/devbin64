@@ -26,10 +26,12 @@
 # * Use .env file to override values
 #
 
-# Lint / AnsibleLint / Base path for collections
-export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
 # Lib / AnsibleLint / Configuration name
 export DEV_LIB_ANSIBLELINT_CFG='.ansible-lint'
+# Lint / AnsibleLint / Base path for collections
+export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
+# Lint / AnsibleLint / Collection Catalog
+export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS:-}"
 
 #
 # Locals

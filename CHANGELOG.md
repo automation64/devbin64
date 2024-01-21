@@ -9,8 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Ansible
+  - dev-pack-ansible-collectin: added script
+  - dev-env-ansible: added script
 - MkDocs
-  - dev-lint-mkdocs: added script
+  - dev-lint-mkdocs: added linter
   - dev-env-mkdocs: added script
 - Ansible-Lint
   - dev-lint-ansiblelint-collections: added script
