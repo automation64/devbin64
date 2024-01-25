@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - YAMLLint
   - dev-lint-yamllint: migrated global vars to dev-env-yamllint
   - dev-lint-yaml: renamed to dev-lint-yamllint
+- Installer64
+  - dev-lib-installer64: added BashLib64 parameters to support embedded install
 
 ### Fixed
 
