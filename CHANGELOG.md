@@ -19,7 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-lint-ansiblelint-collections: added script
   - dev-env-ansiblelint: added script
 - DevBin64
-  - dev-lib-base: install base tools: Installer64 and Bashlib64
+  - dev-lib-base
+    - added installation of base tools: Installer64
+    - added to VSCode / Tasks
 - TestManSH
   - dev-env-testmansh: added shared vars
 - Bash
@@ -42,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-lint-yaml: renamed to dev-lint-yamllint
 - Installer64
   - dev-lib-installer64: added BashLib64 parameters to support embedded install
+- DevBin64
+  - dev-bootstrap
+    - Change gitignore to use full paths
 
 ### Fixed
 
