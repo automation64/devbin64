@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# Dev / Lib / Install base dev-time tools
+# Dev / Lib / Base / Install base dev-time tools
 #
 # * Use to download or install external tools, libraries, etc
 # * Tools and libs should go to lib/
 # * Customize as needed
-# * Version: 1.1.0
+# * Template: 1.1.1
 #
 
 # shellcheck source=bin/dev-set
