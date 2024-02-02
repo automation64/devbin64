@@ -1,0 +1,21 @@
+--- tasks.json	2024-01-30 20:29:26.560755914 +0000
++++ tasks-new.json	2024-01-30 14:46:03.626304150 +0000
+@@ -1,5 +1,17 @@
+ {
+     "version": "2.0.0",
+     "tasks": [
++        {
++            "label": "devbin64: dev-lib-base",
++            "linux": {
++                "command": "${workspaceFolder}/bin/dev-lib-base"
++            },
++            "type": "shell",
++            "args": [],
++            "presentation": {
++                "reveal": "always"
++            },
++            "group": "build"
++        },
+     ]
+ }
+\ No newline at end of file
