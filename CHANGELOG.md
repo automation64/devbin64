@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ansible
   - dev-pack-ansible-collectin: added script
   - dev-env-ansible: added script
+  - dev-lan-ansible: added script
 - MkDocs
   - dev-lint-mkdocs: added linter
   - dev-env-mkdocs: added script
@@ -26,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-env-testmansh: added shared vars
 - Bash
   - dev-env-bash: added shared vars
-  - dev-lab-bash
+  - dev-lab-bash: added script
 - YAMLLint
   - dev-env-yamllint: added shared vars
 - GIT
