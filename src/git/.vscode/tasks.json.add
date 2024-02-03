@@ -1,0 +1,36 @@
+    {
+      "label": "devbin64: dev-git-branch-create",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-git-branch-create"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    },
+    {
+      "label": "devbin64: dev-git-branch-close",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-git-branch-close"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    },
+    {
+      "label": "devbin64: dev-git-repo-update",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-git-repo-update"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    }

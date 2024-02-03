@@ -19,15 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-lint-ansiblelint-collections: added script
   - dev-env-ansiblelint: added script
 - DevBin64
+  - added to VSCode / Tasks
   - dev-lib-base
     - added installation of base tools: Installer64
-    - added to VSCode / Tasks
 - TestManSH
   - dev-env-testmansh: added shared vars
 - Bash
   - dev-env-bash: added shared vars
 - YAMLLint
   - dev-env-yamllint: added shared vars
+- GIT
+  - added to VSCode / Tasks
 
 ### Changed
 
