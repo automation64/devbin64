@@ -53,7 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - DevBin64
-  - dev-bootstrap: added missing default for local debug variable
+  - dev-bootstrap
+    - added missing default for local debug variable
+    - fixed .env quotes
   - dev-set: added missing trace setting
 
 ## [0.3.0]
