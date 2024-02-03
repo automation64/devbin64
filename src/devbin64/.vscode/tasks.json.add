@@ -1,0 +1,12 @@
+    {
+      "label": "devbin64: dev-lib-base",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-lib-base"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    },
