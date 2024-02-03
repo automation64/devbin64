@@ -52,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevBin64
   - dev-bootstrap
     - Change gitignore to use full paths
+- GitHub
+  - dev-release-github: moved globals to env file
 
 ### Fixed
 

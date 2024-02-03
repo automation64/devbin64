@@ -1,6 +1,9 @@
 ---
-# Template: 3.1.0
-name: "Test / Bash"
+# Template: 3.2.0
+name: "Test / TestManSH"
+
+env:
+  DEV_CICD_DEBUG: ""
 
 on:
   pull_request:
@@ -11,18 +14,18 @@ on:
       - "feature/**"
     paths:
       - "src/**"
-      - "test/**"
+      - "test/batscore/**"
 
 jobs:
-  test-batscore:
+  test-testmansh:
     runs-on: "ubuntu-latest"
     steps:
 
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
-      - name: "Prepare build environment"
-        run: "./bin/dev-lib-installer64 && ./bin/dev-lib-bashlib64 && ./bin/dev-lib-testmansh"
+      - name: "Prepare dev environment"
+        run: "./bin/dev-lib-installer64 && ./bin/dev-lib-testmansh"
 
       - name: "Build app"
         run: "./bin/dev-build-bash"
