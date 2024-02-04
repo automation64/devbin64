@@ -1,0 +1,12 @@
+    {
+      "label": "devbin64: dev-lint-testmansh",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-lint-testmansh"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    },

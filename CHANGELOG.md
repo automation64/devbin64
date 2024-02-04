@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.0]
 
+### Added
+
+- TestManSH
+  - added to VSCode / Tasks
+- YAMLLint
+  - added to VSCode / Tasks
+
 ### Changed
 
 - DevBin64
-  - Upgraded to use the latest Installer64 version
+  - dev-bootstrap: upgraded to use latest Installer64 version
 - GIT
   - dev-git-repo-update: added flag to enable upstream
   - dev-git-tag-create: added flag to enable upstream
