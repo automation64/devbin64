@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Kind
+  - dev-lab-kind: added script
 - TestManSH
   - added to VSCode / Tasks
 - YAMLLint
@@ -21,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GIT
   - dev-git-repo-update: added flag to enable upstream
   - dev-git-tag-create: added flag to enable upstream
+
+### Fixed
+
+- Bash
+  - Normalized var names
 
 ## [0.4.0]
 
