@@ -28,13 +28,18 @@ _DevBin64_ is a collection devops scripts for maintaining code repositories and 
 
 ### Installation
 
-- Create and initialize a new empty GIT repository
+- Create and initialize empty GIT repository
 
 ```shell
 mkdir NEW-PROJECT &&
 cd NEW-PROJECT &&
 git init
-# Add remotes if needed
+```
+
+- (optional) Add remotes
+
+```shell
+git remote add origin ORIGIN_URL
 ```
 
 - Download the latest version of the `dev-bootstrap` script to the new repository
@@ -44,7 +49,7 @@ git init
 bash ./dev-bootstrap
 ```
 
-- (optional) declare local variables and secrets in:
+- (optional) Declare local variables and secrets in:
   - `dot.local`
   - `dot.secrets`
 

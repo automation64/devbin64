@@ -1,0 +1,12 @@
+    {
+      "label": "devbin64: dev-lint-yamllint",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-lint-yamllint"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build"
+    },

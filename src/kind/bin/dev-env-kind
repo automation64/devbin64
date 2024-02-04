@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Env / GIT / Shared environment variables
+# Dev / Env / Kind / Shared environment variables
 #
-# * Version: 1.1.0
+# * Version: 1.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,23 +26,25 @@
 # * Use .env file to override values
 #
 
-# GIT / Main branch name
-export DEV_GIT_BRANCH_MAIN="${DEV_GIT_BRANCH_MAIN:-main}"
-# GIT / Origin remote name
-export DEV_GIT_REMOTE_ORIGIN="${DEV_GIT_REMOTE_ORIGIN:-origin}"
-# GIT / Use upstream repository? (ON|OFF)
-export DEV_GIT_REMOTE_UPSTREAM_ENABLED="${DEV_GIT_REMOTE_UPSTREAM_ENABLED:-ON}"
-# GIT / Upstream remote name
-export DEV_GIT_REMOTE_UPSTREAM="${DEV_GIT_REMOTE_UPSTREAM:-upstream}"
+# Env / Bash / Registry for lab and testing containers
+export DEV_ENV_KIND_REGISTRY="${DEV_ENV_KIND_REGISTRY:-ghcr.io/automation64}"
+# Env / Bash / Container path for project mounts
+export DEV_ENV_KIND_CONTAINER_PATH_SRC='/source'
+export DEV_ENV_KIND_CONTAINER_PATH_ROOT='/project'
+export DEV_ENV_KIND_CONTAINER_PATH_VAULT="${DEV_ENV_KIND_CONTAINER_PATH_ROOT}/vault"
+export DEV_ENV_KIND_CONTAINER_PATH_CREDENTIALS='/credentials/.kube'
+# Env / Bash / Default kube path
+export DEV_ENV_KIND_PATH_KUBE="${HOME}/.kube"
+# Lab / Bash / Default image
+export DEV_LAB_KIND_IMAGE="${DEV_LAB_KIND_IMAGE:-toolbox/oraclelinux-9-toolbox-gitops:latest}"
+# Lab / Bash / Entrypoint script
+export DEV_LAB_KIND_CONTAINER_ENTRYPOINT="${DEV_ENV_KIND_CONTAINER_PATH_ROOT}/bin/dev-lab-kind-entrypoint"
 
 #
 # Locals
 #
 # * Use .local file or CICD variables to override values
 #
-
-# Lib / RSync / Command
-export DEV_LIB_RSYNC_BIN="${DEV_LIB_RSYNC_BIN:-/usr/bin/rsync}"
 
 #
 # Secrets
