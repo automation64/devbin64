@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - DevBin64
   - Upgraded to use the latest Installer64 version
+- GIT
+  - dev-git-repo-update: added flag to enable upstream
+  - dev-git-tag-create: added flag to enable upstream
 
 ## [0.4.0]
 
