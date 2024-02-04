@@ -32,19 +32,21 @@
 # Globals
 #
 
-# CICD / Debug flag for bin/ scripts. Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
-export DEV_FILES_MODE='0644'
-export DEV_LIB_BASHLIB64_TARGET=''
-export DEV_LIB_INSTALLER64_TARGET=''
-export DEV_LIB_INSTALLER64_OWNER='automation64/installer64'
-export DEV_PATH_ROOT=''
-export DEV_PATH_LIB=''
-export DEV_PATHS_MODE='0755'
-export DEV_PATHS='bin build docs lib src test tmp var'
-export DEV_BASE_DOT_LOCAL='dot.local'
-export DEV_BASE_DOT_SECRETS='dot.secrets'
-export DEV_BASE_ENV='.env'
+declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
+declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
+
+# Env / Initial values
+declare DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
+declare DEV_LIB_BASHLIB64_TARGET=''
+declare DEV_LIB_INSTALLER64_TARGET=''
+declare DEV_LIB_INSTALLER64_OWNER='automation64/installer64'
+declare DEV_PATH_ROOT=''
+declare DEV_PATH_LIB=''
+declare DEV_PATHS_MODE='0755'
+declare DEV_PATHS='bin build docs lib src test tmp var'
+declare DEV_BASE_DOT_LOCAL='dot.local'
+declare DEV_BASE_DOT_SECRETS='dot.secrets'
+declare DEV_BASE_ENV='.env'
 
 # Installer64 / Parameters
 export INST64_INSTALLER64_TARGET=''
@@ -135,8 +137,8 @@ export DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/%s"
     "$DEV_BASE_DOT_SECRETS" \
     "$DEV_BASE_ENV" \
     "$DEV_LIB_INSTALLER64_OWNER" \
-    "$DEV_LIB_INSTALLER64_TARGET" \
-    "$DEV_LIB_BASHLIB64_TARGET" \
+    "$DEV_BOOTSTRAP_INSTALLER64_NAME" \
+    "$DEV_BOOTSTRAP_BASHLIB64_NAME" \
     >"$DEV_BASE_ENV" &&
     chmod "$DEV_PATHS_MODE" "$DEV_BASE_ENV"
 }
@@ -279,8 +281,8 @@ function dev_bootstrap_initializer() {
   # Initialize .env variables for the bootstrap process
   DEV_PATH_ROOT="$(pwd)"
   DEV_PATH_LIB="${DEV_PATH_ROOT}/lib"
-  DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/bl64"
-  DEV_LIB_INSTALLER64_TARGET="${DEV_PATH_LIB}/inst64"
+  DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/${DEV_BOOTSTRAP_BASHLIB64_NAME}"
+  DEV_LIB_INSTALLER64_TARGET="${DEV_PATH_LIB}/${DEV_BOOTSTRAP_INSTALLER64_NAME}"
 
   # Initialize Installer64 parameters
   INST64_INSTALLER64_TARGET="$DEV_LIB_INSTALLER64_TARGET"
