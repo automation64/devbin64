@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0]
+
+### Added
+
+- GitHub
+  - local-github: added cicd settings file
+
+### Changed
+
+- GitHub
+  - dev-release-github: artifact is now a list
+
+### Fixed
+
+- DevBin64
+  - dev-bootstrap: Fixed gitkeep location
+- TestmanSH
+  - dev-test-bash: Added missing exit contidion
+  - github-workflow: Added screen shell to avoid missing TTY error
+
 ## [0.5.0]
 
 ### Added
@@ -119,6 +139,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repository bootstrap
   - dev-bootstrap
 
+[0.6.0]: https://github.com/automation64/installer64/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/automation64/installer64/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/automation64/installer64/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/automation64/installer64/compare/0.2.0...0.3.0
