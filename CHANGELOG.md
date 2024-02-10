@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Migrated globals to dev-env
 - Hadolint
   - Migrated globals to dev-env
+- Bash
+  - Normalized var names
+- Kind
+  - Registered kind path
 
 ### Fixed
 
