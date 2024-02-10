@@ -2,7 +2,7 @@
 #######################################
 # Dev / Env / Kind / Shared environment variables
 #
-# * Version: 1.1.0
+# * Version: 1.1.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -35,8 +35,6 @@ export DEV_ENV_KIND_CONTAINER_PATH_VAULT="${DEV_ENV_KIND_CONTAINER_PATH_ROOT}/va
 export DEV_ENV_KIND_CONTAINER_PATH_CREDENTIALS='/credentials/.kube'
 # Env / Kind / Default kube path
 export DEV_ENV_KIND_PATH_KUBE="${HOME}/.kube"
-# Lib / Kind / Command
-export DEV_LIB_KIND_BIN="${DEV_LIB_KIND_BIN:-/usr/bin/kind}"
 # Lab / Kind / Default image
 export DEV_LAB_KIND_IMAGE="${DEV_LAB_KIND_IMAGE:-toolbox/oraclelinux-9-toolbox-gitops:latest}"
 # Lab / Kind / Entrypoint script
@@ -47,6 +45,9 @@ export DEV_LAB_KIND_CONTAINER_ENTRYPOINT="${DEV_ENV_KIND_CONTAINER_PATH_ROOT}/bi
 #
 # * Use .local file or CICD variables to override values
 #
+
+# Lib / Kind / Command
+export DEV_LIB_KIND_BIN="${DEV_LIB_KIND_BIN:-/usr/bin/kind}"
 
 #
 # Secrets
