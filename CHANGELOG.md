@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.0]
 
+### Add
+
+- Go
+  - Added new component with lab and test
+
 ### Changed
 
 - Container
@@ -24,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - GitHub
   - dev-release-github: added missing bl64 module
+- Kind
+  - dev-lab-kind: fixed missing status capture for docker run
 
 ## [0.6.0]
 
