@@ -36,7 +36,7 @@ export DEV_ENV_KIND_CONTAINER_PATH_CREDENTIALS='/credentials/.kube'
 # Env / Kind / Default kube path
 export DEV_ENV_KIND_PATH_KUBE="${HOME}/.kube"
 # Lab / Kind / Default image
-export DEV_LAB_KIND_IMAGE="${DEV_LAB_KIND_IMAGE:-toolbox/oraclelinux-9-toolbox-gitops:latest}"
+export DEV_LAB_KIND_IMAGE="${DEV_LAB_KIND_IMAGE:-dev/ubuntu-22.4-dev-gitops:latest}"
 # Lab / Kind / Entrypoint script
 export DEV_LAB_KIND_CONTAINER_ENTRYPOINT="${DEV_ENV_KIND_CONTAINER_PATH_ROOT}/bin/dev-lab-kind-entrypoint"
 
