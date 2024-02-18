@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- DevBin64
+  - dev-bootstrap: added local files generation and base tools instalation
 - Hadolint
   - github: added lint action
 
