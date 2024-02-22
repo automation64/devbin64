@@ -28,5 +28,5 @@ jobs:
 
       - name: "Lint app"
         shell: 'script -q -e -c "bash {0}"' # Required to avoid no TTY error
-        run: "./bin/dev-lint-testmansh"
+        run: "./bin/dev-lint-testmansh src/*/bin"
 ...
