@@ -11,7 +11,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 2.0.0
+# Version: 2.1.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -113,21 +113,25 @@ function dev_bootstrap_lib_base_run() {
 }
 
 function dev_bootstrap_dir_create() {
-  echo "Task: create initial directory structure (${DEV_PATH_ROOT})"
-  [[ -d 'bin' && -d 'src' && -d 'lib' ]] &&
-    echo 'Warning: directory structure already created, no further action will be taken' 2>&1 &&
-    return 0
+  local path=''
   # shellcheck disable=SC2086
-  mkdir \
-    --mode="$DEV_BOOTSTRAP_DIR_MODE" \
-    $DEV_BOOTSTRAP_PATHS
+  for path in $DEV_BOOTSTRAP_PATHS; do
+    [[ -d "$path" ]] && continue
+    echo "Task: create main directory structure (${path})"
+    mkdir \
+      --mode="$DEV_BOOTSTRAP_DIR_MODE" \
+      "$path"
+  done
 }
 
 function dev_bootstrap_dot_env_create() {
-  echo "Task: create environment file (${DEV_BASE_ENV})"
-  [[ -r "$DEV_BASE_ENV" ]] &&
-    echo 'Warning: file already create, no further action will be taken' 2>&1 &&
-    return 0
+  local target_file="$DEV_BASE_ENV"
+
+  echo "Task: create environment file (${target_file})"
+  [[ -r "$target_file" ]] &&
+    target_file+='.new'
+  echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+
   # shellcheck disable=SC2016,SC1078
   printf '#!/usr/bin/env bash
 #
@@ -205,8 +209,8 @@ export DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/%s"
     "$DEV_LIB_INSTALLER64_OWNER" \
     "$DEV_BOOTSTRAP_INSTALLER64_NAME" \
     "$DEV_BOOTSTRAP_BASHLIB64_NAME" \
-    >"$DEV_BASE_ENV" &&
-    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$DEV_BASE_ENV"
+    >"$target_file" &&
+    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$target_file"
 }
 
 function dev_bootstrap_lib_base_create() {
@@ -236,10 +240,13 @@ source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2
 }
 
 function dev_bootstrap_dot_local_create() {
-  echo "Task: create environment file (${DEV_BASE_DOT_LOCAL})"
-  [[ -r "$DEV_BASE_DOT_LOCAL" ]] &&
-    echo 'Warning: file already create, no further action will be taken' 2>&1 &&
-    return 0
+  local target_file="$DEV_BASE_DOT_LOCAL"
+
+  echo "Task: create environment file (${target_file})"
+  [[ -r "$target_file" ]] &&
+    target_file+='.new'
+  echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+
   # shellcheck disable=SC2016
   printf '** ACTION REQUIRED: this is a template file. Copy to .local and remove this line **
 #!/usr/bin/env bash
@@ -250,14 +257,17 @@ function dev_bootstrap_dot_local_create() {
 # * Automatically loaded by dev-set on non CICD environments
 # * For CICD environments, create variables and values based on this file
 # * Source before .env
-# * Version: 1.2.1
+# * Version: 1.3.1
 #
 
-# CICD / Debug flag for bin/ scripts
+# Main / Current environment
+export DEV_ENVIRONMENT="${DEV_ENVIRONMENT:-}"
+
+# Main / Debug flag for bin/ scripts
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 ' \
-    >"$DEV_BASE_DOT_LOCAL" &&
-    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$DEV_BASE_DOT_LOCAL"
+    >"$target_file" &&
+    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$target_file"
 }
 
 function dev_bootstrap_dot_secrets_create() {
@@ -282,6 +292,7 @@ function dev_bootstrap_dot_secrets_create() {
 }
 
 function dev_bootstrap_gitignore_create() {
+  local target_file='.gitignore'
   echo 'Task: create empty directory placeholders (.gitkeep)'
   touch \
     'build/.gitkeep' \
@@ -296,10 +307,11 @@ function dev_bootstrap_gitignore_create() {
     'vault/.gitkeep' ||
     return $?
 
-  echo "Task: create gitignore file (.gitignore)"
-  [[ -r '.gitignore' ]] &&
-    echo 'Warning: file already create, no further action will be taken' 2>&1 &&
-    return 0
+  echo "Task: create repository file (${target_file})"
+  [[ -r "$target_file" ]] &&
+    target_file+='.new'
+  echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+
   # shellcheck disable=SC2016
   printf '#
 # GIT Ignore
@@ -329,7 +341,7 @@ function dev_bootstrap_gitignore_create() {
 # Keep placeholder for empty directories
 !/**/.gitkeep
 ' \
-    >'.gitignore'
+    >"$target_file"
 }
 
 function dev_bootstrap_dot_env_load() {
