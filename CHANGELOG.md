@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0]
+
+### Added
+
+- DevBin64
+  - Added environments support to allow configuration and devtime/runtime data separation
+
+### Changed
+
+- DevBin64
+  - dev-bootstrap: now creates already existing files with `.new` prefix instead of skipping
+
 ## [1.0.0]
 
 ### Added
@@ -185,6 +197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repository bootstrap
   - dev-bootstrap
 
+[1.1.0]: https://github.com/automation64/installer64/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/automation64/installer64/compare/0.8.0...1.0.0
 [0.8.0]: https://github.com/automation64/installer64/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/automation64/installer64/compare/0.6.0...0.7.0
