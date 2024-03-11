@@ -24,10 +24,10 @@ jobs:
         run: "./bin/dev-lib-installer64"
 
       - name: "Build base package"
-        run: "./bin/dev-build-custom"
+        run: "./bin/dev-build-project"
 
       - name: "Prepare package for distribution"
-        run: "./bin/dev-pack-custom"
+        run: "./bin/dev-pack-project"
 
       - name: "Create release"
         run: "./bin/dev-release-github ${GITHUB_REF_NAME}"

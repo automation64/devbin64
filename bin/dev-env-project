@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Env / Custom / Shared environment variables
+# Dev / Env / Project / Shared environment variables
 #
 # * Version: 1.0.0
 #
@@ -26,14 +26,14 @@
 # * Use .env file to override values
 #
 
-# Build / Custom / Build destination
-export DEV_BUILD_CUSTOM_STORE="${DEV_BUILD_CUSTOM_STORE:-${DEV_PATH_BUILD}/base-bin}"
-# Build / Custom / Package files
-export DEV_BUILD_CUSTOM_CONTENT="${DEV_BUILD_CUSTOM_CONTENT:-}"
-# Pack / Custom / Package name
-export DEV_PACK_CUSTOM_NAME_BUNDLE="${DEV_PACK_CUSTOM_NAME_BUNDLE:-devbin64.tar.gz}"
-# Pack / Custom / Packages destination
-export DEV_PACK_CUSTOM_STORE="${DEV_PACK_CUSTOM_STORE:-${DEV_PATH_BUILD}/pack}"
+# Build / Project / Build destination
+export DEV_BUILD_PROJECT_STORE="${DEV_BUILD_PROJECT_STORE:-${DEV_PATH_BUILD}/base-bin}"
+# Build / Project / Package files
+export DEV_BUILD_PROJECT_CONTENT="${DEV_BUILD_PROJECT_CONTENT:-}"
+# Pack / Project / Package name
+export DEV_PACK_PROJECT_NAME_BUNDLE="${DEV_PACK_PROJECT_NAME_BUNDLE:-devbin64.tar.gz}"
+# Pack / Project / Packages destination
+export DEV_PACK_PROJECT_STORE="${DEV_PACK_PROJECT_STORE:-${DEV_PATH_BUILD}/pack}"
 
 #
 # Locals
