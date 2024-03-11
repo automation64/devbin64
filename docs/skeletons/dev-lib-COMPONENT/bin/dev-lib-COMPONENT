@@ -40,6 +40,11 @@ function dev_lib_X_COMPONENT_X() {
   # X_LIB_PLACEHOLDER_X
 }
 
+function dev_lib_initialize() {
+  bl64_dbg_app_show_function
+  # X_INIT_PLACEHOLDER_X
+}
+
 #
 # Main
 #
@@ -48,5 +53,6 @@ function dev_lib_X_COMPONENT_X() {
 
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-lib-X_COMPONENT_X'
-dev_lib_X_COMPONENT_X
+dev_lib_initialize &&
+  dev_lib_X_COMPONENT_X
 bl64_msg_show_batch_finish $? 'dev-lib-X_COMPONENT_X'
