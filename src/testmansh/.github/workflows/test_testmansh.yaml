@@ -1,6 +1,10 @@
 ---
-# Template: 3.2.1
+# Template: 3.3.0
 name: "Test / TestManSH"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
 
 env:
   DEV_CICD_DEBUG: ""
