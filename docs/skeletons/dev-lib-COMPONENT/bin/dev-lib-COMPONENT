@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Lib / Bashlib64 / Download
+# Dev / Lib / X_COMPONENT_TITLE_X / Download
 #
-# * Version: 4.2.0
+# * Version: 1.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,27 +26,33 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-X_COMPONENT_X || exit 1
+# shellcheck source-path=lib/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 #
-# Globals
+# Functions
 #
 
-# CICD / Debug flag for bin/ scripts. Set to YES to enable
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
-# Lib / BashLib64 / Target
-export DEV_LIB_BASHLIB64_TARGET="${DEV_LIB_BASHLIB64_TARGET:-${DEV_PATH_LIB}/bl64}"
-# Lib / BashLib64 / Installer64 parameters
-export INST64_BASHLIB64_TARGET="$DEV_LIB_BASHLIB64_TARGET"
+function dev_lib_X_COMPONENT_X() {
+  bl64_dbg_app_show_function
+  # X_LIB_PLACEHOLDER_X
+}
+
+function dev_lib_initialize() {
+  bl64_dbg_app_show_function
+  # X_INIT_PLACEHOLDER_X
+}
 
 #
 # Main
 #
 
-[[ -n "$DEV_CICD_DEBUG" ]] && set -x
-[[ ! -d "$DEV_LIB_INSTALLER64_TARGET" ]] && dev_set_error 'Installer64 not found, please run ./bin/dev-lib-installer64 and try again' && exit 1
+[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 
-[[ -d "$DEV_LIB_BASHLIB64_TARGET" ]] && rm -Rf "$DEV_LIB_BASHLIB64_TARGET"
-"${DEV_LIB_INSTALLER64_TARGET}/install-bashlib64" &&
-rm -f \
-    "${DEV_LIB_BASHLIB64_TARGET}/bashlib64.bash" \
-    "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-opt.bash"
+bl64_msg_all_enable_verbose
+bl64_msg_show_batch_start 'dev-lib-X_COMPONENT_X'
+dev_lib_initialize &&
+  dev_lib_X_COMPONENT_X
+bl64_msg_show_batch_finish $? 'dev-lib-X_COMPONENT_X'

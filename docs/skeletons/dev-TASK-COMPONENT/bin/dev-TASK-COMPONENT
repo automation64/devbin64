@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# Dev / X_TASK_TITLE_X / X_COMPONENT_TITLE_X / X_TASK_DESCRIPTION_X
+#
+# * Template: 1.5.0
+#
+
+#
+# Imports
+#
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-X_COMPONENT_X || exit 1
+# shellcheck source-path=lib/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+
+#
+# Globals
+#
+
+# X_GLOBALS_PLACEHOLDER_X
+
+#
+# Functions
+#
+
+function dev_X_TASK_X() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_task "X_TITLE_X"
+  # X_FUNCTION_PLACEHOLDER_X
+}
+
+function dev_X_TASK_X_initialize() {
+  bl64_dbg_app_show_function
+  # X_INITILIZE_PLACEHOLDER_X
+}
+
+#
+# Main
+#
+
+[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+
+bl64_msg_all_enable_verbose
+bl64_msg_show_batch_start 'dev-X_TASK_X-X_COMPONENT_X'
+dev_X_TASK_X_initialize &&
+  dev_X_TASK_X
+bl64_msg_show_batch_finish $? 'dev-X_TASK_X-X_COMPONENT_X'

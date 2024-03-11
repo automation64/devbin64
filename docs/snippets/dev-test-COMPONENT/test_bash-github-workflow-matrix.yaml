@@ -1,0 +1,14 @@
+jobs:
+  test-X_COMPONENT_X:
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - "X_VALUE_X"
+    steps:
+
+      - name: "Run tests"
+        run: |
+          source ./bin/dev-set &&
+          source ./bin/dev-env-X_COMPONENT_X &&
+          ./bin/dev-test-X_COMPONENT_X $DEV_TEST_X_COMPONENT_UPPER_X_CONTAINER_${{matrix.target}} ${DEV_TEST_X_COMPONENT_UPPER_X_CASES}/${{matrix.target}}

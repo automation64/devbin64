@@ -11,7 +11,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 2.1.0
+# Version: 2.2.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -51,6 +51,7 @@ export INST64_BASHLIB64_TARGET=''
 # Bootstrap
 declare DEV_BOOTSTRAP_DIR_MODE='0755'
 declare DEV_BOOTSTRAP_EXE_MODE='0755'
+declare DEV_BOOTSTRAP_FILE_MODE='0644'
 declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
 declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -210,7 +211,7 @@ export DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/%s"
     "$DEV_BOOTSTRAP_INSTALLER64_NAME" \
     "$DEV_BOOTSTRAP_BASHLIB64_NAME" \
     >"$target_file" &&
-    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$target_file"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$target_file"
 }
 
 function dev_bootstrap_lib_base_create() {
@@ -267,7 +268,7 @@ export DEV_ENVIRONMENT="${DEV_ENVIRONMENT:-}"
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 ' \
     >"$target_file" &&
-    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$target_file"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$target_file"
 }
 
 function dev_bootstrap_dot_secrets_create() {
@@ -288,7 +289,7 @@ function dev_bootstrap_dot_secrets_create() {
 #
 ' \
     >"$DEV_BASE_DOT_SECRETS" &&
-    chmod "$DEV_BOOTSTRAP_DIR_MODE" "$DEV_BASE_DOT_SECRETS"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_DOT_SECRETS"
 }
 
 function dev_bootstrap_gitignore_create() {

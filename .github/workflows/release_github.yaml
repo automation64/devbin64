@@ -1,6 +1,10 @@
 ---
-# Template: 1.0.0
+# Template: 1.1.0
 name: "Release / GitHub"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
 
 env:
   DEV_CICD_DEBUG: ""
@@ -24,10 +28,10 @@ jobs:
         run: "./bin/dev-lib-installer64"
 
       - name: "Build base package"
-        run: "./bin/dev-build-custom"
+        run: "./bin/dev-build-project"
 
       - name: "Prepare package for distribution"
-        run: "./bin/dev-pack-custom"
+        run: "./bin/dev-pack-project"
 
       - name: "Create release"
         run: "./bin/dev-release-github ${GITHUB_REF_NAME}"
