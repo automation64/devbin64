@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-lab-project: project specific lab environment
 - All
   - Github Actions: added concurrency settings
+- ArgoCD
+  - CLI and installer
+- TaskFile
+  - CLI, Installer
+- Hadolint
+  - CLI, Installer, Linter
+- KubeLint
+  - Linter
+- KubeScape
+  - Linter
 
 ### Changed
 
