@@ -2,7 +2,7 @@
 #######################################
 # Dev / Env / AnsibleLint / Shared environment variables
 #
-# * Version: 1.0.0
+# * Version: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,12 +26,15 @@
 # * Use .env file to override values
 #
 
-# Lib / AnsibleLint / Configuration name
-export DEV_LIB_ANSIBLELINT_CFG='.ansible-lint'
-# Lint / AnsibleLint / Base path for collections
-export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
-# Lint / AnsibleLint / Collection Catalog
-export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS:-}"
+# shellcheck disable=2154
+{
+    # Lib / AnsibleLint / Configuration name
+    export DEV_LIB_ANSIBLELINT_CFG='.ansible-lint'
+    # Lint / AnsibleLint / Base path for collections
+    export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
+    # Lint / AnsibleLint / Collection Catalog
+    export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS:-}"
+}
 
 #
 # Locals
@@ -39,9 +42,11 @@ export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_
 # * Use .local file or CICD variables to override values
 #
 
-# Lib / AnsibleLint / Command
-export DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_BIN:-${HOME}/.local/bin/ansible-lint}"
-
+# shellcheck disable=2154
+{
+    # Lib / AnsibleLint / Command
+    export DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_BIN:-${HOME}/.local/bin/ansible-lint}"
+}
 #
 # Secrets
 #

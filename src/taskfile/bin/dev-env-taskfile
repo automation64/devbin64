@@ -2,7 +2,7 @@
 #######################################
 # Dev / Env / TaskFile / Shared environment variables
 #
-# * Version: 1.0.0
+# * Version: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,10 +26,13 @@
 # * Use .env file to override values
 #
 
-# Lib / TaskFile / Installer
-export DEV_LIB_TASKFILE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-taskfile"
-# Lib / TaskFile / Target
-export DEV_LIB_TASKFILE_TARGET="${DEV_LIB_TASKFILE_TARGET:-${DEV_PATH_LIB}/taskfile}"
+# shellcheck disable=2154
+{
+    # Lib / TaskFile / Installer
+    export DEV_LIB_TASKFILE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-taskfile"
+    # Lib / TaskFile / Target
+    export DEV_LIB_TASKFILE_TARGET="${DEV_LIB_TASKFILE_TARGET:-${DEV_PATH_LIB}/taskfile}"
+}
 
 #
 # Locals
@@ -37,8 +40,11 @@ export DEV_LIB_TASKFILE_TARGET="${DEV_LIB_TASKFILE_TARGET:-${DEV_PATH_LIB}/taskf
 # * Use .local file or CICD variables to override values
 #
 
-# Lib / TaskFile / Command
-export DEV_LIB_TASKFILE_BIN="${DEV_LIB_TASKFILE_BIN:-${DEV_LIB_TASKFILE_TARGET}/task}"
+# shellcheck disable=2154
+{
+    # Lib / TaskFile / Command
+    export DEV_LIB_TASKFILE_BIN="${DEV_LIB_TASKFILE_BIN:-${DEV_LIB_TASKFILE_TARGET}/task}"
+}
 
 #
 # Secrets

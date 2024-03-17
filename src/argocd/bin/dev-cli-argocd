@@ -29,8 +29,8 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source=bin/dev-env-taskfile
-source ./bin/dev-env-taskfile || exit 1
+# shellcheck source=bin/dev-env-argocd
+source ./bin/dev-env-argocd || exit 1
 
 #
 # Main
