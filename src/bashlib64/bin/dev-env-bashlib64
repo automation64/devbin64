@@ -26,8 +26,11 @@
 # * Use .env file to override values
 #
 
-# Lib / BashLib64 / Location
-export DEV_LIB_BASHLIB64_TARGET="${DEV_LIB_BASHLIB64_TARGET:-${DEV_PATH_LIB}/bl64}"
+# shellcheck disable=2154
+{
+    # Lib / BashLib64 / Location
+    export DEV_LIB_BASHLIB64_TARGET="${DEV_LIB_BASHLIB64_TARGET:-${DEV_PATH_LIB}/bl64}"
+}
 
 #
 # Locals
