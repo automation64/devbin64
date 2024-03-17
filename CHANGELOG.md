@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Helm
   - Installer
-
+- ShellCheck
+  - Installer
 - DevBin64
   - dev-set: Module's environment load. Modules are defined in `.env/DEV_MODULE_LOAD`
 

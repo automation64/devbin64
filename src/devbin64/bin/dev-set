@@ -38,6 +38,10 @@ export DEV_PATH_ROOT="${DEV_PATH_ROOT:-}"
 # Main / List of modules to load
 export DEV_MODULE_LOAD="${DEV_MODULE_LOAD:-}"
 
+# From CICD products
+export GITHUB_WORKSPACE="${GITHUB_WORKSPACE:-}"
+export GITLAB_CI="${GITLAB_CI:-}"
+
 #
 # Functions
 #
@@ -50,7 +54,7 @@ function dev_set_error() {
 
 function dev_set_task() {
   local msg="$1"
-  [[ -n "$DEV_SET_VERBOSE" ]] && echo "dev-set: Task: ${msg}"
+  [[ -n "$DEV_SET_VERBOSE" ]] && echo "dev-set:Task: ${msg}"
   return 0
 }
 
@@ -89,7 +93,7 @@ function dev_set_load_github() {
   DEV_BASE_LOCAL="${DEV_PATH_ROOT}/${DEV_BASE_LOCAL}"
   if [[ -f "$DEV_BASE_LOCAL" ]]; then
     dev_set_task "Load local github automatic environment variables (${DEV_BASE_LOCAL})"
-    # shellcheck disable=SC1090
+    # shellcheck source=./.local
     source "${DEV_BASE_LOCAL}" ||
       { dev_set_error "unable to source file (${DEV_BASE_LOCAL})" && return 1; }
   fi
@@ -113,15 +117,17 @@ function dev_set_load_env() {
   return 0
 }
 
+# shellcheck source-path=./bin
 function dev_set_load_modules() {
   local module_name=''
   local module_env=''
 
-  DEV_MODULE_LOAD="installer64 bashlib64 ${DEV_MODULE_LOAD}"
+  source "${DEV_PATH_BIN}/dev-env-installer64" &&
+    source "${DEV_PATH_BIN}/dev-env-bashlib64" ||
+    { dev_set_error "unable to load environment core modules" && return 1; }
   for module_name in $DEV_MODULE_LOAD; do
     module_env="${DEV_PATH_BIN}/dev-env-${module_name}"
     dev_set_task "load module environment variables (${module_env})"
-    # shellcheck disable=SC1090
     source "$module_env" ||
       { dev_set_error "unable to load environment variables from file (${module_env})" && return 1; }
   done
@@ -129,7 +135,6 @@ function dev_set_load_modules() {
 }
 
 function dev_set_load_local() {
-  # shellcheck disable=SC2154
   if [[ -f "$DEV_BASE_LOCAL" ]]; then
     dev_set_load_workstation
   elif [[ -n "$GITHUB_WORKSPACE" ]]; then
@@ -152,7 +157,7 @@ function dev_set_initialize() {
     dev_set_error "unsupported shell environment (${SHELL}). Re-run the script using bash"
     return 1
   fi
-  
+
   if [[ ! -f '.env' ]]; then
     dev_set_error "script must be run from project's root path"
     return 1
@@ -165,13 +170,11 @@ function dev_set_initialize() {
 
 [[ -n "$DEV_CICD_DEBUG" ]] && set -x
 
+# shellcheck disable=SC2015
 dev_set_initialize &&
   dev_set_load_local &&
   dev_set_load_env &&
   dev_set_load_modules ||
-  {
-    dev_set_error 'failed to load Dev environment variables'
-    return 1
-  }
+  { dev_set_error 'failed to load Dev environment variables' && return 1; }
 [[ -n "$DEV_CICD_DEBUG" ]] && set +x
 :
