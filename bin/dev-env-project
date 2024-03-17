@@ -26,14 +26,17 @@
 # * Use .env file to override values
 #
 
-# Build / Project / Build destination
-export DEV_BUILD_PROJECT_STORE="${DEV_BUILD_PROJECT_STORE:-${DEV_PATH_BUILD}/base-bin}"
-# Build / Project / Package files
-export DEV_BUILD_PROJECT_CONTENT="${DEV_BUILD_PROJECT_CONTENT:-}"
-# Pack / Project / Package name
-export DEV_PACK_PROJECT_NAME_BUNDLE="${DEV_PACK_PROJECT_NAME_BUNDLE:-devbin64.tar.gz}"
-# Pack / Project / Packages destination
-export DEV_PACK_PROJECT_STORE="${DEV_PACK_PROJECT_STORE:-${DEV_PATH_BUILD}/pack}"
+# shellcheck disable=2154
+{
+    # Build / Project / Build destination
+    export DEV_BUILD_PROJECT_STORE="${DEV_BUILD_PROJECT_STORE:-${DEV_PATH_BUILD}/base-bin}"
+    # Build / Project / Package files
+    export DEV_BUILD_PROJECT_CONTENT="${DEV_BUILD_PROJECT_CONTENT:-}"
+    # Pack / Project / Package name
+    export DEV_PACK_PROJECT_NAME_BUNDLE="${DEV_PACK_PROJECT_NAME_BUNDLE:-devbin64.tar.gz}"
+    # Pack / Project / Packages destination
+    export DEV_PACK_PROJECT_STORE="${DEV_PACK_PROJECT_STORE:-${DEV_PATH_BUILD}/pack}"
+}
 
 #
 # Locals
