@@ -26,7 +26,7 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=bin
+# shellcheck source=bin/dev-env-ansible
 source ./bin/dev-env-ansible || exit 1
 # shellcheck source=lib/bl64/bashlib64-core.bash
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -46,11 +46,11 @@ function dev_pack_ansible_create() {
   local pack_current=''
 
   cd "$DEV_PACK_ANSIBLE_DESTINATION" || return $?
-  for pack_current in $dev_pack_target; do
+  for pack_current in $pack_target; do
     bl64_msg_show_phase "pack Ansible Collection (${pack_current})"
 
     bl64_msg_show_task 'remove old collection package'
-    bl64_fs_rm_file ${DEV_PACK_ANSIBLE_GALAXY_NAMESPACE}-${pack_current}-*.tar.gz
+    bl64_fs_rm_file "${DEV_PACK_ANSIBLE_GALAXY_NAMESPACE}-${pack_current}"-*.tar.gz
 
     bl64_msg_show_task 'generate new collection package'
     bl64_ans_run_ansible_galaxy \

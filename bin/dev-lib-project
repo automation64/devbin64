@@ -2,7 +2,7 @@
 #######################################
 # Dev / Lib / Project / Download
 #
-# * Version: 1.0.0
+# * Version: 1.1.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -44,7 +44,9 @@ function dev_lib_project() {
   bl64_fs_fix_permissions '0755' '0755' \
     "$DEV_PATH_BIN" \
     "$DEV_PATH_SRC" \
-    "$DEV_PATH_TEST"
+    "$DEV_PATH_TEST" \
+    '.env' \
+    '.local'
 }
 
 function dev_lib_initialize() {
