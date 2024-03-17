@@ -28,8 +28,8 @@
 
 # Lib / ArgoCD / Installer
 export DEV_LIB_ARGOCD_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-argocdcli"
-# Lint / ArgoCD / Target
-export DEV_LINT_ARGOCD_TARGET="${DEV_LINT_ARGOCD_TARGET:-${DEV_PATH_LIB}/argocd}"
+# Lib / ArgoCD / Target
+export DEV_LIB_ARGOCD_TARGET="${DEV_LIB_ARGOCD_TARGET:-${DEV_PATH_LIB}/argocd}"
 
 #
 # Locals
@@ -38,7 +38,7 @@ export DEV_LINT_ARGOCD_TARGET="${DEV_LINT_ARGOCD_TARGET:-${DEV_PATH_LIB}/argocd}
 #
 
 # Lib / ArgoCD / Command
-export DEV_LIB_ARGOCD_BIN="${DEV_LIB_ARGOCD_BIN:-${DEV_LINT_ARGOCD_TARGET}/argocd}"
+export DEV_LIB_ARGOCD_BIN="${DEV_LIB_ARGOCD_BIN:-${DEV_LIB_ARGOCD_TARGET}/argocd}"
 
 #
 # Secrets
