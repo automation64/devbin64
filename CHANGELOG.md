@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0]
+## [2.0.1]
 
 ### Added
 
@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Installer
 - DevBin64
   - dev-set: Module's environment load. Modules are defined in `.env/DEV_MODULE_LOAD`
+
+### Fixed
+
+- DevBin64
+  - dev-set: added ZSH compatibility
 
 ## [1.3.0]
 
@@ -242,6 +247,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repository bootstrap
   - dev-bootstrap
 
+[2.0.1]: https://github.com/automation64/installer64/compare/1.3.0...2.0.1
 [1.3.0]: https://github.com/automation64/installer64/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/automation64/installer64/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/automation64/installer64/compare/1.0.0...1.1.0
