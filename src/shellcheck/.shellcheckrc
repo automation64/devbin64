@@ -4,7 +4,7 @@
 #
 
 external-sources=true
-# Warning: temporary fix to avoid memory but in 0.9 series
+# Warning: temporary fix to avoid memory bug in 0.9 series
 extended-analysis=false
 
 #
