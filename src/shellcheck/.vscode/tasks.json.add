@@ -1,0 +1,12 @@
+    {
+      "label": "devbin64: dev-lint-shellcheck",
+      "linux": {
+        "command": "${workspaceFolder}/bin/dev-lint-shellcheck"
+      },
+      "type": "shell",
+      "args": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "lint"
+    },
