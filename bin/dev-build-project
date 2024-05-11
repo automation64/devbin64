@@ -2,7 +2,7 @@
 #######################################
 # Dev / Build / Project / Prepare distributable buildage content
 #
-# * Template: 1.0.0
+# * Template: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -45,7 +45,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-arc.bash" &&
 
 function dev_build_custom() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task "prepare buildages destination (${DEV_BUILD_PROJECT_STORE})"
+  bl64_msg_show_task "prepare build destination (${DEV_BUILD_PROJECT_STORE})"
   bl64_fs_rm_full "$DEV_BUILD_PROJECT_STORE"
   bl64_fs_create_dir \
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_BUILD_PROJECT_STORE" ||
