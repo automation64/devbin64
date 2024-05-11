@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Lib / Project / Download
+# Dev / Profile
 #
-# * Version: 1.1.1
+# * Create profile directories
+# * Version: 1.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,8 +27,6 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=bin
-source ./bin/dev-env-project || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
@@ -38,22 +37,25 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 # Functions
 #
 
-function dev_lib_project() {
+function dev_profile_create() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task 'Fix repository permissions for container access'
-  bl64_fs_fix_permissions '0755' '0755' \
-    "$DEV_PATH_BIN" \
-    "$DEV_PATH_SRC" \
-    "$DEV_PATH_TEST" \
-    "$DEV_BASE_DOT_LOCAL" \
-    "$DEV_BASE_LOCAL" \
-    "$DEV_BASE_DOT_SECRETS" \
-    "$DEV_BASE_SECRETS" \
-    "$DEV_BASE_ENV" \
-    "$DEV_BASE_CHANGELOG"
+  bl64_msg_show_task "Create profile directories (${DEV_PROFILE})"
+  bl64_fs_create_dir "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+    "${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}" \
+    "${DEV_PATH_ETC}/${DEV_BASE_PROFILE}" \
+    "${DEV_PATH_LOGS}/${DEV_BASE_PROFILE}" \
+    "${DEV_PATH_TMP}/${DEV_BASE_PROFILE}" \
+    "${DEV_PATH_VAR}/${DEV_BASE_PROFILE}" \
+    "${DEV_PATH_VAULT}/${DEV_BASE_PROFILE}" \
+    "$DEV_PATH_PROF_BUILD" \
+    "$DEV_PATH_PROF_ETC" \
+    "$DEV_PATH_PROF_LOGS" \
+    "$DEV_PATH_PROF_TMP" \
+    "$DEV_PATH_PROF_VAR" \
+    "$DEV_PATH_PROF_VAULT"
 }
 
-function dev_lib_initialize() {
+function dev_profile_initialize() {
   bl64_dbg_app_show_function
 }
 
@@ -64,7 +66,7 @@ function dev_lib_initialize() {
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 
 bl64_msg_all_enable_verbose
-bl64_msg_show_batch_start 'dev-lib-project'
-dev_lib_initialize &&
-  dev_lib_project
-bl64_msg_show_batch_finish $? 'dev-lib-project'
+bl64_msg_show_batch_start 'dev-profile'
+dev_profile_initialize &&
+  dev_profile_create
+bl64_msg_show_batch_finish $? 'dev-profile'
