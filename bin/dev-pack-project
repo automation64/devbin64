@@ -27,6 +27,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 function dev_pack_prepare() {
   bl64_dbg_app_show_function
   bl64_msg_show_task "gather distributable package content (${DEV_PACK_PROJECT_STAGING})"
+  # shellcheck disable=SC2086
   bl64_fs_copy_files \
     '0755' \
     "$BL64_VAR_DEFAULT" \
@@ -38,6 +39,7 @@ function dev_pack_prepare() {
 function dev_pack_create() {
   bl64_dbg_app_show_function
   bl64_msg_show_task "create dstributable bundle (${DEV_PACK_PROJECT_BUNDLE})"
+  # shellcheck disable=SC2086
   bl64_arc_run_tar \
     czf "${DEV_PACK_PROJECT_STORE}/${DEV_PACK_PROJECT_BUNDLE}" \
     $BL64_ARC_SET_TAR_VERBOSE \
