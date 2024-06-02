@@ -58,7 +58,6 @@ function dev_pack() {
 function dev_pack_initialize() {
   bl64_dbg_app_show_function
   bl64_check_export 'DEV_PACK_PROJECT_BUNDLE' &&
-    bl64_check_export 'DEV_PACK_PROJECT_ASSETS' &&
     bl64_arc_setup
 }
 
