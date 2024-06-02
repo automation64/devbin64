@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-pack-project: boilerplate for packing distributable release packages
   - dev-build-project: boilerplate for building the app
 
+### Fixed
+
+- GitHub
+  - dev-release-github: Fixed changelog parser
+
 ## [3.0.0]
 
 ### Added
