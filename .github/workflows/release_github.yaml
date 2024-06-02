@@ -27,9 +27,6 @@ jobs:
       - name: "Prepare dev environment"
         run: "./bin/dev-lib-installer64"
 
-      - name: "Build base package"
-        run: "./bin/dev-build-project"
-
       - name: "Prepare package for distribution"
         run: "./bin/dev-pack-project"
 
