@@ -1,3 +1,4 @@
+# WARNING: skeleton only. File is embedded in dev-bootstrap. Remove this line before using
 #!/usr/bin/env bash
 #
 # Dev / Lib / Base / Install base dev-time tools
