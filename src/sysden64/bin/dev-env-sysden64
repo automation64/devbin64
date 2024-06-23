@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#######################################
+# Dev / Env / SysDen64 / Shared environment variables
+#
+# * Version: 6.0.0
+#
+#######################################
+# Copyright [2023] [serdigital64@gmail.com]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#    export DEV_LAB_SYSDEN64_PATH_DEN="${DEV_PATH_PROF_VAR}/home"
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+#
+# Globals
+#
+# * Use .env file to override values
+#
+
+# shellcheck disable=2154
+{
+    # Env / SysDen64 / Registry for lab and testing containers
+    export DEV_ENV_SYSDEN64_REGISTRY="${DEV_ENV_SYSDEN64_REGISTRY:-ghcr.io/automation64}"
+    # Lab / SysDen64 / Default image
+    export DEV_LAB_SYSDEN64_CONTAINER="${DEV_LAB_SYSDEN64_CONTAINER:-toolbox/oraclelinux-9-toolbox-gitops}"
+    # Lab / SysDen64 / Current profile name
+    export DEV_LAB_SYSDEN64_PROFILE='.sysden64-profile'
+    # Lab / SysDen64 / Local paths
+    export DEV_LAB_SYSDEN64_PATH_SD64_BASE='lib/sd64'
+    export DEV_LAB_SYSDEN64_PATH_SD64_LOCAL="${DEV_PATH_ROOT}/${DEV_LAB_SYSDEN64_PATH_SD64_BASE}"
+    export DEV_LAB_SYSDEN64_PATH_DEN="${DEV_PATH_PROF_VAR}/home"
+    # Lab / SysDen64 / Container paths
+    export DEV_LAB_SYSDEN64_PATH_HOME_CONTAINER='/home'
+    export DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER:-/sysden64}"
+    export DEV_LAB_SYSDEN64_PATH_SD64_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/${DEV_LAB_SYSDEN64_PATH_SD64_BASE}"
+    export DEV_LAB_SYSDEN64_PATH_BL64_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/lib/bl64"
+    # Lab / SysDen64 / Helper scripts
+    export DEV_LAB_SYSDEN64_SCRIPT_HOME="${DEV_LAB_SYSDEN64_PATH_SD64_LOCAL}/bin/sysden64"
+    export DEV_LAB_SYSDEN64_SCRIPT_ENTRYPOINT="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/bin/dev-lab-sysden64-entrypoint"
+    # Lab / SysDen64 / Container user shell
+    export DEV_LAB_SYSDEN64_CONTAINER_SHELL="${DEV_LAB_SYSDEN64_CONTAINER_SHELL:-/bin/zsh}"
+    # Lib / SysDen64 / Replace existing configuration on new lab startup? (ON|OFF)
+    export DEV_LIB_SYSDEN64_REPLACE_ENABLED="${DEV_LIB_SYSDEN64_REPLACE_ENABLED:-OFF}"
+}
+
+#
+# Locals
+#
+# * Use .local file or CICD variables to override values
+#
+
+# shellcheck disable=2154
+{
+    # Lab / SysDen64 / Container user
+    export DEV_LAB_SYSDEN64_CONTAINER_USER_CREATE="${DEV_LAB_SYSDEN64_CONTAINER_USER_CREATE:-YES}"
+    export DEV_LAB_SYSDEN64_CONTAINER_USER_NAME="${DEV_LAB_SYSDEN64_CONTAINER_USER_NAME:-${USER}}"
+    export DEV_LAB_SYSDEN64_CONTAINER_USER_UID="${DEV_LAB_SYSDEN64_CONTAINER_USER_UID:-${UID}}"
+}
+
+#
+# Secrets
+#
+# * Use .secrets file or CICD secrets to override values
+#
