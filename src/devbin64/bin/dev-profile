@@ -3,7 +3,7 @@
 # Dev / Profile
 #
 # * Create profile directories
-# * Version: 1.0.0
+# * Version: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -57,6 +57,7 @@ function dev_profile_create() {
 
 function dev_profile_initialize() {
   bl64_dbg_app_show_function
+  bl64_check_export 'DEV_PROFILE'
 }
 
 #
