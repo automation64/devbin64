@@ -9,7 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- DevBin64
+  - dev-bootstrap: generate deployment status file
 - SysDen64
+  - module
+
+### Fixed
+
+- DevBin64
+  - dev-bootstrap: add dev-profile to distributable package
+
+### Changed
+
+- GitHub
+  - dev-release-github: use BL64 to parse CHANGELOG.md
 
 ## [3.1.0]
 
