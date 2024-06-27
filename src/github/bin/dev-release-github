@@ -2,7 +2,7 @@
 #######################################
 # Dev / Release / GitHub / Create application release from tag
 #
-# * Version: 2.2.0
+# * Version: 2.2.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -31,6 +31,9 @@ source ./bin/dev-env-git &&
   source ./bin/dev-env-github || exit 1
 # shellcheck source=lib/bl64/bashlib64.bash
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-rxtx.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-api.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-vcs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
