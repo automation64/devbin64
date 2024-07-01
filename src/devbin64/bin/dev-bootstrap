@@ -11,7 +11,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 3.2.0
+# Version: 4.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -33,7 +33,23 @@
 # Globals
 #
 
-# Env / Initial values
+# DevBin64 / Current version
+declare DEV_BOOTSTRAP_VERSION='3.3.0'
+# DevBin64 / Module Library location
+declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-/opt/devbin64}"
+declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
+# DevBin64 / List of module files for the initial bin/
+declare DEV_BOOTSTRAP_FILES=''
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-env-bashlib64"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-lib-bashlib64"
+
+# DevBin64 / State file name
+declare DEV_BOOTSTRAP_STATE='.devbin64'
+# DevBin64 / Env initial values
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 export DEV_LIB_BASHLIB64_TARGET=''
 export DEV_LIB_INSTALLER64_TARGET=''
@@ -44,10 +60,7 @@ export DEV_PATH_TMP=''
 export DEV_BASE_DOT_LOCAL='dot.local'
 export DEV_BASE_DOT_SECRETS='dot.secrets'
 export DEV_BASE_ENV='.env'
-
-# Installer64 / Parameters
 export DEV_PATH_BIN=''
-export INST64_BASHLIB64_TARGET=''
 
 declare DEV_BOOTSTRAP_DIR_MODE='0755'
 declare DEV_BOOTSTRAP_EXE_MODE='0755'
@@ -55,57 +68,21 @@ declare DEV_BOOTSTRAP_FILE_MODE='0644'
 declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
 declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
-declare DEV_BOOTSTRAP_COMMAND_CURL='/usr/bin/curl'
-declare DEV_BOOTSTRAP_COMMAND_TAR='tar'
-declare DEV_BOOTSTRAP_GH_API='https://api.github.com/repos/automation64/devbin64/releases/latest'
-declare DEV_BOOTSTRAP_SOURCE='https://github.com/automation64/devbin64/releases/download'
-declare DEV_BOOTSTRAP_PACKAGE='devbin64.tar.gz'
 
-# DevBin64 / State file name
-declare DEV_BOOTSTRAP_STATE='.devbin64'
-# DevBin64 / Current version
-declare DEV_BOOTSTRAP_VERSION='3.2.0'
+# Installer64 / Parameters
+export INST64_BASHLIB64_TARGET=''
 
 #
 # Functions
 #
 
-function dev_bootstrap_package_get_version() {
-  "$DEV_BOOTSTRAP_COMMAND_CURL" \
-    -s \
-    "$DEV_BOOTSTRAP_GH_API" |
-    grep '"tag_name":'
-}
-
-function dev_bootstrap_package_download() {
-  local package_url=''
-  local version=''
-
-  version="$(dev_bootstrap_package_get_version)" ||
-    return $?
-  version="${version##*:??}" &&
-    version="${version%%?,*}"
-  package_url="${DEV_BOOTSTRAP_SOURCE}/${version}/${DEV_BOOTSTRAP_PACKAGE}"
-  "$DEV_BOOTSTRAP_COMMAND_CURL" \
-    -s \
-    -L \
-    -o "${DEV_PATH_TMP}/${DEV_BOOTSTRAP_PACKAGE}" \
-    "$package_url"
-}
-
-function dev_bootstrap_package_open() {
-  [[ -f "${DEV_PATH_TMP}/${DEV_BOOTSTRAP_PACKAGE}" ]] &&
-    "$DEV_BOOTSTRAP_COMMAND_TAR" zx -C "$DEV_PATH_BIN" -f "${DEV_PATH_TMP}/${DEV_BOOTSTRAP_PACKAGE}" &&
-    chmod "$DEV_BOOTSTRAP_EXE_MODE" "$DEV_PATH_BIN"/* ||
-    return $?
-  rm -f "${DEV_PATH_TMP}/${DEV_BOOTSTRAP_PACKAGE}"
-  return 0
-}
-
 function dev_bootstrap_bin_populate() {
+  local file=''
   echo "Task: populate dev-bin (${DEV_PATH_BIN})"
-  dev_bootstrap_package_download &&
-    dev_bootstrap_package_open
+  for file in $DEV_BOOTSTRAP_FILES; do
+    cp "$file" "$DEV_PATH_BIN" ||
+      return $?
+  done
 }
 
 function dev_bootstrap_lib_local_run() {
@@ -381,6 +358,11 @@ function dev_bootstrap_initialize() {
   # Initialize Installer64 parameters
   DEV_PATH_BIN="$DEV_LIB_INSTALLER64_TARGET"
   INST64_BASHLIB64_TARGET="$DEV_LIB_BASHLIB64_TARGET"
+
+  if [[ ! -d "$DEV_BOOTSTRAP_PATH_LIB" ]]; then
+    echo "Error: unable to locate module library (${DEV_BOOTSTRAP_PATH_LIB}). Verify or update DEV_BOOTSTRAP_PATH_LIB with the correct path location" 2>&1
+    return 1
+  fi
 }
 
 #
