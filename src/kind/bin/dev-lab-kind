@@ -2,7 +2,7 @@
 #######################################
 # Dev / Lab / Kind / Open sandbox environment
 #
-# * Version: 1.0.1
+# * Version: 1.0.2
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -47,7 +47,8 @@ function dev_lab_open() {
   local -i status=0
 
   bl64_msg_show_warning "temporary opening kubeconfig path permissions (${DEV_ENV_KIND_PATH_KUBE})"
-  bl64_fs_fix_permissions '0644' '0755' "${DEV_ENV_KIND_PATH_KUBE}"
+  bl64_fs_path_permission_set '0644' '0755' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_ON" \
+    "${DEV_ENV_KIND_PATH_KUBE}"
 
   bl64_msg_show_task "open sanbox environment (${dev_lab_image})"
   bl64_cnt_run_interactive \
@@ -64,7 +65,8 @@ function dev_lab_open() {
   status=$?
 
   bl64_msg_show_task "closing kubeconfig path permissions (${DEV_ENV_KIND_PATH_KUBE})"
-  bl64_fs_fix_permissions '0600' '0700' "${DEV_ENV_KIND_PATH_KUBE}"
+  bl64_fs_path_permission_set '0600' '0700' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_ON" \
+    "${DEV_ENV_KIND_PATH_KUBE}"
   ((status == 0)) && status=$?
   return $status
 }
