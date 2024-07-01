@@ -2,7 +2,7 @@
 #
 # Dev / Pack / Project / Create distributable release
 #
-# * Version: 1.1.0
+# * Version: 2.0.0
 #
 
 #
@@ -26,14 +26,31 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 
 function dev_pack_prepare() {
   bl64_dbg_app_show_function
+  local path_mode='0755'
+  bl64_msg_show_task "reset staging area (${DEV_PACK_PROJECT_STAGING})"
+  bl64_fs_path_remove "$DEV_PACK_PROJECT_STAGING" &&
+    bl64_fs_create_dir \
+      "$path_mode" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+      "$DEV_PACK_PROJECT_STAGING" \
+      "${DEV_PACK_PROJECT_STAGING}/bin" \
+      "${DEV_PACK_PROJECT_STAGING}/lib" ||
+    return $?
+
   bl64_msg_show_task "gather distributable package content (${DEV_PACK_PROJECT_STAGING})"
-  # shellcheck disable=SC2086
-  bl64_fs_copy_files \
-    '0755' \
+  bl64_fs_path_copy \
+    "$path_mode" \
+    "$path_mode" \
     "$BL64_VAR_DEFAULT" \
     "$BL64_VAR_DEFAULT" \
-    "$DEV_PACK_PROJECT_STAGING" \
-    $DEV_PACK_PROJECT_ASSETS
+    "${DEV_PACK_PROJECT_STAGING}/bin" \
+    $DEV_PACK_PROJECT_ASSETS &&
+    bl64_fs_path_copy \
+      "$path_mode" \
+      "$path_mode" \
+      "$BL64_VAR_DEFAULT" \
+      "$BL64_VAR_DEFAULT" \
+      "${DEV_PACK_PROJECT_STAGING}/lib" \
+      "$DEV_PATH_SRC"/*
 }
 
 function dev_pack_create() {
