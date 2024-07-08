@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - DevBin64
   - Installer for having a local copy of the module library
-
+- GIT
+  - dev-git-repo-update: add garbage collector
 ### Changed
 
 - DevBin64
