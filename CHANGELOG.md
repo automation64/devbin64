@@ -26,6 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Project
   - Migrated to global build paths
 
+### Fixed
+
+- GitHub
+  - dev-release-github: added missing library
+
 ## [3.2.0]
 
 ### Added
