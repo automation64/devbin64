@@ -49,8 +49,8 @@ function dev_pack_prepare() {
       "$path_mode" \
       "$BL64_VAR_DEFAULT" \
       "$BL64_VAR_DEFAULT" \
-      "${DEV_PATH_BUILD_STAGING}/lib" \
-      "$DEV_PATH_SRC"/*
+      "${DEV_PATH_BUILD_STAGING}" \
+      "${DEV_PATH_SRC}/lib"
 }
 
 function dev_pack_create() {
