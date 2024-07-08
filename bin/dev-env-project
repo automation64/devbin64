@@ -41,7 +41,7 @@
     # Pack / Project / Assets to include in the package
     export DEV_PACK_PROJECT_ASSETS="${DEV_PACK_PROJECT_ASSETS:-}"
     # Pack / Project / List of generated distributable files
-    export DEV_PACK_PROJECT_DISTRIBUTABLE="${DEV_PACK_PROJECT_DISTRIBUTABLE:-}"
+    export DEV_PACK_PROJECT_DISTRIBUTABLE="${DEV_PACK_PROJECT_DISTRIBUTABLE:-${DEV_PATH_BUILD_PACK}/${DEV_PACK_PROJECT_BUNDLE}}"
 }
 
 #
