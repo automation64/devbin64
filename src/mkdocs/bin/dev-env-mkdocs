@@ -2,9 +2,9 @@
 #######################################
 # Dev / Env / MKDocs / Shared environment variables
 #
-# * Version: 1.0.1
+# * Version: 2.0.0
 #
-#######################################
+######################################
 # Copyright [2023] [serdigital64@gmail.com]
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,6 @@
 
 # shellcheck disable=2154
 {
-    # Lint / MkDocs / Target
-    export DEV_LINT_MKDOCS_TARGET="${DEV_LINT_MKDOCS_TARGET:-${DEV_PATH_BUILD}/mkdocs}"
     # Lib / MkDocs / Configuration
     export DEV_LIB_MKDOCS_CFG="${DEV_PATH_ROOT}/mkdocs.yml"
 }
