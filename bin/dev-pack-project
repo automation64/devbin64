@@ -66,7 +66,7 @@ function dev_pack_create() {
 function dev_pack() {
   bl64_dbg_app_show_function
   bl64_msg_show_task "prepare packages destination (${DEV_PATH_BUILD_PACK})"
-  bl64_fs_rm_full \
+  bl64_fs_path_remove \
     "$DEV_PATH_BUILD_STAGING" \
     "$DEV_PATH_BUILD_PACK"
   bl64_fs_create_dir \
