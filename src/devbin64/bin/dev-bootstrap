@@ -3,7 +3,8 @@
 #######################################
 # Dev / Bootstrap
 #
-# * Boostrap repository creation:
+# * Boostrap repository creation:  - Migrated to global build paths
+
 #   * create basic directory structure
 #   * download Installer64 and Bashlib64 tools
 #   * download dev-bin tools
@@ -11,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 4.0.0
+# Version: 5.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -34,7 +35,7 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BOOTSTRAP_VERSION='3.3.0'
+declare DEV_BOOTSTRAP_VERSION='4.0.0'
 # DevBin64 / Module Library location
 declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-/opt/devbin64}"
 declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
@@ -132,7 +133,7 @@ function dev_bootstrap_dot_env_create() {
 # * Used by DevBin64 to define project wide variables
 # * Automatically loaded by dev-set
 # * Do not include local variables (workstation specific) and secrets. Use .local and .secrets instead
-# * Version: 3.4.0
+# * Version: 3.5.0
 #
 
 # Main / Base file and directory names
@@ -171,6 +172,9 @@ export DEV_PATH_LIB="${DEV_PATH_ROOT}/lib"
 
 # Main / DevOps builds. Content excluded from GIT
 export DEV_PATH_BUILD="${DEV_PATH_ROOT}/${DEV_BASE_BUILD}"
+export DEV_PATH_BUILD_PREPARE="${DEV_PATH_BUILD}/prepare"
+export DEV_PATH_BUILD_STAGING="${DEV_PATH_BUILD}/staging"
+export DEV_PATH_BUILD_PACK="${DEV_PATH_BUILD}/pack"
 
 # Main / DevOps local vault for secrets. Content excluded from GIT
 export DEV_PATH_VAULT="${DEV_PATH_ROOT}/vault"
