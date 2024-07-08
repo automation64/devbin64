@@ -1,1 +1,1 @@
-../src/shellcheck/bin/dev-cli-shellcheck
+../src/lib/shellcheck/bin/dev-cli-shellcheck
