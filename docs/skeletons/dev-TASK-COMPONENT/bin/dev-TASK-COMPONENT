@@ -2,7 +2,7 @@
 #
 # Dev / X_TASK_TITLE_X / X_COMPONENT_TITLE_X / X_TASK_DESCRIPTION_X
 #
-# * Template: 1.5.0
+# * Template: 1.6.0
 #
 
 #
@@ -32,7 +32,7 @@ function dev_X_TASK_X() {
   # X_FUNCTION_PLACEHOLDER_X
 }
 
-function dev_X_TASK_X_initialize() {
+function dev_initialize() {
   bl64_dbg_app_show_function
   # X_INITILIZE_PLACEHOLDER_X
 }
@@ -45,6 +45,6 @@ function dev_X_TASK_X_initialize() {
 
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-X_TASK_X-X_COMPONENT_X'
-dev_X_TASK_X_initialize &&
+dev_initialize &&
   dev_X_TASK_X
 bl64_msg_show_batch_finish $? 'dev-X_TASK_X-X_COMPONENT_X'
