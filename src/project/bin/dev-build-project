@@ -2,7 +2,7 @@
 #
 # Dev / Build / Project / Build application
 #
-# * Version: 1.1.0
+# * Version: 2.0.0
 #
 
 #
@@ -25,22 +25,21 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 
 function dev_build_build() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task "build application (${DEV_BUILD_PROJECT_STORE})"
+  bl64_msg_show_task "build application (${DEV_PATH_BUILD_PREPARE})"
   # X_BUILD_PLACEHOLDER_X
 }
 
 function dev_build() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task "prepare buildages destination (${DEV_BUILD_PROJECT_STORE})"
-  bl64_fs_rm_full "$DEV_BUILD_PROJECT_STORE"
-  bl64_fs_create_dir \
-    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_BUILD_PROJECT_STORE" ||
-    return $?
+  bl64_msg_show_task "prepare buildages destination (${DEV_PATH_BUILD_PREPARE})"
   dev_build_build
 }
 
 function dev_build_initialize() {
   bl64_dbg_app_show_function
+  bl64_fs_path_remove "$DEV_PATH_BUILD_PREPARE"
+  bl64_fs_create_dir \
+    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_PATH_BUILD_PREPARE"
 }
 
 #
