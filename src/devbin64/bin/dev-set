@@ -30,9 +30,9 @@
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Main / Increase verbosity? Set to YES to increase
 export DEV_SET_VERBOSE="${DEV_SET_VERBOSE:-}"
-# Main / Base file and directory names
-export DEV_BASE_LOCAL='.local'
-export DEV_BASE_SECRETS='.secrets'
+# Main / Bootstrap files. Must be the same as defined in .env
+export DEV_BASE_LOCAL='.local.env'
+export DEV_BASE_SECRETS='.secrets.env'
 export DEV_BASE_ENV='.env'
 # Main / Project root
 export DEV_PATH_ROOT="${DEV_PATH_ROOT:-}"
