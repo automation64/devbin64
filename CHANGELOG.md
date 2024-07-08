@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0]
+
+### Added
+
+- DevBin64
+  - Installer for having a local copy of the module library
+- GIT
+  - dev-git-repo-update: add garbage collector
+### Changed
+
+- DevBin64
+  - dev-bootstrap: now copy modules from local library instead of GitHub repo
+  - env: added build paths (prepare, staging, pack)
+- Ansible
+  - Migrated to global build paths
+- Bash
+  - Migrated to global build paths
+- MKDocs
+  - Migrated to global build paths
+- Project
+  - Migrated to global build paths
+
+### Fixed
+
+- GitHub
+  - dev-release-github: added missing library
+
 ## [3.2.0]
 
 ### Added

@@ -1,1 +1,1 @@
-../src/argocd/bin/dev-env-argocd
+../src/lib/argocd/bin/dev-env-argocd
