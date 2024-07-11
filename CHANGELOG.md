@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevBin64
   - dev-set: make .local.env optional
 
+### Fixed
+
+- Project
+  - Add missing module
+
 ## [4.0.1]
 
 ### Added
