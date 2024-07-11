@@ -3,16 +3,16 @@
 #######################################
 # Dev / Bootstrap
 #
-# * Boostrap repository creation:  - Migrated to global build paths
-
+# * Boostrap repository creation:
 #   * create basic directory structure
 #   * download Installer64 and Bashlib64 tools
-#   * download dev-bin tools
-#   * populate core files
+#   * publish base DevBin64 modules
+#   * publish optional DevBin64 modules (defined in shell-env $DEV_BOOTSTRAP_MODULES or file $DEV_BOOTSTRAP_MODULE_STATE)
+# * If the repository is already present, refresh content from local store
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.0.0
+# Version: 6.1.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -36,6 +36,8 @@
 
 # DevBin64 / Current version
 declare DEV_BOOTSTRAP_VERSION='4.1.0'
+# DevBin64 / List of optional modules for adding after bootstrap is complete
+declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 # DevBin64 / Module Library location
 declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-/opt/devbin64}"
 declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
@@ -72,6 +74,7 @@ declare DEV_BOOTSTRAP_FILE_MODE='0644'
 declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
 declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
+declare DEV_BOOTSTRAP_MODULE_STATE="${DEV_BOOTSTRAP_STATE}-modules"
 
 # Installer64 / Parameters
 export INST64_BASHLIB64_TARGET=''
@@ -80,12 +83,45 @@ export INST64_BASHLIB64_TARGET=''
 # Functions
 #
 
-function dev_bootstrap_bin_populate() {
+function dev_bootstrap_bin_populate_base() {
   local file=''
   echo "Task: populate dev-bin (${DEV_PATH_BIN})"
   for file in $DEV_BOOTSTRAP_FILES; do
     cp "$file" "$DEV_PATH_BIN" ||
       return $?
+  done
+}
+
+function dev_bootstrap_bin_detect_optional() {
+  local module=''
+
+  # Env-var has priority over local module file
+  [[ -n "$DEV_BOOTSTRAP_MODULES" ]] && return 0
+
+  # Do nothing if no module file is present
+  [[ ! -f "$DEV_BOOTSTRAP_MODULE_STATE" ]] && return 0
+
+  # Import module list from file
+  for module in $(<$DEV_BOOTSTRAP_MODULE_STATE); do
+    DEV_BOOTSTRAP_MODULES+=" $module"
+  done
+}
+
+function dev_bootstrap_bin_populate_optional() {
+  local module_name=''
+  local module_path=''
+
+  dev_bootstrap_bin_detect_optional
+  [[ -z "$DEV_BOOTSTRAP_MODULES" ]] && return 0
+
+  for module_name in $DEV_BOOTSTRAP_MODULES; do
+    module_path="${DEV_BOOTSTRAP_PATH_LIB}/${module_name}/bin"
+    if [[ -d "$module_path" ]]; then
+      echo "Task: add optional module (${module_name})"
+      cp "${module_path}/"* "$DEV_PATH_BIN"
+    else
+      echo "Warning: optional module content not found (${module_path})"
+    fi
   done
 }
 
@@ -394,7 +430,8 @@ dev_bootstrap_initialize &&
   dev_bootstrap_dot_secrets_create &&
   dev_bootstrap_dot_env_load &&
   dev_bootstrap_gitignore_create &&
-  dev_bootstrap_bin_populate &&
+  dev_bootstrap_bin_populate_base &&
+  dev_bootstrap_bin_populate_optional &&
   dev_bootstrap_lib_base_create &&
   dev_bootstrap_lib_local_run &&
   dev_bootstrap_lib_base_run &&
