@@ -26,7 +26,7 @@
 # * Use .env file to override values
 #
 
-# shellcheck disable=2154
+# shellcheck disable=SC2154
 {
     # Env / Kubelint / Container Registry for tools
     export DEV_ENV_KUBELINT_REGISTRY="${DEV_ENV_KUBELINT_REGISTRY:-ghcr.io/automation64}"
@@ -43,10 +43,10 @@
 #
 # Locals
 #
-# * Use .local file or CICD variables to override values
+# * Use .local.env file or CICD variables to override values
 #
 
-# shellcheck disable=2154
+# shellcheck disable=SC2154
 {
     # Lib / Kubelint / Command
     export DEV_LIB_KUBELINT_BIN="${DEV_LIB_KUBELINT_BIN:-/usr/local/bin/kube-linter}"
@@ -55,5 +55,5 @@
 #
 # Secrets
 #
-# * Use .secrets file or CICD secrets to override values
+# * Use .secrets.env file or CICD secrets to override values
 #
