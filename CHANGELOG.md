@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-set: make .local.env optional
 - Project
   - Upgrade BL64
+- Ansible
+  - Upgrade BL64
 - Bash
   - Upgrade BL64
 - Container
@@ -20,6 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cosign
   - Upgrade BL64
 - Go
+  - Upgrade BL64
+- Hadolint
+  - Upgrade BL64
+- Kind
+  - Upgrade BL64
+- Kubelint
+  - Upgrade BL64
+- SysDen64
   - Upgrade BL64
 
 ## [4.0.1]
