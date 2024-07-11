@@ -11,11 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - DevBin64
   - dev-set: make .local.env optional
-
-### Fixed
-
 - Project
-  - Add missing module
+  - Upgrade BL64
+- Bash
+  - Upgrade BL64
+- Container
+  - Upgrade BL64
+- Cosign
+  - Upgrade BL64
+- Go
+  - Upgrade BL64
 
 ## [4.0.1]
 
