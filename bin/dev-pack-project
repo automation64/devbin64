@@ -78,10 +78,7 @@ function dev_pack_initialize() {
   bl64_dbg_app_show_function
   bl64_check_export 'DEV_PACK_PROJECT_BUNDLE' &&
     bl64_arc_setup &&
-    bl64_fs_path_remove \
-      "$DEV_PATH_BUILD_STAGING" \
-      "$DEV_PATH_BUILD_PACK" &&
-    bl64_fs_create_dir \
+    bl64_fs_dir_reset \
       "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
       "$DEV_PATH_BUILD_STAGING" \
       "$DEV_PATH_BUILD_PACK"
