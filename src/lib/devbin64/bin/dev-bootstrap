@@ -40,7 +40,39 @@ declare DEV_BOOTSTRAP_VERSION='4.2.0'
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 # DevBin64 / Module Library location
 declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-/opt/devbin64}"
+
+# DevBin64 / Env initial values
+export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
+export DEV_BASE_DOT_LOCAL="dot.local.env"
+export DEV_BASE_DOT_SECRETS="dot.secrets.env"
+export DEV_BASE_ENV='.env'
+export DEV_BASE_GITKEEP=".gitkeep"
+export DEV_BASE_LOCAL=".local.env"
+export DEV_BASE_POST=".post.env"
+export DEV_BASE_SECRETS=".secrets.env"
+export DEV_LIB_BASHLIB64_TARGET=''
+export DEV_LIB_INSTALLER64_OWNER='automation64/installer64'
+export DEV_LIB_INSTALLER64_TARGET=''
+export DEV_PATH_BIN=''
+export DEV_PATH_LIB=''
+export DEV_PATH_ROOT=''
+export DEV_PATH_TMP=''
+
+# DevBin64 / Constants
+declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
+declare DEV_BOOTSTRAP_DIR_MODE='0755'
+declare DEV_BOOTSTRAP_EXE_MODE='0755'
+declare DEV_BOOTSTRAP_FILE_MODE='0644'
+declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
+declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
+
+# DevBin64 / State file name
+declare DEV_BOOTSTRAP_STATE='.devbin64'
+# DevBin64 / Optional modules
+declare DEV_BOOTSTRAP_MODULE_STATE="${DEV_BOOTSTRAP_STATE}-modules"
+# DevBin64 / Source modules location
 declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
+
 # DevBin64 / List of module files for the initial bin/
 declare DEV_BOOTSTRAP_FILES=''
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile"
@@ -49,32 +81,6 @@ DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-install
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-env-bashlib64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-lib-bashlib64"
-
-# DevBin64 / State file name
-declare DEV_BOOTSTRAP_STATE='.devbin64'
-# DevBin64 / Env initial values
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
-export DEV_LIB_BASHLIB64_TARGET=''
-export DEV_LIB_INSTALLER64_TARGET=''
-export DEV_LIB_INSTALLER64_OWNER='automation64/installer64'
-export DEV_PATH_ROOT=''
-export DEV_PATH_LIB=''
-export DEV_PATH_TMP=''
-export DEV_BASE_DOT_LOCAL="dot.local.env"
-export DEV_BASE_LOCAL=".local.env"
-export DEV_BASE_POST=".post.env"
-export DEV_BASE_DOT_SECRETS="dot.secrets.env"
-export DEV_BASE_SECRETS=".secrets.env"
-export DEV_BASE_ENV='.env'
-export DEV_PATH_BIN=''
-
-declare DEV_BOOTSTRAP_DIR_MODE='0755'
-declare DEV_BOOTSTRAP_EXE_MODE='0755'
-declare DEV_BOOTSTRAP_FILE_MODE='0644'
-declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
-declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
-declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
-declare DEV_BOOTSTRAP_MODULE_STATE="${DEV_BOOTSTRAP_STATE}-modules"
 
 # Installer64 / Parameters
 export INST64_BASHLIB64_TARGET=''
@@ -337,18 +343,18 @@ function dev_bootstrap_dot_secrets_create() {
 
 function dev_bootstrap_gitignore_create() {
   local target_file='.gitignore'
-  echo 'Task: create empty directory placeholders (.gitkeep)'
+  echo "Task: create empty directory placeholders (${DEV_BASE_GITKEEP})"
   touch \
-    'build/.gitkeep' \
-    'etc/.gitkeep' \
-    'docs/.gitkeep' \
-    'lib/.gitkeep' \
-    'logs/.gitkeep' \
-    'src/.gitkeep' \
-    'test/.gitkeep' \
-    'tmp/.gitkeep' \
-    'var/.gitkeep' \
-    'vault/.gitkeep' ||
+    "build/${DEV_BASE_GITKEEP}" \
+    "etc/${DEV_BASE_GITKEEP}" \
+    "docs/${DEV_BASE_GITKEEP}" \
+    "lib/${DEV_BASE_GITKEEP}" \
+    "logs/${DEV_BASE_GITKEEP}" \
+    "src/${DEV_BASE_GITKEEP}" \
+    "test/${DEV_BASE_GITKEEP}" \
+    "tmp/${DEV_BASE_GITKEEP}" \
+    "var/${DEV_BASE_GITKEEP}" \
+    "vault/${DEV_BASE_GITKEEP}" ||
     return $?
 
   echo "Task: create repository file (${target_file})"
@@ -384,17 +390,23 @@ function dev_bootstrap_gitignore_create() {
 /.vscode
 
 # Keep placeholder for empty directories
-!/**/.gitkeep
+!/**/%s
 ' \
 "$DEV_BASE_LOCAL" \
 "$DEV_BASE_SECRETS" \
+"$DEV_BASE_GITKEEP" \
     >"$target_file"
 }
 
 function dev_bootstrap_dot_env_load() {
   echo "Task: load environment file (${DEV_BASE_ENV})"
-  # shellcheck disable=SC1090
-  source "$DEV_BASE_ENV"
+  if [[ -f "${DEV_BASE_ENV}.new" ]]; then
+    # shellcheck disable=SC1090
+    source "${DEV_BASE_ENV}.new"
+  else
+    # shellcheck disable=SC1090
+    source "$DEV_BASE_ENV"
+  fi
 }
 
 function dev_bootstrap_initialize() {
