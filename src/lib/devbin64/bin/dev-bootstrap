@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.1.0
+# Version: 6.2.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -35,7 +35,7 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BOOTSTRAP_VERSION='4.1.0'
+declare DEV_BOOTSTRAP_VERSION='4.2.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 # DevBin64 / Module Library location
@@ -172,21 +172,22 @@ function dev_bootstrap_dot_env_create() {
 # * Used by DevBin64 to define project wide variables
 # * Automatically loaded by dev-set
 # * Do not include local variables (workstation specific) and secrets. Use .local.env and .secrets.env instead
-# * Version: 4.0.0
+# * Version: 4.1.0
 #
 
 # Main / Base file and directory names
 export DEV_BASE_BUILD="build"
-export DEV_BASE_TEST="test"
-export DEV_BASE_SRC="src"
-export DEV_BASE_DOT_LOCAL="%s"
-export DEV_BASE_LOCAL="%s"
-export DEV_BASE_POST="%s"
-export DEV_BASE_DOT_SECRETS="%s"
-export DEV_BASE_SECRETS="%s"
-export DEV_BASE_ENV="%s"
 export DEV_BASE_CHANGELOG="CHANGELOG.md"
+export DEV_BASE_DOT_LOCAL="dot.local.env"
+export DEV_BASE_DOT_SECRETS="dot.secrets.env"
+export DEV_BASE_ENV=".env"
+export DEV_BASE_GITKEEP=".gitkeep"
+export DEV_BASE_LOCAL=".local.env"
+export DEV_BASE_POST=".post.env"
 export DEV_BASE_PROFILE="prof"
+export DEV_BASE_SECRETS=".secrets.env"
+export DEV_BASE_SRC="src"
+export DEV_BASE_TEST="test"
 
 # Main / Project source code
 export DEV_PATH_SRC="${DEV_PATH_ROOT}/${DEV_BASE_SRC}"
