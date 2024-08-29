@@ -3,6 +3,7 @@
 # Dev / Lib / X_COMPONENT_TITLE_X / Download
 #
 # * Version: 1.0.0
+# * Template: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -35,7 +36,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Functions
 #
 
-function dev_lib_X_COMPONENT_X() {
+function dev_lib_download() {
   bl64_dbg_app_show_function
   # X_LIB_PLACEHOLDER_X
 }
@@ -54,5 +55,5 @@ function dev_lib_initialize() {
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-lib-X_COMPONENT_X'
 dev_lib_initialize &&
-  dev_lib_X_COMPONENT_X
+  dev_lib_download
 bl64_msg_show_batch_finish $? 'dev-lib-X_COMPONENT_X'

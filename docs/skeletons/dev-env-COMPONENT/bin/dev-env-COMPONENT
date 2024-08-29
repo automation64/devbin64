@@ -3,6 +3,7 @@
 # Dev / Env / X_COMPONENT_TITLE_X / Shared environment variables
 #
 # * Version: 1.0.0
+# * Template: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,8 +27,11 @@
 # * Use .env file to override values
 #
 
-# X_TASK_TITLE_X / X_COMPONENT_TITLE_X / X_VAR_DESCRIPTION_X
-export DEV_X_TASK_UPPER_X_X_COMPONENT_UPPER_X_X_VAR_UPPER_X="X_VALUE_X"
+# shellcheck disable=SC2154
+{
+  # X_TASK_TITLE_X / X_COMPONENT_TITLE_X / X_VAR_DESCRIPTION_X
+  export DEV_X_TASK_UPPER_X_X_COMPONENT_UPPER_X_X_VAR_UPPER_X="X_VALUE_X"
+}
 
 #
 # Locals
