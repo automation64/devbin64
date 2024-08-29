@@ -2,7 +2,7 @@
 #######################################
 # Dev / Lib / Helm / Download
 #
-# * Version: 1.0.0
+# * Version: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -35,7 +35,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Functions
 #
 
-function dev_lib_argocd() {
+function dev_lib_helm() {
   bl64_dbg_app_show_function
   INST64_HELM_TARGET="$DEV_LIB_HELM_TARGET" \
     INST64_HELM_SYSTEM_WIDE='NO' \
@@ -56,5 +56,5 @@ function dev_lib_initialize() {
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-lib-helm'
 dev_lib_initialize &&
-  dev_lib_argocd
+  dev_lib_helm
 bl64_msg_show_batch_finish $? 'dev-lib-helm'
