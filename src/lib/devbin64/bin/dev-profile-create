@@ -67,7 +67,7 @@ function dev_profile_initialize() {
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 
 bl64_msg_all_enable_verbose
-bl64_msg_show_batch_start 'dev-profile'
+bl64_msg_show_batch_start 'dev-profile-create'
 dev_profile_initialize &&
   dev_profile_create
-bl64_msg_show_batch_finish $? 'dev-profile'
+bl64_msg_show_batch_finish $? 'dev-profile-create'

@@ -36,5 +36,5 @@ DEV_PROFILE="${1:-$DEV_PROFILE}"
 shift
 source ./bin/dev-set &&
   source ./bin/dev-env-sysden64 &&
-  "${DEV_PATH_BIN}/dev-profile" &&
+  "${DEV_PATH_BIN}/dev-profile-create" &&
   "${DEV_PATH_BIN}/dev-lab-sysden64-run" "$@"
