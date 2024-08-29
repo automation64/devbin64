@@ -10,12 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - DevBin64
-  - dev-profile-remove
+  - dev-init: sets development environment and profile
+  - dev-profile-remove: removes profile
 
 ### Changed
 
 - DevBin64
-  - Renamed: `dev-profile` to `dev-profile-create`
+  - dev-profile: renamed to dev-profile-create
+  - dev-bootstrap: default profile name changed to none
 
 ## [4.3.0]
 
