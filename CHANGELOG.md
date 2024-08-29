@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Modules
+  - GitLeaks
 - DevBin64
   - dev-init: sets development environment and profile
   - dev-profile-remove: removes profile
