@@ -51,12 +51,12 @@ function dev_lib_normalize() {
   # example #   "$DEV_PATH_BIN" \
   # example #   "$DEV_PATH_SRC" \
   # example #   "$DEV_PATH_TEST" \
-  # example #   "$DEV_BASE_DOT_LOCAL" \
-  # example #   "$DEV_BASE_LOCAL" \
-  # example #   "$DEV_BASE_DOT_SECRETS" \
-  # example #   "$DEV_BASE_SECRETS" \
-  # example #   "$DEV_BASE_ENV" \
-  # example #   "$DEV_BASE_CHANGELOG"
+  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_DOT_LOCAL}" \
+  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_LOCAL}" \
+  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_DOT_SECRETS}" \
+  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_SECRETS}" \
+  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_ENV}" \
+  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_CHANGELOG}"
 }
 
 function dev_lib_initialize() {

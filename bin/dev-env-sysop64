@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Env / X_COMPONENT_TITLE_X / Shared environment variables
+# Dev / Env / SysOp64 / Shared environment variables
 #
 # * Version: 1.0.0
+# * Template: 1.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -26,8 +27,13 @@
 # * Use .env file to override values
 #
 
-# X_TASK_TITLE_X / X_COMPONENT_TITLE_X / X_VAR_DESCRIPTION_X
-export DEV_X_TASK_UPPER_X_X_COMPONENT_UPPER_X_X_VAR_UPPER_X="X_VALUE_X"
+# shellcheck disable=SC2154
+{
+  # Lib / SysOp64 / Installer
+  export DEV_LIB_SYSOP64_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-sysop64"
+  # Lib / SysOp64 / Target
+  export DEV_LIB_SYSOP64_TARGET="${DEV_LIB_SYSOP64_TARGET:-${DEV_PATH_LIB}/so64}"
+}
 
 #
 # Locals

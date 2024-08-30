@@ -1,5 +1,5 @@
 ---
-# Template: 1.1.0
+# Template: 1.1.1
 name: "Release / GitHub"
 
 concurrency:
@@ -25,7 +25,7 @@ jobs:
         uses: "actions/checkout@main"
 
       - name: "Prepare dev environment"
-        run: "./bin/dev-lib-installer64"
+        run: "./bin/dev-lib-base"
 
       - name: "Create release"
         run: "./bin/dev-release-github ${GITHUB_REF_NAME}"

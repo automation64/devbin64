@@ -1,5 +1,5 @@
 jobs:
-  test-X_COMPONENT_X:
+  test-X_MODULE_X:
     strategy:
       fail-fast: false
       matrix:
@@ -10,5 +10,5 @@ jobs:
       - name: "Run tests"
         run: |
           source ./bin/dev-set &&
-          source ./bin/dev-env-X_COMPONENT_X &&
-          ./bin/dev-test-X_COMPONENT_X $DEV_TEST_X_COMPONENT_UPPER_X_CONTAINER_${{matrix.target}} ${DEV_TEST_X_COMPONENT_UPPER_X_CASES}/${{matrix.target}}
+          source ./bin/dev-env-X_MODULE_X &&
+          ./bin/dev-test-X_MODULE_X $DEV_TEST_X_MODULE_UPPER_X_CONTAINER_${{matrix.target}} ${DEV_TEST_X_MODULE_UPPER_X_CASES}/${{matrix.target}}
