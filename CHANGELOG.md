@@ -24,6 +24,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-profile: renamed to dev-profile-create
   - dev-bootstrap: default profile name changed to `none`
   - dev-lib-base: now is used by DevBin64 only. Migrate project specific content to dev-lib-project
+- Bash
+  - gh-workflow: replace lib-installer for lib-base
+- GitHub
+  - gh-workflow: replace lib-installer for lib-base
+- HadoLint
+  - gh-workflow: replace lib-installer for lib-base
+- ShellCheck
+  - gh-workflow: replace lib-installer for lib-base
+- YamlLint
+  - gh-workflow: replace lib-installer for lib-base
 
 ## [4.3.0]
 
