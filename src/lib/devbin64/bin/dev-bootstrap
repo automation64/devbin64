@@ -77,6 +77,7 @@ declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
 declare DEV_BOOTSTRAP_FILES=''
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-create"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-init"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-env-bashlib64"
