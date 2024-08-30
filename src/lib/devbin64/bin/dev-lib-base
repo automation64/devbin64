@@ -1,4 +1,3 @@
-# WARNING: Use as source for updating dev-bootstrap. Remove this line after copy-paste
 #!/usr/bin/env bash
 #
 # Dev / Lib / Base / Install base dev-time tools

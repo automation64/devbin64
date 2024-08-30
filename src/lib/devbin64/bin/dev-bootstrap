@@ -75,13 +75,15 @@ declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
 
 # DevBin64 / List of module files for the initial bin/
 declare DEV_BOOTSTRAP_FILES=''
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-create"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-init"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-env-bashlib64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-lib-bashlib64"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-init"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-lib-base"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-create"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-remove"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/sysop64/bin/dev-env-sysop64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/sysop64/bin/dev-lib-sysop64"
 
@@ -265,42 +267,6 @@ export DEV_MODULE_LOAD=""
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$target_file"
 }
 
-function dev_bootstrap_lib_base_create() {
-  local dev_base="${DEV_PATH_BIN}/dev-lib-base"
-  echo "Task: create dev-lib-base script (${dev_base})"
-  [[ -r "$dev_base" ]] &&
-    echo 'Warning: file already create, no further action will be taken' 2>&1 &&
-    return 0
-  # shellcheck disable=SC2016,SC2059
-  printf "#!/usr/bin/env bash
-#
-# Dev / Lib / Base / Install base dev-time tools
-#
-# * Use to download DevBin64 components in ephemeral environments
-# * Tools and libs should go to lib/
-# * For project specific tools, use dev-lib-project
-# * Version: 2.0.0
-#
-
-# shellcheck source=bin/dev-set
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-
-# Download main components
-./bin/dev-lib-installer64 &&
-  ./bin/dev-lib-sysop64 ||
-  exit $?
-
-# Download project related components
-if [[ -f ./bin/dev-lib-project ]]; then
-  ./bin/dev-lib-project
-else
-  exit 0
-fi
-" \
-    >"$dev_base" &&
-    chmod "$DEV_BOOTSTRAP_EXE_MODE" "$dev_base"
-}
-
 function dev_bootstrap_dot_local_create() {
   local target_file="$DEV_BASE_DOT_LOCAL"
 
@@ -309,51 +275,19 @@ function dev_bootstrap_dot_local_create() {
     target_file+='.new'
     echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
   fi
-
-  # shellcheck disable=SC2016
-  printf '# ** ACTION REQUIRED: this is a template file. Copy to .local.env and remove this line **
-#!/usr/bin/env bash
-#
-# Development environment / Local variables
-#
-# * This file must be excluded from GIT
-# * Automatically loaded by dev-set on non CICD environments
-# * For CICD environments, create variables and values based on this file
-# * Source before .env
-# * Version: 1.0.0
-# * Template: 3.0.1
-#
-
-# Main / Debug flag for bin/ scripts
-export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
-
-#
-# Project specific variables
-#
-' \
-    >"$target_file" &&
+  cp "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_LOCAL}" "$target_file" &&
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$target_file"
 }
 
 function dev_bootstrap_dot_secrets_create() {
+  local target_file="$DEV_BASE_DOT_SECRETS"
+
   echo "Task: create environment file (${DEV_BASE_DOT_SECRETS})"
-  [[ -r "$DEV_BASE_DOT_SECRETS" ]] &&
-    echo 'Warning: file already create, no further action will be taken' 2>&1 &&
-    return 0
-  # shellcheck disable=SC2016
-  printf '# ** ACTION REQUIRED: this is a template file. Copy to .secrets.env and remove this line **
-#!/usr/bin/env bash
-#
-# Development environment / Secrets
-#
-# * This file must be excluded from GIT
-# * Automatically loaded by dev-set on non CICD environments
-# * For CICD environments, create variables and values based on this file
-# * Version: 1.0.0
-# * Template: 2.0.1
-#
-' \
-    >"$DEV_BASE_DOT_SECRETS" &&
+  if [[ -r "$DEV_BASE_DOT_SECRETS" ]]; then
+    target_file+='.new'
+    echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+  fi
+  cp "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_SECRETS}" "$target_file" &&
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_DOT_SECRETS"
 }
 
@@ -396,10 +330,10 @@ function dev_bootstrap_gitignore_create() {
 /logs/*
 /tmp/*
 /vault/*
-/.vscode
+/%s
+/%s
 
-/%s
-/%s
+/.vscode
 
 #
 # Project specific exclusions
@@ -408,9 +342,9 @@ function dev_bootstrap_gitignore_create() {
 # Keep placeholder for empty directories
 !/**/%s
 ' \
-"$DEV_BASE_LOCAL" \
-"$DEV_BASE_SECRETS" \
-"$DEV_BASE_GITKEEP" \
+    "$DEV_BASE_LOCAL" \
+    "$DEV_BASE_SECRETS" \
+    "$DEV_BASE_GITKEEP" \
     >"$target_file"
 }
 
@@ -461,7 +395,6 @@ dev_bootstrap_initialize &&
   dev_bootstrap_gitignore_create &&
   dev_bootstrap_bin_populate_base &&
   dev_bootstrap_bin_populate_optional &&
-  dev_bootstrap_lib_base_create &&
   dev_bootstrap_lib_local_run &&
   dev_bootstrap_lib_base_run &&
   echo "$DEV_BOOTSTRAP_VERSION" >"$DEV_BOOTSTRAP_STATE"
