@@ -13,8 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - GitLeaks
   - SysOp64
 - DevBin64
-  - dev-init: sets development environment and profile
-  - dev-profile-remove: removes profile
+  - dev-init: new task, sets development environment and profile
+  - dev-profile-remove: new task, removes profile
+- Bash
+  - dev-test: added project paths inside test container
 
 ### Changed
 
