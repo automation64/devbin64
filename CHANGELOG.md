@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.4.0]
+## [5.0.0]
 
 ### Added
 
@@ -22,7 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - DevBin64
   - dev-profile: renamed to dev-profile-create
-  - dev-bootstrap: default profile name changed to none
+  - dev-bootstrap: default profile name changed to `none`
+  - dev-lib-base: now is used by DevBin64 only. Migrate project specific content to dev-lib-project
 
 ## [4.3.0]
 
