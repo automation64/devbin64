@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Env / X_COMPONENT_TITLE_X / Shared environment variables
+# Dev / Lib / X_MODULE_TITLE_X / Download
 #
 # * Version: 1.0.0
 # * Template: 1.0.1
@@ -22,25 +22,38 @@
 #######################################
 
 #
-# Globals
-#
-# * Use .env file to override values
+# Imports
 #
 
-# shellcheck disable=SC2154
-{
-  # X_TASK_TITLE_X / X_COMPONENT_TITLE_X / X_VAR_DESCRIPTION_X
-  export DEV_X_TASK_UPPER_X_X_COMPONENT_UPPER_X_X_VAR_UPPER_X="X_VALUE_X"
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-X_MODULE_X || exit 1
+# shellcheck source-path=lib/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+
+#
+# Functions
+#
+
+function dev_lib_download() {
+  bl64_dbg_app_show_function
+  # X_LIB_PLACEHOLDER_X
+}
+
+function dev_lib_initialize() {
+  bl64_dbg_app_show_function
+  # X_INIT_PLACEHOLDER_X
 }
 
 #
-# Locals
-#
-# * Use .local.env file or CICD variables to override values
+# Main
 #
 
-#
-# Secrets
-#
-# * Use .secrets.env file or CICD secrets to override values
-#
+[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+
+bl64_msg_all_enable_verbose
+bl64_msg_show_batch_start 'dev-lib-X_MODULE_X'
+dev_lib_initialize &&
+  dev_lib_download
+bl64_msg_show_batch_finish $? 'dev-lib-X_MODULE_X'
