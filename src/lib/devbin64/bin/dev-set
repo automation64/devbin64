@@ -5,7 +5,7 @@
 # * Loads DevBin64 environment variables
 # * To be used by DevBin64 scripts
 # * Warning: Bash is the only supported shell. Other shells may work as long as they are compatible with Bash syntax
-# * Version: 8.2.0
+# * Version: 8.2.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -136,9 +136,9 @@ function dev_set_load_modules() {
   local module_name=''
   local module_env=''
 
-  # Load mandatory base modules
-  source "${DEV_PATH_BIN}/dev-env-installer64" &&
-    source "${DEV_PATH_BIN}/dev-env-bashlib64" ||
+  # Load mandatory base modules, based on dependency order
+  source "${DEV_PATH_BIN}/dev-env-bashlib64" &&
+    source "${DEV_PATH_BIN}/dev-env-installer64" ||
     { dev_set_show_error "unable to load environment core modules" && return 1; }
 
   # Warning: no using direct var expansion to avoid compatibility issues with ZSH
