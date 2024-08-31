@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Installer64
+  - dev-env-installer64: set local BL64 location
 - DevBin64
   - dev-profile: renamed to dev-profile-create
   - dev-bootstrap: default profile name changed to `none`
