@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# Dev / X_TASK_TITLE_X / Trivy / X_TASK_DESCRIPTION_X
+#
+# * Version: 1.0.0
+# * Template: 1.6.0
+#
+
+#
+# Imports
+#
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-trivy || exit 1
+# shellcheck source-path=lib/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+
+#
+# Functions
+#
+
+function dev_sast() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_task "X_TITLE_X"
+  "$DEV_LIB_TRIVY_BIN"
+}
+
+function dev_initialize() {
+  bl64_dbg_app_show_function
+}
+
+#
+# Main
+#
+
+[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+
+bl64_msg_all_enable_verbose
+bl64_msg_show_batch_start 'dev-sast-trivy'
+dev_initialize &&
+  dev_sast
+bl64_msg_show_batch_finish $? 'dev-sast-trivy'
