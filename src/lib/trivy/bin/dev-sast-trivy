@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Dev / X_TASK_TITLE_X / Trivy / X_TASK_DESCRIPTION_X
+# Dev / SAST / Trivy / Scan for image vulnerabilities
 #
 # * Version: 1.0.0
 # * Template: 1.6.0
@@ -22,13 +22,19 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 #
 
 function dev_sast() {
-  bl64_dbg_app_show_function
-  bl64_msg_show_task "X_TITLE_X"
-  "$DEV_LIB_TRIVY_BIN"
+  bl64_dbg_app_show_function "$@"
+  local image_location="$1"
+  "$DEV_LIB_TRIVY_BIN" \
+    image \
+    --format="$DEV_SAST_TRIVY_FORMAT" \
+    --scanners=vuln \
+    "$image"
 }
 
 function dev_initialize() {
-  bl64_dbg_app_show_function
+  bl64_dbg_app_show_function "$@"
+  local image_location="$1"
+  bl64_check_parameter 'image_location'
 }
 
 #
@@ -36,9 +42,10 @@ function dev_initialize() {
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+declare image_location="${1:-}"
 
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-sast-trivy'
-dev_initialize &&
-  dev_sast
+dev_initialize "$image_location" &&
+  dev_sast "$image_location"
 bl64_msg_show_batch_finish $? 'dev-sast-trivy'
