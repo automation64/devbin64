@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Dev / SAST / Trivy / Scan for image vulnerabilities
+# Dev / SAST / Trivy / Static code analysis
 #
 # * Version: 1.0.0
 # * Template: 1.6.0
