@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.1.0]
+## [6.0.0]
 
 ### Added
 
@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Trivy
 - GitLeaks
   - dev-sast-gitleaks
+- Project
+  - dev-prep-project
+
+### Changed
+
+- DevBin64
+  - dev-lib-base: **breaking-change** no longer auto-calls dev-lib-project
+- Project
+  - dev-lib-project: **breaking-change** no longer normalizes permissions
 
 ## [5.0.0]
 
