@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Modules
   - Trivy
+- GitLeaks
+  - dev-sast-gitleaks
 
 ## [5.0.0]
 
