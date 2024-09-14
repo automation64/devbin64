@@ -24,7 +24,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 function dev_sast() {
   bl64_dbg_app_show_function
   "$DEV_LIB_GITLEAKS_BIN" \
-    git \
+    detect \
     --exit-code 1 \
     --report-format "$DEV_SAST_GITLEAKS_FORMAT" \
     "$DEV_PATH_ROOT"

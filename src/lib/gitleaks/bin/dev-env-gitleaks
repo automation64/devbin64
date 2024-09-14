@@ -33,6 +33,8 @@
   export DEV_LIB_GITLEAKS_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-gitleaks"
   # Lib / GitLeaks / Target
   export DEV_LIB_GITLEAKS_TARGET="${DEV_LIB_GITLEAKS_TARGET:-${DEV_PATH_LIB}/gitleaks}"
+  # Lib / GitLeaks / Version
+  export DEV_LIB_GITLEAKS_VERSION="${DEV_LIB_GITLEAKS_VERSION:-v8.18.4}"
   # SAST / GitLeaks / Format
   export DEV_SAST_GITLEAKS_FORMAT="${DEV_SAST_GITLEAKS_FORMAT:-sarif}"
 }
