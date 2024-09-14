@@ -1,5 +1,5 @@
 ---
-# Template: 1.1.0
+# Template: 1.2.0
 name: "Release"
 
 concurrency:
@@ -24,8 +24,8 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
-      - name: "Prepare dev environment"
-        run: "./bin/dev-lib-installer64 && ./bin/dev-lib-bashlib64"
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
 
       # X_BUILD_PLACEHOLDER_X
 

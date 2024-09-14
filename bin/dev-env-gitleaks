@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Env / X_MODULE_TITLE_X / Shared environment variables
+# Dev / Env / GitLeaks / Shared environment variables
 #
 # * Version: 1.0.0
 # * Template: 1.0.1
@@ -29,8 +29,14 @@
 
 # shellcheck disable=SC2154
 {
-  # X_TASK_TITLE_X / X_MODULE_TITLE_X / X_VAR_DESCRIPTION_X
-  export DEV_X_TASK_UPPER_X_X_MODULE_UPPER_X_X_VAR_UPPER_X="X_VALUE_X"
+  # Lib / GitLeaks / Installer
+  export DEV_LIB_GITLEAKS_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-gitleaks"
+  # Lib / GitLeaks / Target
+  export DEV_LIB_GITLEAKS_TARGET="${DEV_LIB_GITLEAKS_TARGET:-${DEV_PATH_LIB}/gitleaks}"
+  # Lib / GitLeaks / Version
+  export DEV_LIB_GITLEAKS_VERSION="${DEV_LIB_GITLEAKS_VERSION:-v8.18.4}"
+  # SAST / GitLeaks / Format
+  export DEV_SAST_GITLEAKS_FORMAT="${DEV_SAST_GITLEAKS_FORMAT:-sarif}"
 }
 
 #
@@ -38,6 +44,12 @@
 #
 # * Use .local.env file or CICD variables to override values
 #
+
+# shellcheck disable=SC2154
+{
+  # Lib / GitLeaks / Command
+  export DEV_LIB_GITLEAKS_BIN="${DEV_LIB_GITLEAKS_BIN:-${DEV_LIB_GITLEAKS_TARGET}/gitleaks}"
+}
 
 #
 # Secrets

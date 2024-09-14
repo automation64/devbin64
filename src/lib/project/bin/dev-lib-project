@@ -2,8 +2,10 @@
 #######################################
 # Dev / Lib / Project / Download
 #
+# * Use to download dev time tools
+# * Tools are installed locally, repository wide
 # * Version: X_VERSION_PLACEHOLDER_X
-# * Template: 2.0.0
+# * Template: 3.0.0
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -44,21 +46,6 @@ function dev_lib_download() {
   # example # bl64_msg_show_task 'Download module assets'
 }
 
-function dev_lib_normalize() {
-  bl64_dbg_app_show_function
-  # example # bl64_msg_show_task 'Normalize repository permissions'
-  # example # bl64_fs_path_permission_set '0755' '0755' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_ON"\
-  # example #   "$DEV_PATH_BIN" \
-  # example #   "$DEV_PATH_SRC" \
-  # example #   "$DEV_PATH_TEST" \
-  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_DOT_LOCAL}" \
-  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_LOCAL}" \
-  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_DOT_SECRETS}" \
-  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_SECRETS}" \
-  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_ENV}" \
-  # example #   "${DEV_PATH_ROOT}/${DEV_BASE_CHANGELOG}"
-}
-
 function dev_lib_initialize() {
   bl64_dbg_app_show_function
 }
@@ -72,6 +59,5 @@ function dev_lib_initialize() {
 bl64_msg_all_enable_verbose
 bl64_msg_show_batch_start 'dev-lib-project'
 dev_lib_initialize &&
-  dev_lib_download &&
-  dev_lib_normalize
+  dev_lib_download
 bl64_msg_show_batch_finish $? 'dev-lib-project'

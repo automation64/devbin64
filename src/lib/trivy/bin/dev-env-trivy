@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Lib / X_MODULE_TITLE_X / Download
+# Dev / Env / Trivy / Shared environment variables
 #
 # * Version: 1.0.0
 # * Template: 1.0.1
@@ -22,38 +22,35 @@
 #######################################
 
 #
-# Imports
+# Globals
+#
+# * Use .env file to override values
 #
 
-# shellcheck source=bin/dev-set
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=bin
-source ./bin/dev-env-X_MODULE_X || exit 1
-# shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-
-#
-# Functions
-#
-
-function dev_lib_download() {
-  bl64_dbg_app_show_function
-  # X_LIB_PLACEHOLDER_X
-}
-
-function dev_lib_initialize() {
-  bl64_dbg_app_show_function
-  # X_INIT_PLACEHOLDER_X
+# shellcheck disable=SC2154
+{
+  # Lib / Trivy / Installer
+  export DEV_LIB_TRIVY_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-trivy"
+  # Lib / Trivy / Target
+  export DEV_LIB_TRIVY_TARGET="${DEV_LIB_TRIVY_TARGET:-${DEV_PATH_LIB}/triby}"
+  # SAST / Trivy / Format
+  export DEV_SAST_TRIVY_FORMAT="${DEV_SAST_TRIVY_FORMAT:-sarif}"
 }
 
 #
-# Main
+# Locals
+#
+# * Use .local.env file or CICD variables to override values
 #
 
-[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+# shellcheck disable=SC2154
+{
+  # Lib / Trivy / Command
+  export DEV_LIB_TRIVY_BIN="${DEV_LIB_TRIVY_BIN:-${DEV_LIB_TRIVY_TARGET}/trivy}"
+}
 
-bl64_msg_all_enable_verbose
-bl64_msg_show_batch_start 'dev-lib-X_MODULE_X'
-dev_lib_initialize &&
-  dev_lib_download
-bl64_msg_show_batch_finish $? 'dev-lib-X_MODULE_X'
+#
+# Secrets
+#
+# * Use .secrets.env file or CICD secrets to override values
+#

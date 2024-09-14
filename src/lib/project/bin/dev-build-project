@@ -3,7 +3,7 @@
 # Dev / Build / Project / Build application
 #
 # * Version: X_VERSION_PLACEHOLDER_X
-# * Template: 2.0.0
+# * Template: 2.0.1
 #
 
 #
@@ -24,22 +24,14 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 # Functions
 #
 
-function dev_build_build() {
-  bl64_dbg_app_show_function
-  bl64_msg_show_task "build application (${DEV_PATH_BUILD_PREPARE})"
-  # X_BUILD_PLACEHOLDER_X
-}
-
 function dev_build() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task "prepare buildages destination (${DEV_PATH_BUILD_PREPARE})"
-  dev_build_build
+  # X_BUILD_PLACEHOLDER_X
 }
 
 function dev_build_initialize() {
   bl64_dbg_app_show_function
-  bl64_fs_path_remove "$DEV_PATH_BUILD_PREPARE"
-  bl64_fs_create_dir \
+  bl64_fs_dir_reset \
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_PATH_BUILD_PREPARE"
 }
 

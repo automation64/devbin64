@@ -35,7 +35,7 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BOOTSTRAP_VERSION='5.0.0'
+declare DEV_BOOTSTRAP_VERSION='6.0.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 # DevBin64 / Module Library location

@@ -1,0 +1,32 @@
+---
+# Template: 1.0.0
+name: "SAST / X_TARGET_TITLE_X"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+    paths:
+      - "src/**"
+      - "test/**"
+
+jobs:
+  sast-X_TARGET_X:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Build app"
+        run: "X_PLACEHOLDER_2_X"
+
+      - name: "Run SAST"
+        run: "X_PLACEHOLDER_3_X"
+...
