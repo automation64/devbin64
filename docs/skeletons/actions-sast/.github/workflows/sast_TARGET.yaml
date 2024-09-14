@@ -1,6 +1,6 @@
 ---
-# Template: 1.1.0
-name: "Test / X_TARGET_TITLE_X"
+# Template: 1.0.0
+name: "SAST / X_TARGET_TITLE_X"
 
 on:
   pull_request:
@@ -14,7 +14,7 @@ on:
       - "test/**"
 
 jobs:
-  test-X_TARGET_X:
+  sast-X_TARGET_X:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -27,6 +27,6 @@ jobs:
       - name: "Build app"
         run: "X_PLACEHOLDER_2_X"
 
-      - name: "Run tests"
+      - name: "Run SAST"
         run: "X_PLACEHOLDER_3_X"
 ...
