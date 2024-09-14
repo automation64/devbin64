@@ -1,0 +1,26 @@
+---
+# Template: 1.0.0
+name: "X_TASK_TITLE_X / X_TARGET_TITLE_X"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+    # X_PATHS_PLACEHOLDER_X
+
+jobs:
+  X_TASK_X-X_TARGET_X:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      # X_STEPS_PLACEHOLDER_X
+...
