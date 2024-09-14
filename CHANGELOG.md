@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevBin64
   - dev-lib-base: **breaking-change** no longer auto-calls dev-lib-project
 - Project
-  - dev-lib-project: **breaking-change** no longer normalizes permissions
+  - dev-lib-project: **breaking-change** no longer normalizes permissions. Use dev-prep-project instead
 
 ## [5.0.0]
 
