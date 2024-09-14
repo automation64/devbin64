@@ -26,6 +26,7 @@ function dev_sast() {
   local image_location="$1"
   "$DEV_LIB_TRIVY_BIN" \
     image \
+    --exit-code=1 \
     --format="$DEV_SAST_TRIVY_FORMAT" \
     --scanners=vuln \
     "$image"
