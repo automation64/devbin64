@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - ShellCheck
   - TestManSH
   - YAMLLint
+- Git
+  - dev-git-tag-create: Refactored to use bl64
 
 ## [6.0.0]
 
