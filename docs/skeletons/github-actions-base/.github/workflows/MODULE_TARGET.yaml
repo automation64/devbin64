@@ -22,5 +22,8 @@ jobs:
       - name: "Prepare environment"
         run: "./bin/dev-lib-base"
 
+      - name: "Download tools"
+        # X_TOOLS_PLACEHOLDER_X
+
       # X_STEPS_PLACEHOLDER_X
 ...

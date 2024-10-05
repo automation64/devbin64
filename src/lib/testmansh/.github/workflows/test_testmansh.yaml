@@ -1,5 +1,5 @@
 ---
-# Template: 3.3.0
+# Template: 3.4.0
 name: "Test / TestManSH"
 
 concurrency:
@@ -28,8 +28,11 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
-      - name: "Prepare dev environment"
-        run: "./bin/dev-lib-installer64 && ./bin/dev-lib-testmansh"
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Download tools"
+        run: "./bin/dev-lib-testmansh"
 
       - name: "Build app"
         run: "./bin/dev-build-bash"
