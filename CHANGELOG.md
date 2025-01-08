@@ -5,12 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [6.3.0]
+## [6.3.1]
 
-### Changed
+### Fixed
 
 - DevBin64
-  - dev-set: global profile can now be overrided from the command line
+  - dev-set:
+    - reverted: profile as param
+    - missing profile var init
+- Ansible
+  - Upgraded BL64
+- MKDocs
+  - Upgraded BL64
+- SysDen64
+  - Upgraded BL64
 
 ## [6.2.0]
 
