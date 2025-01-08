@@ -2,7 +2,7 @@
 #######################################
 # Dev / Pack / Ansible / Create Ansible collection distributable file
 #
-# * Version: 2.0.0
+# * Version: 2.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -62,7 +62,7 @@ function dev_pack_ansible_initialize() {
     bl64_check_directory "$DEV_PACK_ANSIBLE_BASE_COLLECTIONS" &&
     bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_PACK_ANSIBLE_CFG" &&
     bl64_fs_path_remove "$DEV_PATH_BUILD_PACK" &&
-    bl64_fs_create_dir \
+    bl64_fs_dir_create \
       '0755' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_PATH_BUILD_PACK"
 }
 

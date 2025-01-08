@@ -2,7 +2,7 @@
 #######################################
 # Dev / Lint / MKDocs / Lint site
 #
-# * Version: 2.0.0
+# * Version: 2.0.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -55,7 +55,7 @@ function dev_lint_initialize() {
   bl64_dbg_app_show_function
   bl64_check_command_search_path "$DEV_LIB_MKDOCS_BIN" &&
     bl64_fs_path_remove "$build_path" &&
-    bl64_fs_create_dir '0777' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$build_path"
+    bl64_fs_dir_create '0777' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$build_path"
 }
 
 #
