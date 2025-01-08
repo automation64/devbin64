@@ -7,10 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [6.3.1]
 
-### Changed
+### Fixed
 
 - DevBin64
-  - dev-set: reverted: global profile can now be overrided from the command line
+  - dev-set:
+    - reverted: profile as param
+    - missing profile var init
+- Ansible
+  - Upgraded BL64
+- MKDocs
+  - Upgraded BL64
+- SysDen64
+  - Upgraded BL64
 
 ## [6.2.0]
 

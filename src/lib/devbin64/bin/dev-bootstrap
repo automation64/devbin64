@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.3.0
+# Version: 6.3.1
 #
 #######################################
 # Copyright [2023] [serdigital64@gmail.com]
@@ -57,6 +57,7 @@ export DEV_PATH_BIN=''
 export DEV_PATH_LIB=''
 export DEV_PATH_ROOT=''
 export DEV_PATH_TMP=''
+export DEV_PROFILE=''
 
 # DevBin64 / Constants
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -361,6 +362,7 @@ function dev_bootstrap_dot_env_load() {
 
 function dev_bootstrap_initialize() {
   # Initialize .env variables for the bootstrap process
+  DEV_PROFILE=''
   DEV_PATH_ROOT="$(pwd)"
   DEV_PATH_LIB="${DEV_PATH_ROOT}/lib"
   DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/${DEV_BOOTSTRAP_BASHLIB64_NAME}"
