@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Lint / Kubelint / Lint yaml files
-#
-# * Check is done using kubelint
-# * Version: 1.0.1
-#
-#######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -105,8 +99,10 @@ function dev_lint_initialize() {
 declare dev_lint_target="${*:-}"
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+bl64_lib_script_version_set '1.0.2'
+bl64_msg_all_enable_verbose
 
-bl64_msg_show_batch_start 'dev-lint-kubelint'
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 dev_lint_initialize &&
   dev_lint_kubelint "$dev_lint_target"
-bl64_msg_show_batch_finish $? 'dev-lint-kubelint'
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
