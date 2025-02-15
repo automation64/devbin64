@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-#######################################
-# Dev / Env / Hadolint / Shared environment variables
-#
 # * Version: 2.0.1
-#
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #

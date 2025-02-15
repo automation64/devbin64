@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-#######################################
-# Dev / Env / Container / Shared environment variables
-#
 # * Version: 1.2.2
-#
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #

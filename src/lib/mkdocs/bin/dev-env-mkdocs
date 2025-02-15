@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-#######################################
-# Dev / Env / MKDocs / Shared environment variables
-#
 # * Version: 2.0.0
-#
 ######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #

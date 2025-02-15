@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-#######################################
-# Dev / Env / Helm / Shared environment variables
-#
 # * Version: 1.0.1
-#
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
