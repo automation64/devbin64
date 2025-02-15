@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / GIT / Update GIT repository
-#
-# * Version: 1.5.1
-#
-#######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,10 +67,10 @@ function dev_git_initialize() {
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.5.2'
 bl64_msg_all_enable_verbose
-bl64_msg_show_batch_start 'dev-git-repo-update'
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 dev_git_initialize &&
   dev_repo_update
-bl64_msg_show_batch_finish $? 'dev-git-repo-update'
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
