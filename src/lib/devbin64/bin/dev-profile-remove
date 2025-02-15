@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Profile / Remove
-#
-# * Remove profile directories
-# * Version: 1.0.0
-#
-#######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,10 +52,10 @@ function dev_profile_initialize() {
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_all_enable_verbose
-bl64_msg_show_batch_start 'dev-profile-remove'
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 dev_profile_initialize &&
   dev_profile_remove
-bl64_msg_show_batch_finish $? 'dev-profile-remove'
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

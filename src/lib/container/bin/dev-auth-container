@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Auth / Container / Registry Login
-#
-# * Version: 1.2.1
-#
-#######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,9 +77,10 @@ function dev_auth_initialize() {
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-
+bl64_lib_script_version_set '1.2.2'
 bl64_msg_all_enable_verbose
-bl64_msg_show_batch_start 'dev-auth-container'
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 dev_auth_initialize &&
   dev_auth_docker
-bl64_msg_show_batch_finish $? 'dev-auth-container'
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
