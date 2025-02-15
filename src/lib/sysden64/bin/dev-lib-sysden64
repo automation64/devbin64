@@ -39,7 +39,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 #
 
 # Lib / DevBin64 / Installation parameters
-export INST64_SYSDEN64_SYSTEM_WIDE='OFF'
+export INST64_SYSTEM_WIDE='OFF'
 export INST64_SYSDEN64_TARGET="$DEV_LAB_SYSDEN64_PATH_SD64_LOCAL"
 
 #

@@ -23,7 +23,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # Lib / Cosign / Installer64 parameters
 export INST64_BASHLIB64="$DEV_LIB_BASHLIB64_TARGET"
 export INST64_COSIGN_TARGET="$DEV_LIB_COSIGN_TARGET"
-export INST64_COSIGN_SYSTEM_WIDE="$BL64_VAR_OFF"
+export INST64_SYSTEM_WIDE="$BL64_VAR_OFF"
 
 #
 # Functions

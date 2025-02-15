@@ -38,7 +38,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 function dev_lib_taskfile() {
   bl64_dbg_app_show_function
   INST64_TASKFILE_TARGET="$DEV_LIB_TASKFILE_TARGET" \
-    INST64_TASKFILE_SYSTEM_WIDE='NO' \
+    INST64_SYSTEM_WIDE='NO' \
     "${DEV_LIB_TASKFILE_INSTALLER}"
 }
 

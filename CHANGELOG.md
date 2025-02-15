@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0]
+
+### Changed
+
+- ArgoCD
+  - Upgraded Installer64
+- Cosign
+  - Upgraded Installer64
+- GitLeaks
+  - Upgraded Installer64
+- Hadoling
+  - Upgraded Installer64
+- Helm
+  - Upgraded Installer64
+- Shellcheck
+  - Upgraded Installer64
+- SysDen64
+  - Upgraded Installer64
+- SysOp64
+  - Upgraded Installer64
+- Taskfile
+  - Upgraded Installer64
+- Trivy
+  - Upgraded Installer64
+
 ## [6.3.1]
 
 ### Fixed
