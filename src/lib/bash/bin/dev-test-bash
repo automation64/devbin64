@@ -66,10 +66,10 @@ function dev_test_run() {
   [[ "$test_file" =~ "$DEV_BASE_GITKEEP" ]] && return 0
 
   bl64_msg_show_phase "run test target: ${test_file}"
-  if [[ "$container_path" == "$DEV_TEST_BASH_CONTAINER_ENABLED" ]]; then
-    dev_test_container_run "$container_path" "$test_file"
-  else
+  if [[ "$container_path" == "$DEV_TEST_BASH_CONTAINER_DISABLED" ]]; then
     dev_test_host_run "$test_file"
+  else
+    dev_test_container_run "$container_path" "$test_file"
   fi
 }
 

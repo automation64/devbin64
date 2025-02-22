@@ -42,7 +42,7 @@
     # Test / Bash / Flag for marking container environment
     export DEV_TEST_BASH_CONTAINER_ENVIRONMENT='OFF'
     # Test / Bash / Flag for disabling container test, and run on local OS
-    export DEV_TEST_BASH_CONTAINER_ENABLED='NO'
+    export DEV_TEST_BASH_CONTAINER_DISABLED='YES'
     # Test / Bash / Default test containers
     export DEV_TEST_BASH_CONTAINER="${DEV_TEST_BASH_CONTAINER:-bash-test/alpine-3-bash-test}"
     export DEV_TEST_BASH_CONTAINER_ALM="${DEV_TEST_BASH_CONTAINER_ALM:-bash-test/almalinux-9-bash-test}"
