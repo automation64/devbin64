@@ -46,7 +46,8 @@ jobs:
 
       - name: "Prepare environment"
         run: |
-          ./bin/dev-lib-base
+          ./bin/dev-lib-base &&
+          ./bin/dev-prep-project
 
       - name: "Run OS specific tests"
         run: |
@@ -74,8 +75,9 @@ jobs:
 
       - name: "Prepare environment"
         run: |
+          ./bin/dev-lib-bash &&
           ./bin/dev-lib-base &&
-          ./bin/dev-lib-bash
+          ./bin/dev-prep-project
 
       - name: "Run OS specific tests"
         run: |
