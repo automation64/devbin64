@@ -29,7 +29,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 function dev_test_host_run() {
   local test_file="$1"
-  "${DEV_ENV_BASH_CONTAINER_PATH_ROOT}/${test_file}"
+  "${DEV_PATH_ROOT}/${test_file}"
 }
 
 function dev_test_run() {
@@ -60,19 +60,17 @@ function dev_test_bash() {
   else
     tests="$target"
   fi
-  bl64_msg_show_info "test container: ${container}"
   for current in $tests; do
     bl64_dbg_app_show_comments 'skip git dir holder'
     [[ "$current" == "$DEV_BASE_GITKEEP" ]] && continue
-    dev_test_run "${container}" "$current" ||
+    dev_test_run "$current" ||
       return $?
   done
 }
 
 function dev_test_initialize() {
   bl64_dbg_app_show_function
-  bl64_cnt_setup &&
-    bl64_check_directory "$DEV_TEST_BASH_CASES"
+  bl64_check_directory "$DEV_TEST_BASH_CASES"
 }
 
 #
