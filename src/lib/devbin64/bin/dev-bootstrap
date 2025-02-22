@@ -32,7 +32,7 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BOOTSTRAP_VERSION='6.3.1'
+declare DEV_BIN64_VERSION='7.1.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 # DevBin64 / Module Library location
@@ -396,7 +396,7 @@ dev_bootstrap_initialize &&
   dev_bootstrap_bin_populate_optional &&
   dev_bootstrap_lib_local_run &&
   dev_bootstrap_lib_base_run &&
-  echo "$DEV_BOOTSTRAP_VERSION" >"$DEV_BOOTSTRAP_STATE"
+  echo "$DEV_BIN64_VERSION" >"$DEV_BOOTSTRAP_STATE"
 dev_bootstrap_status=$?
 
 if ((dev_bootstrap_status == 0)); then
