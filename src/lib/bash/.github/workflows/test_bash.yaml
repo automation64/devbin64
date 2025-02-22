@@ -10,6 +10,7 @@ env:
   DEV_CICD_DEBUG: ""
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - "main"
@@ -40,12 +41,12 @@ jobs:
           - "SLES"
           - "UB"
     steps:
-
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
       - name: "Prepare environment"
-        run: "./bin/dev-lib-base"
+        run: |
+          ./bin/dev-lib-base
 
       - name: "Run OS specific tests"
         run: |
@@ -68,16 +69,22 @@ jobs:
   test-bash-macos:
     runs-on: "macos-latest"
     steps:
-
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
       - name: "Prepare environment"
-        run: "./bin/dev-lib-base"
+        run: |
+          ./bin/dev-lib-base &&
+          ./bin/dev-lib-bash
 
       - name: "Run OS specific tests"
         run: |
           source ./bin/dev-set &&
           source ./bin/dev-env-bash &&
           ./bin/dev-test-bash-host ${DEV_TEST_BASH_CASES}/MCOS
-...
+
+      - name: "Run Unix generic tests"
+        run: |
+          source ./bin/dev-set &&
+          source ./bin/dev-env-bash &&
+          ./bin/dev-test-bash ${DEV_TEST_BASH_CASES}/UNX
