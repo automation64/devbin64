@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bash
   - dev-test-bash-host: run test in host
-  - dev-test-bash: allow tests to run in the host, instead of in the container: DEV_TEST_BASH_CONTAINER_ENABLED
+  - dev-test-bash: allow tests to run in the host, instead of in the container: DEV_TEST_BASH_CONTAINER_DISABLED
   - dev-env-bash: default test containers
   - github/test_bash.yaml: multi-os matrix
 
