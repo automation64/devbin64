@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0]
+
+### Added
+
+- Bash
+  - dev-test-bash-host: run test in host
+  - dev-test-bash: allow tests to run in the host, instead of in the container: DEV_TEST_BASH_CONTAINER_ENABLED
+  - dev-env-bash: default test containers
+  - github/test_bash.yaml: multi-os matrix
+
 ## [7.0.0]
 
 ### Changed
