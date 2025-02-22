@@ -73,9 +73,12 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
+      - name: "Upgrade Bash version"
+        run: |
+          ./bin/dev-lib-bash
+
       - name: "Prepare environment"
         run: |
-          ./bin/dev-lib-bash &&
           ./bin/dev-lib-base &&
           ./bin/dev-prep-project
 
