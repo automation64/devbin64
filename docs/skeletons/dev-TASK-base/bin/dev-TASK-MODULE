@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Template: 1.6.0
+# * Template: 1.6.1
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -49,11 +49,13 @@ function dev_initialize() {
 # Main
 #
 
+# X_MAIN_VARS_PLACEHOLDER_X
+
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
 bl64_msg_all_enable_verbose
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 dev_initialize &&
-  dev_X_TASK_X
+  # X_MAIN_TASKS_PLACEHOLDER_X
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
