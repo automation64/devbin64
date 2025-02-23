@@ -9,6 +9,11 @@ if [[ "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" != 'ON' ]]; then
   exit 1
 fi
 
+if [[ "$DEV_TEST_BASH_RUNNER_ENVIRONMENT" != 'ON' ]]; then
+  echo 'error: Test must be executed inside a CICD runner'
+  exit 1
+fi
+
 install_target='/tmp/devbin64'
 test_target="${HOME}/repo"
 mkdir -p \
