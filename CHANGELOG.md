@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.3.0]
 
+### Added
+
+- Bash
+  - Test: allow test to require CICD runner environment
+
 ### Changed
 
 - DevBin64
