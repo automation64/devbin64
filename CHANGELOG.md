@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.0]
+
+### Added
+
+- Bash
+  - Test: allow test to require CICD runner environment
+
+### Changed
+
+- DevBin64
+  - dev-profile-remove: now requires the profile as parameter
+  - dev-bootstrap: removed SysOp64 from base modules
+
+### Fixed
+  - dev-profile-create: now checks that the profile name is different than `none`
+
 ## [7.2.0]
 
 ### Added
