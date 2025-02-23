@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevBin64
   - dev-profile-remove: now requires the profile as parameter
 
+### Fixed
+  - dev-profile-create: now checks that the profile name is different than `none`
+
 ## [7.2.0]
 
 ### Added
