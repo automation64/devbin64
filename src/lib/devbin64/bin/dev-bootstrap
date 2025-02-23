@@ -32,7 +32,7 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.1.0'
+declare DEV_BIN64_VERSION='7.2.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 # DevBin64 / Module Library location
@@ -82,8 +82,6 @@ DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-remove
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/sysop64/bin/dev-env-sysop64"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/sysop64/bin/dev-lib-sysop64"
 
 # Installer64 / Parameters
 export INST64_BASHLIB64_TARGET=''

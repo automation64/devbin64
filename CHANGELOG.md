@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - DevBin64
   - dev-profile-remove: now requires the profile as parameter
+  - dev-bootstrap: removed SysOp64 from base modules
 
 ### Fixed
   - dev-profile-create: now checks that the profile name is different than `none`
