@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.4.0
+# Version: 6.4.1
 #
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -32,12 +32,15 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.4.0'
+declare DEV_BIN64_VERSION='7.4.1'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
+
+# Automation64 / Root path
+declare DEV_AT64_HOME="${HOME}/at64"
+[[ ! -d "$DEV_AT64_HOME" ]] && DEV_AT64_HOME='/opt'
 # DevBin64 / Module Library location
-declare DEV_BOOTSTRAP_PATH_ROOT
-[[ -d "${HOME}/at64" ]] && DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:${HOME}/at64/devbin64}" || DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-/opt/devbin64}"
+declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-${DEV_AT64_HOME}/devbin64}"
 
 # DevBin64 / Env initial values
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
@@ -159,7 +162,7 @@ function dev_bootstrap_dir_create() {
     [[ -d "$path" ]] && continue
     echo "Task: create main directory structure (${path})"
     mkdir \
-      --mode="$DEV_BOOTSTRAP_DIR_MODE" \
+      -m "$DEV_BOOTSTRAP_DIR_MODE" \
       "$path"
   done
 }
