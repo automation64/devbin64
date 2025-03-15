@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [7.5.0]
 
+### Changed
+
+- DevBin64
+  - File update now replaces original if different, no .new left behind
+
 ### Added
 
 - GitHub Workflows: CICD flag to show msg in ASCII
