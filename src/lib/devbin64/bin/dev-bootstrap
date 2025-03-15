@@ -32,7 +32,7 @@
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.4.1'
+declare DEV_BIN64_VERSION='7.5.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
