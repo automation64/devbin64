@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.4.1
+# Version: 6.5.0
 #
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -28,11 +28,83 @@
 #######################################
 
 #
+# Bootstrap
+#
+
+# Verify that the current shell is supported
+if [ -z "$BASH_VERSION" ]; then
+  echo "Fatal: BashLib64 is not supported in the current shell (shell: $SHELL)"
+  exit 1
+elif [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+  echo "Fatal: BashLib64 requires Bash V4 or greater (current-version: ${BASH_VERSION})"
+  exit 1
+fi
+
+# Do not inherit aliases and commands
+builtin unset -f unalias
+builtin unalias -a
+builtin unset -f command
+builtin hash -r
+
+# Normalize shtop defaults
+builtin shopt -qu \
+  'dotglob' \
+  'extdebug' \
+  'failglob' \
+  'globstar' \
+  'gnu_errfmt' \
+  'huponexit' \
+  'lastpipe' \
+  'login_shell' \
+  'nocaseglob' \
+  'nocasematch' \
+  'nullglob' \
+  'xpg_echo'
+builtin shopt -qs \
+  'extquote'
+
+# Ensure pipeline exit status is failed when any cmd fails
+builtin set -o 'pipefail'
+
+# Enable error processing
+builtin set -o 'errtrace'
+builtin set -o 'functrace'
+
+# Disable fast-fail. Developer must implement error handling (check for exit status)
+builtin set +o 'errexit'
+
+# Reset bash set options to defaults
+builtin set -o 'braceexpand'
+builtin set -o 'hashall'
+builtin set +o 'allexport'
+builtin set +o 'histexpand'
+builtin set +o 'history'
+builtin set +o 'ignoreeof'
+builtin set +o 'monitor'
+builtin set +o 'noclobber'
+builtin set +o 'noglob'
+builtin set +o 'nolog'
+builtin set +o 'notify'
+builtin set +o 'onecmd'
+builtin set +o 'posix'
+
+# Do not set/unset - Breaks bats-core
+# set -o 'keyword'
+# set -o 'noexec'
+
+# Do not inherit sensitive environment variables
+builtin unset CDPATH
+builtin unset ENV
+builtin unset IFS
+builtin unset MAIL
+builtin unset MAILPATH
+
+#
 # Globals
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.4.1'
+declare DEV_BIN64_VERSION='7.5.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
@@ -44,6 +116,7 @@ declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-${DEV_AT64_HOME}/dev
 
 # DevBin64 / Env initial values
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
+export DEV_BASE_DOT_ENV="dot.env"
 export DEV_BASE_DOT_LOCAL="dot.local.env"
 export DEV_BASE_DOT_SECRETS="dot.secrets.env"
 export DEV_BASE_ENV='.env'
@@ -93,6 +166,22 @@ export INST64_BASHLIB64_TARGET=''
 #
 # Functions
 #
+
+function dev_bootstrap_duplicate_remove() {
+  local file_old="$1"
+  local file_new="$2"
+  local diff_command='diff'
+
+  [[ -z "$(command -v "$diff_command" 2>/dev/null)" ]] && return 0
+  [[ ! -e "$file_old" || ! -e "$file_new" ]] && return 0
+
+  if "$diff_command" -q "$file_old" "$file_new" >/dev/null 2>&1; then
+    rm -f "$file_new"
+  else
+    cat "$file_new" >"$file_old" &&
+      rm -f "$file_new"
+  fi
+}
 
 function dev_bootstrap_bin_populate_base() {
   local file=''
@@ -144,8 +233,6 @@ function dev_bootstrap_lib_local_run() {
       echo "Task: create local files (${target})"
       grep -v 'ACTION REQUIRED: this is a template file' "dot${target}" >"$target" ||
         return $?
-    else
-      echo "Warning: resource already created, no further action will be taken (${target})" 2>&1
     fi
   done
 }
@@ -168,11 +255,15 @@ function dev_bootstrap_dir_create() {
 }
 
 function dev_bootstrap_dot_env_create() {
-  local target_file="$DEV_BASE_ENV"
-  echo "Task: create environment file (${target_file})"
-  if [[ -f "$target_file" ]]; then
-    target_file+='.new'
-    echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+  local file_target=''
+  local file_old="$DEV_BASE_DOT_ENV"
+  local file_new="${file_old}.new"
+
+  echo "Task: create environment file (${file_old})"
+  if [[ -f "$file_old" ]]; then
+    file_target="$file_new"
+  else
+    file_target="$file_old"
   fi
 
   # shellcheck disable=SC2016,SC1078
@@ -263,36 +354,64 @@ export DEV_MODULE_LOAD=""
     "$DEV_BASE_DOT_SECRETS" \
     "$DEV_BASE_SECRETS" \
     "$DEV_BASE_ENV" \
-    >"$target_file" &&
-    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$target_file"
+    >"$file_target" &&
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
+    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
+}
+
+function dev_bootstrap_env_create() {
+  if [[ ! -f "$DEV_BASE_ENV" ]]; then
+    echo "Task: create environment file (${DEV_BASE_ENV})"
+    cat "$DEV_BASE_DOT_ENV" >"$DEV_BASE_ENV"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_ENV"
+  fi
 }
 
 function dev_bootstrap_dot_local_create() {
-  local target_file="$DEV_BASE_DOT_LOCAL"
+  local file_target=''
+  local file_old="$DEV_BASE_DOT_LOCAL"
+  local file_new="${file_old}.new"
 
-  echo "Task: create environment file (${target_file})"
-  if [[ -f "$target_file" ]]; then
-    target_file+='.new'
-    echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+  echo "Task: create environment file (${file_old})"
+  if [[ -f "$file_old" ]]; then
+    file_target="$file_new"
+  else
+    file_target="$file_old"
   fi
-  cp "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_LOCAL}" "$target_file" &&
-    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$target_file"
+
+  cp "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_LOCAL}" "$file_target" &&
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
+    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
 }
 
 function dev_bootstrap_dot_secrets_create() {
-  local target_file="$DEV_BASE_DOT_SECRETS"
+  local file_target=''
+  local file_old="$DEV_BASE_DOT_SECRETS"
+  local file_new="${file_old}.new"
 
-  echo "Task: create environment file (${DEV_BASE_DOT_SECRETS})"
-  if [[ -r "$DEV_BASE_DOT_SECRETS" ]]; then
-    target_file+='.new'
-    echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
+  echo "Task: create environment file (${file_old})"
+  if [[ -f "$file_old" ]]; then
+    file_target="$file_new"
+  else
+    file_target="$file_old"
   fi
-  cp "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_SECRETS}" "$target_file" &&
-    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_DOT_SECRETS"
+  cp "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${file_old}" "$file_target" &&
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
+    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
 }
 
 function dev_bootstrap_gitignore_create() {
-  local target_file='.gitignore'
+  local file_target=''
+  local file_old=".gitignore"
+  local file_new="${file_old}.new"
+
+  echo "Task: create gitignore file (${file_old})"
+  if [[ -f "$file_old" ]]; then
+    file_target="$file_new"
+  else
+    file_target="$file_old"
+  fi
+
   echo "Task: create empty directory placeholders (${DEV_BASE_GITKEEP})"
   touch \
     "build/${DEV_BASE_GITKEEP}" \
@@ -306,12 +425,6 @@ function dev_bootstrap_gitignore_create() {
     "var/${DEV_BASE_GITKEEP}" \
     "vault/${DEV_BASE_GITKEEP}" ||
     return $?
-
-  echo "Task: create repository file (${target_file})"
-  if [[ -r "$target_file" ]]; then
-    target_file+='.new'
-    echo "Warning: file already created, new version will be available as: ${target_file}" 2>&1
-  fi
 
   # shellcheck disable=SC2016
   printf '#
@@ -345,7 +458,9 @@ function dev_bootstrap_gitignore_create() {
     "$DEV_BASE_LOCAL" \
     "$DEV_BASE_SECRETS" \
     "$DEV_BASE_GITKEEP" \
-    >"$target_file"
+    >"$file_target" &&
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
+    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
 }
 
 function dev_bootstrap_dot_env_load() {
@@ -390,6 +505,7 @@ echo "Process: [${dev_bootstrap_process}] started"
 dev_bootstrap_initialize &&
   dev_bootstrap_dir_create &&
   dev_bootstrap_dot_env_create &&
+  dev_bootstrap_env_create &&
   dev_bootstrap_dot_local_create &&
   dev_bootstrap_dot_secrets_create &&
   dev_bootstrap_dot_env_load &&
