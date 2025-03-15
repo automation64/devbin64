@@ -116,6 +116,7 @@ declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-${DEV_AT64_HOME}/dev
 
 # DevBin64 / Env initial values
 export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
+export DEV_BASE_DOT_ENV="dot.env"
 export DEV_BASE_DOT_LOCAL="dot.local.env"
 export DEV_BASE_DOT_SECRETS="dot.secrets.env"
 export DEV_BASE_ENV='.env'
@@ -178,7 +179,7 @@ function dev_bootstrap_duplicate_remove() {
     rm -f "$file_new"
   else
     cat "$file_new" >"$file_old" &&
-    rm -f "$file_new"
+      rm -f "$file_new"
   fi
 }
 
@@ -255,7 +256,7 @@ function dev_bootstrap_dir_create() {
 
 function dev_bootstrap_dot_env_create() {
   local file_target=''
-  local file_old="$DEV_BASE_ENV"
+  local file_old="$DEV_BASE_DOT_ENV"
   local file_new="${file_old}.new"
 
   echo "Task: create environment file (${file_old})"
@@ -356,6 +357,14 @@ export DEV_MODULE_LOAD=""
     >"$file_target" &&
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
     dev_bootstrap_duplicate_remove "$file_old" "$file_new"
+}
+
+function dev_bootstrap_env_create() {
+  if [[ ! -f "$DEV_BASE_ENV" ]]; then
+    echo "Task: create environment file (${DEV_BASE_ENV})"
+    cat "$DEV_BASE_DOT_ENV" >"$DEV_BASE_ENV"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_ENV"
+  fi
 }
 
 function dev_bootstrap_dot_local_create() {
@@ -496,6 +505,7 @@ echo "Process: [${dev_bootstrap_process}] started"
 dev_bootstrap_initialize &&
   dev_bootstrap_dir_create &&
   dev_bootstrap_dot_env_create &&
+  dev_bootstrap_env_create &&
   dev_bootstrap_dot_local_create &&
   dev_bootstrap_dot_secrets_create &&
   dev_bootstrap_dot_env_load &&
