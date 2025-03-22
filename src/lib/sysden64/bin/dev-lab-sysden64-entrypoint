@@ -74,7 +74,6 @@ function dev_lab_user_setup() {
       "$DEV_LAB_SYSDEN64_CONTAINER_USER_NAME" \
       "$DEV_LAB_SYSDEN64_SCRIPT_HOME" \
       -l \
-      -d \
       -p "$DEV_PROFILE" \
       -i "$DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER" \
       -V 'ALL' &&
@@ -105,7 +104,7 @@ function dev_lab_initialize() {
 #
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '3.0.1'
+bl64_lib_script_version_set '3.1.0'
 bl64_msg_all_enable_verbose
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
