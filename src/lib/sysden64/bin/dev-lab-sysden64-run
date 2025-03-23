@@ -53,11 +53,12 @@ function dev_lab_open() {
         --env 'DEV_LIB_SYSDEN64_REPLACE_ENABLED' \
         --env 'DEV_LAB_SYSDEN64_CONTAINER_USER_NAME' \
         --env 'DEV_LAB_SYSDEN64_CONTAINER_USER_UID' \
+        --env 'DEV_LAB_SYSDEN64_CONTAINER_USER_HOME' \
         --env 'DEV_LAB_SYSDEN64_CONTAINER_USER_CREATE' \
         --env 'DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER' \
         --env 'DEV_LAB_SYSDEN64_PATH_HOME_CONTAINER' \
         --mount "type=bind,source=${DEV_PATH_ROOT},target=${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}" \
-        --mount "type=bind,source=${DEV_LAB_SYSDEN64_PATH_DEN},target=${DEV_LAB_SYSDEN64_PATH_HOME_CONTAINER}/${DEV_LAB_SYSDEN64_CONTAINER_USER_NAME}" \
+        --mount "type=bind,source=${DEV_LAB_SYSDEN64_PATH_DEN},target=${DEV_LAB_SYSDEN64_CONTAINER_USER_HOME}" \
         "${DEV_ENV_SYSDEN64_REGISTRY}/${DEV_LAB_SYSDEN64_CONTAINER}"
   else
     bl64_cnt_run_interactive \
@@ -72,14 +73,15 @@ function dev_lab_initialize() {
   bl64_check_export 'DEV_PROFILE' &&
     bl64_dbg_app_show_function
   bl64_cnt_setup &&
-  bl64_msg_show_setup 'Sysden64 Lab Container' \
-    'DEV_PROFILE' \
-    'DEV_ENV_SYSDEN64_REGISTRY' \
-    'DEV_LAB_SYSDEN64_CONTAINER' \
-    'DEV_LAB_SYSDEN64_CONTAINER_USER_NAME' \
-    'DEV_LAB_SYSDEN64_CONTAINER_USER_UID' \
-    'DEV_LAB_SYSDEN64_PATH_DEN' \
-    'DEV_LIB_SYSDEN64_REPLACE_ENABLED'
+    bl64_msg_show_setup 'Sysden64 Lab Container' \
+      'DEV_PROFILE' \
+      'DEV_ENV_SYSDEN64_REGISTRY' \
+      'DEV_LAB_SYSDEN64_CONTAINER' \
+      'DEV_LAB_SYSDEN64_CONTAINER_USER_NAME' \
+      'DEV_LAB_SYSDEN64_CONTAINER_USER_UID' \
+      'DEV_LAB_SYSDEN64_CONTAINER_USER_HOME' \
+      'DEV_LAB_SYSDEN64_PATH_DEN' \
+      'DEV_LIB_SYSDEN64_REPLACE_ENABLED'
 }
 
 #
@@ -88,7 +90,7 @@ function dev_lab_initialize() {
 
 declare DEV_LAB_SYSDEN64_CONTAINER="${1:-$DEV_LAB_SYSDEN64_CONTAINER}"
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '4.1.0'
+bl64_lib_script_version_set '5.0.0'
 bl64_msg_all_enable_verbose
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
