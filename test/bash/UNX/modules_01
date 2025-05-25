@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source test/lib/check.bash
+source test/lib/runtime.bash
 
 #
 # Prepare Test
