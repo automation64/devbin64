@@ -1,5 +1,5 @@
 ---
-# Template: 2.2.0
+# Template: 2.2.1
 name: "Test / Bash"
 
 concurrency:
@@ -28,6 +28,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         target:
           - "ALM"
