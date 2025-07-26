@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 #######################################
-# Dev / Env / Project / Shared environment variables
-#
-# * Version: X_VERSION_PLACEHOLDER_X
-# * Template: 2.0.0
-#
-#######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
