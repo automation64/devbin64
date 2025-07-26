@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Automation64 detection
 - BashLib64
   - Circular dependency with Installer64
+- Installer64
+  - Circular dependency with Installer64
 
 ### Changed
 
@@ -20,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Inst64 upgraded
 - BashLib64
   - Inst64 upgraded
+- Cosign
+  - Removed obsolete global
 
 ## [7.6.2]
 
