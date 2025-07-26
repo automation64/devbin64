@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.5.0
+# Version: 6.5.1
 #
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -104,14 +104,14 @@ builtin unset MAILPATH
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.7.0'
+declare DEV_BIN64_VERSION='7.7.1'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
 # Automation64 / Root path
-declare DEV_AT64_HOME="${HOME}/at64"
-[[ ! -d "$DEV_AT64_HOME" ]] && DEV_AT64_HOME='/opt'
-# DevBin64 / Module Library location
+declare DEV_AT64_HOME='/opt'
+[[ ! -d "$DEV_AT64_HOME/bl64" && -d "${HOME}/at64/bl64" ]] && DEV_AT64_HOME="${HOME}/at64"
+# DevBin64 / Installation path
 declare DEV_BOOTSTRAP_PATH_ROOT="${DEV_BOOTSTRAP_PATH_ROOT:-${DEV_AT64_HOME}/devbin64}"
 
 # DevBin64 / Env initial values
@@ -136,7 +136,6 @@ export DEV_PROFILE=''
 # DevBin64 / Constants
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
 declare DEV_BOOTSTRAP_DIR_MODE='0755'
-declare DEV_BOOTSTRAP_EXE_MODE='0755'
 declare DEV_BOOTSTRAP_FILE_MODE='0644'
 declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
 declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'

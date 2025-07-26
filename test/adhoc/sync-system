@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+[[ ! -d /project ]] && echo 'Fatal: test for lab container only' && exit 1
+
+sudo rm -rf /opt/devbin64
+sudo mkdir /opt/devbin64 /opt/devbin64/bin &&
+sudo cp -r /project/src/lib /opt/devbin64 &&
+sudo cp /project/src/lib/devbin64/bin/dev-bootstrap /opt/devbin64/bin

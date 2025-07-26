@@ -5,7 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.7.0]
+## [7.7.1]
+
+### Fixed
+
+- DevBin64
+  - Automation64 detection
+- BashLib64
+  - Circular dependency with Installer64
+- Installer64
+  - Circular dependency with Installer64
 
 ### Changed
 
@@ -13,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Inst64 upgraded
 - BashLib64
   - Inst64 upgraded
+- Cosign
+  - Removed obsolete global
 
 ## [7.6.2]
 
