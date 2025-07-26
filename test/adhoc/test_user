@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+[[ ! -d /project ]] && echo 'Fatal: test for lab container only' && exit 1
+
+export DEV_BOOTSTRAP_PATH_ROOT='/project/src'
+cd src/lib
+modules="$(ls -1 | grep -v devbin64)"
+
+cd "$HOME"
+mkdir test-repo
+cd test-repo
+echo "$modules" > .devbin64-modules
+
+/project/src/lib/devbin64/bin/dev-bootstrap
