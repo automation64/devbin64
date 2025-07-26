@@ -37,6 +37,8 @@
 {
   # Lib / Installer64 / Local Installer64 library for BashLib64
   export INST64_LIB_PATH="$DEV_LIB_INSTALLER64_TARGET"
+  # Lib / Installer64 / Local Installer64 library for BashLib64
+  export INST64_BASHLIB64="$DEV_LIB_BASHLIB64_TARGET"
   # Lib / BashLib64 / Installer64 parameters
   export INST64_BASHLIB64_TARGET="$DEV_LIB_BASHLIB64_TARGET"
   # Lib / Installer64 / Force user install type
