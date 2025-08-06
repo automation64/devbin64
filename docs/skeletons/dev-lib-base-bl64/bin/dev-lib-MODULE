@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Template: 1.0.1
+# * Template: 1.0.2
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -13,20 +13,12 @@
 # limitations under the License.
 #######################################
 
-#
-# Imports
-#
-
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
 source ./bin/dev-env-X_MODULE_X || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-
-#
-# Functions
-#
 
 function dev_lib_download() {
   bl64_dbg_app_show_function
@@ -36,14 +28,12 @@ function dev_lib_download() {
 function dev_lib_initialize() {
   bl64_dbg_app_show_function
   # X_INIT_PLACEHOLDER_X
+  bl64_msg_show_about
 }
-
-#
-# Main
-#
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Prepare module resources'
 bl64_msg_all_enable_verbose
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 1.0.0
+# * Version: 1.0.1
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -13,18 +13,10 @@
 # limitations under the License.
 #######################################
 
-#
-# Imports
-#
-
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source=bin/dev-env-X_MODULE_X
 source ./bin/dev-env-X_MODULE_X || exit 1
-
-#
-# Main
-#
 
 [[ -n "$DEV_CICD_DEBUG" ]] && set -x
 
