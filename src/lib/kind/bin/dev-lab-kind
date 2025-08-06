@@ -44,7 +44,7 @@ function dev_lab_open() {
   bl64_fs_path_permission_set '0644' '0755' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_ON" \
     "${DEV_ENV_KIND_PATH_KUBE}"
 
-  bl64_msg_show_task "open sanbox environment (${dev_lab_image})"
+  bl64_msg_show_task "open sandbox environment (${dev_lab_image})"
   bl64_cnt_run_interactive \
     --network=host \
     --entrypoint="$DEV_LAB_KIND_CONTAINER_ENTRYPOINT" \
