@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/installer64
-# Version: 6.5.1
+# Version: 6.7.0
 #
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -104,7 +104,7 @@ builtin unset MAILPATH
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.7.1'
+declare DEV_BIN64_VERSION='7.8.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
@@ -155,6 +155,7 @@ DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-init"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-lib-base"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-create"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-remove"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-list"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
@@ -194,13 +195,17 @@ function dev_bootstrap_bin_populate_base() {
 function dev_bootstrap_bin_detect_optional() {
   local module=''
 
-  # Env-var has priority over local module file
-  [[ -n "$DEV_BOOTSTRAP_MODULES" ]] && return 0
+  if [[ -n "$DEV_BOOTSTRAP_MODULES" ]]; then
+    if [[ ! -f "$DEV_BOOTSTRAP_MODULE_STATE" ]]; then
+      for module in $DEV_BOOTSTRAP_MODULES; do
+        echo "$module" >> "$DEV_BOOTSTRAP_MODULE_STATE" || return $?
+      done
+    else
+      return 0
+    fi
+  fi
 
-  # Do nothing if no module file is present
   [[ ! -f "$DEV_BOOTSTRAP_MODULE_STATE" ]] && return 0
-
-  # Import module list from file
   for module in $(<$DEV_BOOTSTRAP_MODULE_STATE); do
     DEV_BOOTSTRAP_MODULES+=" $module"
   done

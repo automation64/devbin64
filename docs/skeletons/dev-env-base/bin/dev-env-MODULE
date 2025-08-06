@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Template: 1.0.1
+# * Template: 1.0.2
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -19,7 +19,12 @@
 # * Use .env file to override values
 #
 
-# X_GLOBAL_PLACEHOLDER_X
+# shellcheck disable=SC2154
+{
+    : # X_GLOBAL_PLACEHOLDER_X
+    # X_TASK_X / X_MODULE_X / X_VARIABLE_DESCRIPTION_X
+    export X_TASK_CAPS_X_X_MODULE_CAPS_X_X_VARIABLE_CAPS_X="X_VALUE_X"
+}
 
 #
 # Locals
@@ -27,7 +32,10 @@
 # * Use .local.env file or CICD variables to override values
 #
 
-# X_LOCALS_PLACEHOLDER_X
+# shellcheck disable=SC2154
+{
+    : # X_GLOBAL_PLACEHOLDER_X
+}
 
 #
 # Secrets
@@ -35,4 +43,7 @@
 # * Use .secrets.env file or CICD secrets to override values
 #
 
-# X_SECRETS_PLACEHOLDER_X
+# shellcheck disable=SC2154
+{
+    : # X_GLOBAL_PLACEHOLDER_X
+}

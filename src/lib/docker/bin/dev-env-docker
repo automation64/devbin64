@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 1.0.1
+# * Template: 1.0.2
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -13,12 +13,37 @@
 # limitations under the License.
 #######################################
 
-# shellcheck source=bin/dev-set
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source=bin/dev-env-X_MODULE_X
-source ./bin/dev-env-X_MODULE_X || exit 1
+#
+# Globals
+#
+# * Use .env file to override values
+#
 
-[[ -n "$DEV_CICD_DEBUG" ]] && set -x
+# shellcheck disable=SC2154
+{
+    #  Build / Docker / Baker file path
+    export DEV_BUILD_DOCKER_PATH_BAKER="${DEV_BUILD_DOCKER_PATH_BAKER:-$DEV_PATH_SRC/docker-bake.hcl}"
+}
 
-echo 'dev-lib-X_MODULE_X: Task: install X_APP_NAME_X'
-# X_INSTALLER_PLACEHOLDER_X
+#
+# Locals
+#
+# * Use .local.env file or CICD variables to override values
+#
+
+# shellcheck disable=SC2154
+{
+    # Lib / Docker / Command
+    export DEV_LIB_DOCKER_BIN="${DEV_LIB_DOCKER_BIN:-/usr/bin/docker}"
+}
+
+#
+# Secrets
+#
+# * Use .secrets.env file or CICD secrets to override values
+#
+
+# shellcheck disable=SC2154
+{
+    :
+}

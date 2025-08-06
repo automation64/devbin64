@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Template: 1.7.0
+# * Template: 1.0.2
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -16,28 +16,21 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-X_MODULE_X || exit 1
+source ./bin/dev-env-docker || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
-# X_GLOBALS_PLACEHOLDER_X
-
-function dev_X_TASK_X() {
+function dev_lib_initialize() {
   bl64_dbg_app_show_function
-  # X_FUNCTION_PLACEHOLDER_X
-}
-
-function dev_initialize() {
-  bl64_dbg_app_show_function
-  # X_INITILIZE_PLACEHOLDER_X
-  bl64_msg_show_about
+  bl64_check_command "$DEV_LIB_DOCKER_BIN" &&
+    bl64_msg_show_about
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'X_TASK_DESCRIPTION_X'
-bl64_msg_all_enable_verbose && dev_initialize || exit $?
+bl64_msg_help_about_set 'Prepare module resources'
+bl64_msg_all_enable_verbose
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-# X_MAIN_TASKS_PLACEHOLDER_X
+dev_lib_initialize
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
