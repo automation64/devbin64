@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.8.0]
+
+### Added
+
+- Module
+  - Docker
+- DevBin64
+  - dev-profile-list
+
+### Changed
+
+- DevBin64
+  - dev-bootstrap: create .devbin64-modules if DEV_BOOTSTRAP_MODULES is set
+  - dev-profile-create: allow passing the profile as parameter
+  - dev-init: removed bl64 dependency
+
 ## [7.7.1]
 
 ### Fixed
