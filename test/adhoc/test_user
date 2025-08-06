@@ -6,6 +6,8 @@ export DEV_BOOTSTRAP_PATH_ROOT='/project/src'
 cd src/lib
 modules="$(ls -1 | grep -v devbin64)"
 
+./test/adhoc/reset_user.sh
+
 cd "$HOME"
 mkdir test-repo
 cd test-repo
