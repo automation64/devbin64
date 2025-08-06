@@ -24,8 +24,12 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ui.bash" &&
 
 function dev_profile_list() {
   bl64_dbg_app_show_function
-  cd "${DEV_PATH_ETC}/${DEV_BASE_PROFILE}" &&
-    echo *
+  if [[ -d "${DEV_PATH_ETC}/${DEV_BASE_PROFILE}" ]]; then
+    cd "${DEV_PATH_ETC}/${DEV_BASE_PROFILE}" &&
+      echo *
+  else
+    bl64_msg_show_warning 'repository has no profiles created'
+  fi
 }
 
 function dev_profile_initialize() {
