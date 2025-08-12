@@ -1,3 +1,0 @@
-# X_MAIN_VARS_PLACEHOLDER_X
-declare MAIN_X_PARAM_NAME_X="$1"
-declare MAIN_X_VAR_NAME_X=''
