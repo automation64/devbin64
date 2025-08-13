@@ -25,6 +25,8 @@
   export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
   # Lib / OpenTofu / Target
   export DEV_LIB_OPENTOFU_TARGET="${DEV_LIB_OPENTOFU_TARGET:-${DEV_PATH_LIB}/otf}"
+  # Deploy / GitOps / Staging
+  export DEV_DEPLOY_GITOPS_PATH_OPENTOFU="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}"
 }
 
 #
