@@ -21,10 +21,10 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / TaskFile / Installer
-    export DEV_LIB_TASKFILE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-taskfile"
-    # Lib / TaskFile / Target
-    export DEV_LIB_TASKFILE_TARGET="${DEV_LIB_TASKFILE_TARGET:-${DEV_PATH_LIB}/taskfile}"
+  # Lib / TaskFile / Installer
+  export DEV_LIB_TASKFILE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-taskfile"
+  # Lib / TaskFile / Target
+  export DEV_LIB_TASKFILE_TARGET="${DEV_LIB_TASKFILE_TARGET:-${DEV_PATH_LIB}/taskfile}"
 }
 
 #
@@ -35,8 +35,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / TaskFile / Command
-    export DEV_LIB_TASKFILE_BIN="${DEV_LIB_TASKFILE_BIN:-${DEV_LIB_TASKFILE_TARGET}/task}"
+  # Lib / TaskFile / Command
+  export DEV_LIB_TASKFILE_BIN="${DEV_LIB_TASKFILE_BIN:-${DEV_LIB_TASKFILE_TARGET}/task}"
 }
 
 #

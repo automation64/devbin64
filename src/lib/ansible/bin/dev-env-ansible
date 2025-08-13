@@ -21,21 +21,21 @@
 
 # shellcheck disable=SC2154
 {
-    # Env / Bash / Registry for lab and testing containers
-    export DEV_ENV_ANSIBLE_REGISTRY="${DEV_ENV_ANSIBLE_REGISTRY:-ghcr.io/automation64}"
-    # Env / Bash / Container path for project mounts
-    export DEV_ENV_ANSIBLE_CONTAINER_PATH_SRC='/source'
-    export DEV_ENV_ANSIBLE_CONTAINER_PATH_ROOT='/project'
-    # Pack / Ansible / Configuration
-    export DEV_PACK_ANSIBLE_CFG="${DEV_PACK_ANSIBLE_CFG:-${DEV_PATH_ROOT}/.ansible.cfg}"
-    # Pack / Ansible / Base path for collections
-    export DEV_PACK_ANSIBLE_BASE_COLLECTIONS="${DEV_PACK_ANSIBLE_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
-    # Pack / Ansible / Collection Catalog
-    export DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS="${DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS:-}"
-    # Pack / Ansible / Ansible Galaxy Namespace
-    export DEV_PACK_ANSIBLE_GALAXY_NAMESPACE="${DEV_PACK_ANSIBLE_GALAXY_NAMESPACE:-}"
-    # Lab / Ansible / Default image
-    export DEV_LAB_ANSIBLE_IMAGE="${DEV_LAB_ANSIBLE_IMAGE:-ansible-test/ubuntu-21.4-ansible-test}"
+  # Env / Bash / Registry for lab and testing containers
+  export DEV_ENV_ANSIBLE_REGISTRY="${DEV_ENV_ANSIBLE_REGISTRY:-ghcr.io/automation64}"
+  # Env / Bash / Container path for project mounts
+  export DEV_ENV_ANSIBLE_CONTAINER_PATH_SRC='/source'
+  export DEV_ENV_ANSIBLE_CONTAINER_PATH_ROOT='/project'
+  # Pack / Ansible / Configuration
+  export DEV_PACK_ANSIBLE_CFG="${DEV_PACK_ANSIBLE_CFG:-${DEV_PATH_ROOT}/.ansible.cfg}"
+  # Pack / Ansible / Base path for collections
+  export DEV_PACK_ANSIBLE_BASE_COLLECTIONS="${DEV_PACK_ANSIBLE_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
+  # Pack / Ansible / Collection Catalog
+  export DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS="${DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS:-}"
+  # Pack / Ansible / Ansible Galaxy Namespace
+  export DEV_PACK_ANSIBLE_GALAXY_NAMESPACE="${DEV_PACK_ANSIBLE_GALAXY_NAMESPACE:-}"
+  # Lab / Ansible / Default image
+  export DEV_LAB_ANSIBLE_IMAGE="${DEV_LAB_ANSIBLE_IMAGE:-ansible-test/ubuntu-21.4-ansible-test}"
 }
 
 #

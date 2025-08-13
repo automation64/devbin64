@@ -21,18 +21,18 @@
 
 # shellcheck disable=SC2154
 {
-    # Env / Go / Registry for lab and testing containers
-    export DEV_ENV_GO_REGISTRY="${DEV_ENV_GO_REGISTRY:-ghcr.io/automation64}"
-    # Env / Go / Container path for project mounts
-    export DEV_ENV_GO_CONTAINER_PATH_SRC='/source'
-    export DEV_ENV_GO_CONTAINER_PATH_ROOT='/project'
-    export DEV_ENV_GO_CONTAINER_PATH_TEST='/test'
-    # Lab / Go / Default image
-    export DEV_LAB_GO_CONTAINER="${DEV_LAB_GO_CONTAINER:-go-test/alpine-3-go-test}"
-    # Test / Go / Container where the test will run
-    export DEV_TEST_GO_CONTAINER="${DEV_TEST_GO_CONTAINER:-go-test/alpine-3-go-test}"
-    # Test / Go / Path to test cases. Relative to DEV_PATH_ROOT
-    export DEV_TEST_GO_CASES="${DEV_TEST_GO_CASES:-${DEV_BASE_TEST}/go}"
+  # Env / Go / Registry for lab and testing containers
+  export DEV_ENV_GO_REGISTRY="${DEV_ENV_GO_REGISTRY:-ghcr.io/automation64}"
+  # Env / Go / Container path for project mounts
+  export DEV_ENV_GO_CONTAINER_PATH_SRC='/source'
+  export DEV_ENV_GO_CONTAINER_PATH_ROOT='/project'
+  export DEV_ENV_GO_CONTAINER_PATH_TEST='/test'
+  # Lab / Go / Default image
+  export DEV_LAB_GO_CONTAINER="${DEV_LAB_GO_CONTAINER:-go-test/alpine-3-go-test}"
+  # Test / Go / Container where the test will run
+  export DEV_TEST_GO_CONTAINER="${DEV_TEST_GO_CONTAINER:-go-test/alpine-3-go-test}"
+  # Test / Go / Path to test cases. Relative to DEV_PATH_ROOT
+  export DEV_TEST_GO_CASES="${DEV_TEST_GO_CASES:-${DEV_BASE_TEST}/go}"
 }
 
 #
@@ -43,8 +43,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / Go / Command
-    export DEV_LIB_GO_BIN="${DEV_LIB_GO_BIN:-/usr/local/bin/go}"
+  # Lib / Go / Command
+  export DEV_LIB_GO_BIN="${DEV_LIB_GO_BIN:-/usr/local/bin/go}"
 }
 
 #

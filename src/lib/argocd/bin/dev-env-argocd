@@ -21,10 +21,10 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / ArgoCD / Installer
-    export DEV_LIB_ARGOCD_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-argocdcli"
-    # Lib / ArgoCD / Target
-    export DEV_LIB_ARGOCD_TARGET="${DEV_LIB_ARGOCD_TARGET:-${DEV_PATH_LIB}/argocd}"
+  # Lib / ArgoCD / Installer
+  export DEV_LIB_ARGOCD_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-argocdcli"
+  # Lib / ArgoCD / Target
+  export DEV_LIB_ARGOCD_TARGET="${DEV_LIB_ARGOCD_TARGET:-${DEV_PATH_LIB}/argocd}"
 }
 
 #
@@ -35,8 +35,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / ArgoCD / Command
-    export DEV_LIB_ARGOCD_BIN="${DEV_LIB_ARGOCD_BIN:-${DEV_LIB_ARGOCD_TARGET}/argocd}"
+  # Lib / ArgoCD / Command
+  export DEV_LIB_ARGOCD_BIN="${DEV_LIB_ARGOCD_BIN:-${DEV_LIB_ARGOCD_TARGET}/argocd}"
 }
 
 #
