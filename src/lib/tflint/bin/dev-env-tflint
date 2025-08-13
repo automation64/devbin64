@@ -25,6 +25,10 @@
   export DEV_LIB_TFLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tflint"
   # Lib / TFLint / Target
   export DEV_LIB_TFLINT_TARGET="${DEV_LIB_TFLINT_TARGET:-${DEV_PATH_LIB}/tfl}"
+  # Lint / TFLint / Target
+  export DEV_LINT_TFLINT_TARGET="${DEV_LINT_TFLINT_TARGET:-${DEV_PATH_SRC}}"
+  # Lint / TFLint / Format
+  export DEV_LINT_TFLINT_FORMAT="${DEV_LINT_TFLINT_FORMAT:-sarif}"
 }
 
 #

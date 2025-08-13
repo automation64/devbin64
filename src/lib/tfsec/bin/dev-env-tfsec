@@ -25,6 +25,10 @@
   export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
   # Lib / TFSec / Target
   export DEV_LIB_TFSEC_TARGET="${DEV_LIB_TFSEC_TARGET:-${DEV_PATH_LIB}/tfs}"
+  # SAST /TFSec / Target
+  export DEV_SAST_TFSEC_TARGET="${DEV_SAST_TFSEC_TARGET:-${DEV_PATH_SRC}}"
+  # SAST /TFSec / Output format
+  export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-sarif}"
 }
 
 #
