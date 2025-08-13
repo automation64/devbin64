@@ -1,6 +1,11 @@
 ---
 # Template: 1.1.0
-name: "Test / X_TARGET_TITLE_X"
+name: "SAST / X_TARGET_TITLE_X"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
 
 on:
   pull_request:
@@ -9,12 +14,9 @@ on:
   push:
     branches:
       - "feature/**"
-    paths:
-      - "src/**"
-      - "test/**"
 
 jobs:
-  test-X_TARGET_X:
+  sast-X_TARGET_X:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -24,9 +26,11 @@ jobs:
       - name: "Prepare environment"
         run: "./bin/dev-lib-base"
 
-      - name: "Build app"
-        run: "X_PLACEHOLDER_2_X"
+      - name: "Download tools"
+        run : "X_TOOLS_PLACEHOLDER_X"
 
-      - name: "Run tests"
+      # X_PREPARE_APP_PLACEHOLDER_X
+
+      - name: "Run SAST"
         run: "X_PLACEHOLDER_3_X"
 ...
