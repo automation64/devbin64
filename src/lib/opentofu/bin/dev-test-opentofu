@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-task: 1.8.0
+# * template-test: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -18,6 +18,7 @@ source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2
 # shellcheck source-path=bin
 source ./bin/dev-env-gitops &&
   source ./bin/dev-env-opentofu || exit 1
+
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
@@ -28,30 +29,38 @@ declare MY_MODULE="${1:-}"
 declare MY_VERSION="${2:-}"
 declare MY_STAGING=''
 
-function my_deploy() {
+function my_prepare() {
+  bl64_dbg_app_show_function
+  local test="${DEV_PATH_TEST}/opentofu"
+  if [[ -d "$test" ]]; then
+    bl64_fs_run_cp "$test"/* "$MY_STAGING"
+  fi
+}
+
+function my_test() {
   bl64_dbg_app_show_function
   cd "$MY_STAGING" &&
     "$DEV_LIB_OPENTOFU_BIN" init -input=false &&
-    "$DEV_LIB_OPENTOFU_BIN" apply -input=false
+    "$DEV_LIB_OPENTOFU_BIN" plan -input=false -concise
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-
-  MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-
-  if [[ "$DEV_ENV_GITOPS_ENABLED" == 'NO' ]]; then
-    bl64_msg_show_error 'imcompatible task. Repository is not GitOps64 enabled. (DEV_ENV_GITOPS_ENABLED)'
-    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+  if [[ "$DEV_ENV_GITOPS_ENABLED" == 'YES' ]]; then
+    db64_profile_check_set &&
+      bl64_check_parameter 'MY_MODULE' &&
+      bl64_check_parameter 'MY_VERSION' ||
+      return $?
+    MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+  else
+    MY_STAGING="${DEV_PATH_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}"
   fi
 
   bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
     bl64_check_directory "$MY_STAGING" &&
-    bl64_check_parameter 'MY_MODULE' &&
-    bl64_check_parameter 'MY_VERSION' &&
-    db64_profile_check &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'DEV_ENV_GITOPS_ENABLED' \
       'MY_MODULE' \
       'MY_VERSION' \
       'MY_STAGING'
@@ -59,9 +68,10 @@ function my_initialize() {
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Deploy from stating environment'
+bl64_msg_help_about_set 'Test source code'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_deploy
+my_prepare &&
+  my_test
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

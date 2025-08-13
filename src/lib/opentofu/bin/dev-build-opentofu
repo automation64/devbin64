@@ -33,28 +33,42 @@ declare MY_CONFIG=''
 function my_build() {
   bl64_dbg_app_show_function
   bl64_fs_path_remove "$MY_STAGING"
+
+  bl64_msg_show_task 'Create staging environment'
   bl64_fs_run_mkdir -p "$MY_STAGING" &&
-    bl64_fs_run_cp "$MY_SOURCE"/* "$MY_STAGING" &&
+    bl64_msg_show_task 'Promote source code to staging' &&
+    bl64_fs_run_cp "$MY_SOURCE"/* "$MY_STAGING" ||
+    return $?
+
+  if [[ -d "$MY_CONFIG" ]]; then
+    bl64_msg_show_task 'Promote configuration files to staging'
     bl64_fs_run_cp "$MY_CONFIG"/* "$MY_STAGING"
+  fi
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
+  bl64_msg_show_about
 
-  MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-  MY_SOURCE="${DEV_PATH_SRC}/${MY_MODULE}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_VERSION}"
-  MY_CONFIG="${DEV_PATH_PROF_ETC}/${MY_MODULE}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_VERSION}"
+  if [[ "$DEV_ENV_GITOPS_ENABLED" == 'YES' ]]; then
+    db64_profile_check_set &&
+      bl64_check_parameter 'MY_MODULE' &&
+      bl64_check_parameter 'MY_VERSION' ||
+      return $?
 
-  if [[ "$DEV_PROFILE" == 'none' ]]; then
-    bl64_msg_show_error 'undefined target profile (DEV_PROFILE)'
-    return $BL64_LIB_ERROR_PARAMETER_MISSING
+    MY_SOURCE="${DEV_PATH_SRC}/${MY_MODULE}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_VERSION}"
+    MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+    MY_CONFIG="${DEV_PATH_PROF_ETC}/${MY_MODULE}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_VERSION}"
+  else
+    db64_profile_check_disabled || return $?
+    MY_SOURCE="${DEV_PATH_SRC}"
+    MY_STAGING="${DEV_PATH_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}"
   fi
+
   bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
-    bl64_check_parameter 'MY_MODULE' &&
-    bl64_check_parameter 'MY_VERSION' &&
     bl64_check_directory "$MY_SOURCE" &&
-    bl64_msg_show_about &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'DEV_ENV_GITOPS_ENABLED' \
       'MY_MODULE' \
       'MY_VERSION' \
       'MY_SOURCE' \
