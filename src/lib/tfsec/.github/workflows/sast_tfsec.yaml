@@ -1,0 +1,36 @@
+---
+# Template: 1.1.0
+name: "Lint / TFLint"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+    paths:
+      - "src/**"
+
+jobs:
+  lint:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Download tools"
+        run: "./bin/dev-lib-tflint"
+
+      - name: "Run Lint"
+        run: "./bin/dev-lint-tflint"
+...
