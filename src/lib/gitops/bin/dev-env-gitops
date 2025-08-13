@@ -26,6 +26,9 @@
   export DEV_ENV_GITOPS_TAG_OPENTOFU='otf'
   export DEV_ENV_GITOPS_TAG_SHELL='sh'
   export DEV_ENV_GITOPS_TAG_TERRAFORM='tf'
+
+  # Env / GitOps / GitOps64 enabled?
+  export DEV_ENV_GITOPS_ENABLED="${DEV_ENV_GITOPS_ENABLED:-NO}"
 }
 
 #
