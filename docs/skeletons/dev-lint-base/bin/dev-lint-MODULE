@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-run: 1.0.0
+# * template-lint: 1.0.0
 # * template-task: 1.8.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -21,6 +21,13 @@ source ./bin/dev-env-X_MODULE_X || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
+declare MY_TARGET="${*:-${DEV_LINT_X_MODULE_UPPER_X_TARGET}}"
+
+function my_lint() {
+  bl64_dbg_app_show_function
+  # X_LINTER_PLACEHOLDER_X # "$DEV_LIB_X_MODULE_UPPER_X_BIN" "${MY_TARGET}"
+}
+
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_check_command "$DEV_LIB_X_MODULE_UPPER_X_BIN" &&
@@ -29,9 +36,9 @@ function my_initialize() {
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Run dev time tool'
+bl64_msg_help_about_set 'Lint source code'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-"$DEV_LIB_X_MODULE_UPPER_X_BIN" "$@"
+my_lint
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
