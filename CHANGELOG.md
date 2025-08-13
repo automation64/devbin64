@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GIT
   - dev-git-repo-create
 
+### Fixed
+
+- DevBin64
+  - doc.env: Removed incompatible default declaration of DEV_PROFILE variable
+
 ## [7.8.0]
 
 ### Added

@@ -38,7 +38,7 @@ export DEV_PATH_ROOT="${DEV_PATH_ROOT:-}"
 # Main / List of modules to load
 export DEV_MODULE_LOAD="${DEV_MODULE_LOAD:-}"
 # Main / Profile
-export DEV_PROFILE="${DEV_PROFILE:-}"
+export DEV_PROFILE="${DEV_PROFILE:-none}"
 
 # From CICD products
 export GITHUB_WORKSPACE="${GITHUB_WORKSPACE:-}"
