@@ -25,6 +25,8 @@
   export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
   # Lib / OpenTofu / Target
   export DEV_LIB_OPENTOFU_TARGET="${DEV_LIB_OPENTOFU_TARGET:-${DEV_PATH_LIB}/otf}"
+  # Env / OpenTofu / Enable export to Terraform compatible registry
+  export DEV_ENV_OPENTOFU_EXPORT_ENABLED="${DEV_ENV_OPENTOFU_EXPORT_ENABLED:-YES}"
 }
 
 #
