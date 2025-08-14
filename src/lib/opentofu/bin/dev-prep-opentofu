@@ -43,7 +43,8 @@ function my_prepare() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_file "${DEV_PATH_ROOT}/README.md" 'terraform registry modules are required to have a README.md file'
+  bl64_check_file "${DEV_PATH_ROOT}/README.md" 'terraform registry modules are required to have a README.md file' &&
+    bl64_check_file "${DEV_PATH_ROOT}/LICENSE" 'terraform registry modules are required to have a LICENSE file'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
