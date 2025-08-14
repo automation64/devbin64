@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Template: 1.0.2
+# template-env: 1.0.2
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,9 +21,9 @@
 
 # shellcheck disable=SC2154
 {
-    : # X_GLOBAL_PLACEHOLDER_X
-    # X_TASK_X / X_MODULE_X / X_VARIABLE_DESCRIPTION_X
-    export X_TASK_CAPS_X_X_MODULE_CAPS_X_X_VARIABLE_CAPS_X="X_VALUE_X"
+  : # X_GLOBAL_PLACEHOLDER_X
+  # X_TASK_X / X_MODULE_X / X_VARIABLE_DESCRIPTION_X
+  export DEV_X_TASK_CAPS_X_X_MODULE_CAPS_X_X_VARIABLE_CAPS_X="X_VALUE_X"
 }
 
 #
@@ -34,7 +34,7 @@
 
 # shellcheck disable=SC2154
 {
-    : # X_GLOBAL_PLACEHOLDER_X
+  : # X_GLOBAL_PLACEHOLDER_X
 }
 
 #
@@ -45,5 +45,5 @@
 
 # shellcheck disable=SC2154
 {
-    : # X_GLOBAL_PLACEHOLDER_X
+  : # X_GLOBAL_PLACEHOLDER_X
 }

@@ -21,8 +21,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / MkDocs / Configuration
-    export DEV_LIB_MKDOCS_CFG="${DEV_PATH_ROOT}/mkdocs.yml"
+  # Lib / MkDocs / Configuration
+  export DEV_LIB_MKDOCS_CFG="${DEV_PATH_ROOT}/mkdocs.yml"
 }
 
 #
@@ -33,8 +33,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / MkDocs / Command
-    export DEV_LIB_MKDOCS_BIN="${DEV_LIB_MKDOCS_BIN:-${HOME}/.local/bin/mkdocs}"
+  # Lib / MkDocs / Command
+  export DEV_LIB_MKDOCS_BIN="${DEV_LIB_MKDOCS_BIN:-${HOME}/.local/bin/mkdocs}"
 }
 
 #

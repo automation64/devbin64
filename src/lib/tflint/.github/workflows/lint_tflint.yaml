@@ -1,6 +1,11 @@
 ---
-# Template: 1.0.0
-name: "X_TASK_TITLE_X / X_TARGET_TITLE_X"
+# Template: 1.1.0
+name: "SAST / TFSec"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
 
 on:
   pull_request:
@@ -9,10 +14,11 @@ on:
   push:
     branches:
       - "feature/**"
-    # X_PATHS_PLACEHOLDER_X
+    paths:
+      - "src/**"
 
 jobs:
-  X_TASK_X-X_TARGET_X:
+  sast:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -23,7 +29,8 @@ jobs:
         run: "./bin/dev-lib-base"
 
       - name: "Download tools"
-        # X_TOOLS_PLACEHOLDER_X
+        run: "./bin/dev-lib-tfsec"
 
-      # X_STEPS_PLACEHOLDER_X
+      - name: "Run SAST"
+        run: "./bin/dev-sast-tfsec"
 ...

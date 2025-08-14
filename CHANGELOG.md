@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.9.0]
+
+### Added
+
+- Module
+  - OpenTofu
+  - TFLint
+  - TFSec
+  - GitOps
+- DevBin64
+  - dev-set: added public functions
+- GIT
+  - dev-git-repo-create
+
+### Fixed
+
+- DevBin64
+  - doc.env: Removed incompatible default declaration of DEV_PROFILE variable
+
 ## [7.8.0]
 
 ### Added

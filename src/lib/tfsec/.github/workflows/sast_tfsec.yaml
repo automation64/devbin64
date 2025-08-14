@@ -1,6 +1,11 @@
 ---
 # Template: 1.1.0
-name: "Test / X_TARGET_TITLE_X"
+name: "Lint / TFLint"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
 
 on:
   pull_request:
@@ -11,10 +16,9 @@ on:
       - "feature/**"
     paths:
       - "src/**"
-      - "test/**"
 
 jobs:
-  test-X_TARGET_X:
+  lint:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -24,9 +28,9 @@ jobs:
       - name: "Prepare environment"
         run: "./bin/dev-lib-base"
 
-      - name: "Build app"
-        run: "X_PLACEHOLDER_2_X"
+      - name: "Download tools"
+        run: "./bin/dev-lib-tflint"
 
-      - name: "Run tests"
-        run: "X_PLACEHOLDER_3_X"
+      - name: "Run Lint"
+        run: "./bin/dev-lint-tflint"
 ...

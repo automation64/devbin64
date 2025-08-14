@@ -21,10 +21,10 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / Helm / Installer
-    export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
-    # Lib / Helm / Target
-    export DEV_LIB_HELM_TARGET="${DEV_LIB_HELM_TARGET:-${DEV_PATH_LIB}/helm}"
+  # Lib / Helm / Installer
+  export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
+  # Lib / Helm / Target
+  export DEV_LIB_HELM_TARGET="${DEV_LIB_HELM_TARGET:-${DEV_PATH_LIB}/helm}"
 }
 
 #
@@ -35,8 +35,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / Helm / Command
-    export DEV_LIB_HELM_BIN="${DEV_LIB_HELM_BIN:-${DEV_LIB_HELM_TARGET}/helm}"
+  # Lib / Helm / Command
+  export DEV_LIB_HELM_BIN="${DEV_LIB_HELM_BIN:-${DEV_LIB_HELM_TARGET}/helm}"
 }
 
 #

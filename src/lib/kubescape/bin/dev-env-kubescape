@@ -21,16 +21,16 @@
 
 # shellcheck disable=SC2154
 {
-    # Env / Kubescape / Container Registry for tools
-    export DEV_ENV_KUBESCAPE_REGISTRY="${DEV_ENV_KUBESCAPE_REGISTRY:-ghcr.io/automation64}"
-    # Env / Kubescape / Container path for project mounts
-    export DEV_ENV_KUBESCAPE_CONTAINER_PATH_ROOT='/project'
-    # Lint / Kubescape / Target
-    export DEV_LINT_KUBESCAPE_TARGET="${DEV_LINT_KUBESCAPE_TARGET:-etc}"
-    # Lint / Kubescape / Container with linting tool
-    export DEV_LINT_KUBESCAPE_CONTAINER="${DEV_LINT_KUBESCAPE_CONTAINER:-k8s-lint/alpine-3-k8s-lint}"
-    # Lint / Kubescape / Container entrypoint
-    export DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT="${DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT:-/usr/local/bin/kubescape}"
+  # Env / Kubescape / Container Registry for tools
+  export DEV_ENV_KUBESCAPE_REGISTRY="${DEV_ENV_KUBESCAPE_REGISTRY:-ghcr.io/automation64}"
+  # Env / Kubescape / Container path for project mounts
+  export DEV_ENV_KUBESCAPE_CONTAINER_PATH_ROOT='/project'
+  # Lint / Kubescape / Target
+  export DEV_LINT_KUBESCAPE_TARGET="${DEV_LINT_KUBESCAPE_TARGET:-etc}"
+  # Lint / Kubescape / Container with linting tool
+  export DEV_LINT_KUBESCAPE_CONTAINER="${DEV_LINT_KUBESCAPE_CONTAINER:-k8s-lint/alpine-3-k8s-lint}"
+  # Lint / Kubescape / Container entrypoint
+  export DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT="${DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT:-/usr/local/bin/kubescape}"
 }
 
 #
@@ -41,8 +41,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / Kubescape / Command
-    export DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_BIN:-/usr/local/bin/kubescape}"
+  # Lib / Kubescape / Command
+  export DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_BIN:-/usr/local/bin/kubescape}"
 }
 
 #

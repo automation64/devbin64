@@ -21,12 +21,12 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / AnsibleLint / Configuration name
-    export DEV_LIB_ANSIBLELINT_CFG='.ansible-lint'
-    # Lint / AnsibleLint / Base path for collections
-    export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
-    # Lint / AnsibleLint / Collection Catalog
-    export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS:-}"
+  # Lib / AnsibleLint / Configuration name
+  export DEV_LIB_ANSIBLELINT_CFG='.ansible-lint'
+  # Lint / AnsibleLint / Base path for collections
+  export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
+  # Lint / AnsibleLint / Collection Catalog
+  export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS:-}"
 }
 
 #
@@ -37,8 +37,8 @@
 
 # shellcheck disable=SC2154
 {
-    # Lib / AnsibleLint / Command
-    export DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_BIN:-${HOME}/.local/bin/ansible-lint}"
+  # Lib / AnsibleLint / Command
+  export DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_BIN:-${HOME}/.local/bin/ansible-lint}"
 }
 #
 # Secrets
