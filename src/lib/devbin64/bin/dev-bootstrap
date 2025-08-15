@@ -104,7 +104,7 @@ builtin unset MAILPATH
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.9.0'
+declare DEV_BIN64_VERSION='7.9.1'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
@@ -279,7 +279,7 @@ function dev_bootstrap_dot_env_create() {
 # * Automatically loaded by dev-set
 # * Do not include local variables (workstation specific) and secrets. Use .local.env and .secrets.env instead
 # * Version: 1.0.0
-# * Template: 4.2.1
+# * Template: 4.2.2
 #
 
 # Main / Base file and directory names
@@ -334,6 +334,9 @@ export DEV_PATH_TMP="${DEV_PATH_ROOT}/tmp"
 
 # Main / Profile dependant variables
 export DEV_PATH_PROF_BUILD="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
+export DEV_PATH_PROF_BUILD_PREPARE="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}/prepare"
+export DEV_PATH_PROF_BUILD_STAGING="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}/staging"
+export DEV_PATH_PROF_BUILD_PACK="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}/pack"
 export DEV_PATH_PROF_ETC="${DEV_PATH_ETC}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
 export DEV_PATH_PROF_LOGS="${DEV_PATH_LOGS}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
 export DEV_PATH_PROF_TMP="${DEV_PATH_TMP}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
