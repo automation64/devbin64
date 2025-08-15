@@ -31,17 +31,23 @@ declare MY_STAGING=''
 
 function my_prepare() {
   bl64_dbg_app_show_function
-  local test="${DEV_PATH_TEST}/opentofu"
-  if [[ -d "$test" ]]; then
-    bl64_fs_run_cp "$test"/* "$MY_STAGING"
+
+  if [[ -d "$DEV_TEST_OPENTOFU_CASES_TEST" ]]; then
+    bl64_msg_show_task 'Prepare test cases'
+    bl64_fs_run_cp -r "$DEV_TEST_OPENTOFU_CASES_TEST" "$MY_STAGING"
   fi
 }
 
 function my_test() {
   bl64_dbg_app_show_function
+  bl64_msg_show_task 'Run test phase'
   cd "$MY_STAGING" &&
-    "$DEV_LIB_OPENTOFU_BIN" init -input=false &&
-    "$DEV_LIB_OPENTOFU_BIN" plan -input=false -concise
+    "$DEV_LIB_OPENTOFU_BIN" \
+      init \
+      -input=false &&
+    "$DEV_LIB_OPENTOFU_BIN" \
+      test \
+      -concise
 }
 
 function my_initialize() {
@@ -52,9 +58,11 @@ function my_initialize() {
       bl64_check_parameter 'MY_MODULE' &&
       bl64_check_parameter 'MY_VERSION' ||
       return $?
-    MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+    MY_STAGING="${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+    MY_OUTPUT="${DEV_PATH_PROF_TMP}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
   else
-    MY_STAGING="${DEV_PATH_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}"
+    MY_STAGING="${DEV_BUILD_OPENTOFU_STAGING}"
+    MY_OUTPUT="${DEV_BUILD_OPENTOFU_OUTPUT}"
   fi
 
   bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
@@ -64,12 +72,14 @@ function my_initialize() {
       'DEV_PROFILE' \
       'MY_MODULE' \
       'MY_VERSION' \
-      'MY_STAGING'
+      'DEV_TEST_OPENTOFU_CASES_TEST' \
+      'MY_STAGING' \
+      'MY_OUTPUT'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Test source code'
+bl64_lib_script_version_set '1.1.0'
+bl64_msg_help_about_set 'Test source code: tofu test'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"

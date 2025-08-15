@@ -16,7 +16,8 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-opentofu || exit 1
+source ./bin/dev-env-gitops &&
+  source ./bin/dev-env-opentofu || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
@@ -27,11 +28,13 @@ function my_prepare() {
   bl64_dbg_app_show_function
   local source=''
 
+  bl64_dbg_app_show_comments 'If gitops is enabled, module export must be disabled'
+  bl64_lib_flag_is_enabled "$DEV_ENV_GITOPS_ENABLED" && return 0
   bl64_lib_flag_is_enabled "$DEV_ENV_OPENTOFU_EXPORT_ENABLED" || return 0
 
   bl64_msg_show_info 'Prepare repository for module export requirements'
   cd "$DEV_PATH_SRC" || return $?
-  for source in *.tf; do
+  for source in *.tf *.tofu; do
     bl64_fs_symlink_create \
       "${DEV_PATH_SRC}/${source}" \
       "${DEV_PATH_ROOT}/${source}" \
@@ -48,7 +51,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.1.0'
 bl64_msg_help_about_set 'Prepare repository for module specific requirements'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 

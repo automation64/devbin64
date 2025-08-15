@@ -36,7 +36,7 @@ function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
 
-  MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+  MY_STAGING="${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
 
   if [[ "$DEV_ENV_GITOPS_ENABLED" == 'NO' ]]; then
     bl64_msg_show_error 'imcompatible task. Repository is not GitOps64 enabled. (DEV_ENV_GITOPS_ENABLED)'
@@ -56,7 +56,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.1.0'
 bl64_msg_help_about_set 'Deploy from stating environment'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 

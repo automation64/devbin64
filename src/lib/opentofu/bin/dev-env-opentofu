@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-env-inst64: 1.0.1
+# * template-env-inst64: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,12 +21,27 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / OpenTofu / Installer
-  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
-  # Lib / OpenTofu / Target
-  export DEV_LIB_OPENTOFU_TARGET="${DEV_LIB_OPENTOFU_TARGET:-${DEV_PATH_LIB}/otf}"
+  # Env / OpenTofu / Module environment definition version
+  export DEV_ENV_OPENTOFU_VERSION='1.1.0'
   # Env / OpenTofu / Enable export to Terraform compatible registry
   export DEV_ENV_OPENTOFU_EXPORT_ENABLED="${DEV_ENV_OPENTOFU_EXPORT_ENABLED:-YES}"
+
+  # Lib / OpenTofu / Installer
+  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
+  # Lib / OpenTofu / Target path
+  export DEV_LIB_OPENTOFU_TARGET="${DEV_LIB_OPENTOFU_TARGET:-${DEV_PATH_LIB}/otf}"
+
+  # Build / OpenTofu / Staging path
+  export DEV_BUILD_OPENTOFU_STAGING="${DEV_PATH_BUILD_STAGING}/opentofu"
+  export DEV_BUILD_OPENTOFU_OUTPUT="${DEV_PATH_TMP}/opentofu"
+
+  # Test / OpenTofu / Cases path
+  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
+  export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
+  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/tests"
+
+  # Test / OpenTofu / Plan file
+  export DEV_TEST_OPENTOFU_PLAN='test.plan'
 }
 
 #
@@ -39,6 +54,9 @@
 {
   # Lib / OpenTofu / Command
   export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-${DEV_LIB_OPENTOFU_TARGET}/tofu}"
+  
+  # Build / OpenTofu / Reset staging path before build?
+  export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-YES}"
 }
 
 #
