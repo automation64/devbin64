@@ -15,14 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - TFSec
   - GitOps
 - DevBin64
-  - dev-set: added public functions
+  - dev-set: added public functions, profile normalization
 - GIT
   - dev-git-repo-create
 
 ### Fixed
 
 - DevBin64
-  - doc.env: Removed incompatible default declaration of DEV_PROFILE variable
+  - doc.env: Removed incompatible default declaration of DEV_PROFILE variable, added missing build variables
 
 ## [7.8.0]
 
