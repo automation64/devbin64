@@ -49,3 +49,12 @@
 {
   : # X_GLOBAL_PLACEHOLDER_X
 }
+
+#
+# External
+#
+
+# shellcheck disable=SC2154
+{
+  : # X_GLOBAL_PLACEHOLDER_X
+}
