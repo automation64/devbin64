@@ -24,24 +24,37 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 declare MY_MODULE="${1:-}"
 declare MY_VERSION="${2:-}"
 declare MY_STAGING=''
+declare MY_LOGS=''
 
 function my_deploy() {
   bl64_dbg_app_show_function
+
+  bl64_msg_show_task 'Prepare log store'
+  bl64_fs_path_remove "$MY_LOGS"
+  bl64_fs_run_mkdir -p "$MY_LOGS" || return $?
+
+  bl64_msg_show_task 'Run deploy phase'
   cd "$MY_STAGING" &&
-    "$DEV_LIB_OPENTOFU_BIN" init -input=false &&
-    "$DEV_LIB_OPENTOFU_BIN" apply -input=false
+    "$DEV_LIB_OPENTOFU_BIN" \
+      init \
+      -input=false &&
+    "$DEV_LIB_OPENTOFU_BIN" \
+      apply \
+      -input=false
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
 
-  MY_STAGING="${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-
   if [[ "$DEV_ENV_GITOPS_ENABLED" == 'NO' ]]; then
     bl64_msg_show_error 'imcompatible task. Repository is not GitOps64 enabled. (DEV_ENV_GITOPS_ENABLED)'
     return $BL64_LIB_ERROR_TASK_REQUIREMENTS
   fi
+
+  MY_STAGING="${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+  MY_LOGS="${DEV_PATH_PROF_LOGS}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+  TF_LOG_PATH="${MY_LOGS}/${DEV_DEPLOY_OPENTOFU_LOG}"
 
   bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
     bl64_check_directory "$MY_STAGING" &&
@@ -52,7 +65,8 @@ function my_initialize() {
       'DEV_PROFILE' \
       'MY_MODULE' \
       'MY_VERSION' \
-      'MY_STAGING'
+      'MY_STAGING' \
+      'MY_LOGS'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable

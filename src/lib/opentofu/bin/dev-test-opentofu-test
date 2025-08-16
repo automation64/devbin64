@@ -28,9 +28,14 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 declare MY_MODULE="${1:-}"
 declare MY_VERSION="${2:-}"
 declare MY_STAGING=''
+declare MY_LOGS=''
 
 function my_prepare() {
   bl64_dbg_app_show_function
+
+  bl64_msg_show_task 'Prepare log store'
+  bl64_fs_path_remove "$MY_LOGS"
+  bl64_fs_run_mkdir -p "$MY_LOGS" || return $?
 
   if [[ -d "$DEV_TEST_OPENTOFU_CASES_TEST" ]]; then
     bl64_msg_show_task 'Prepare test cases'
@@ -46,8 +51,7 @@ function my_test() {
       init \
       -input=false &&
     "$DEV_LIB_OPENTOFU_BIN" \
-      test \
-      -concise
+      test
 }
 
 function my_initialize() {
@@ -59,11 +63,12 @@ function my_initialize() {
       bl64_check_parameter 'MY_VERSION' ||
       return $?
     MY_STAGING="${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-    MY_OUTPUT="${DEV_PATH_PROF_TMP}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+    MY_LOGS="${DEV_PATH_PROF_LOGS}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
   else
     MY_STAGING="${DEV_BUILD_OPENTOFU_STAGING}"
-    MY_OUTPUT="${DEV_BUILD_OPENTOFU_OUTPUT}"
+    MY_LOGS="${DEV_TEST_OPENTOFU_LOGS}"
   fi
+  TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
 
   bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
     bl64_check_directory "$MY_STAGING" &&
@@ -74,7 +79,7 @@ function my_initialize() {
       'MY_VERSION' \
       'DEV_TEST_OPENTOFU_CASES_TEST' \
       'MY_STAGING' \
-      'MY_OUTPUT'
+      'MY_LOGS'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable

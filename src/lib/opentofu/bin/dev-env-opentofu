@@ -33,15 +33,22 @@
 
   # Build / OpenTofu / Staging path
   export DEV_BUILD_OPENTOFU_STAGING="${DEV_PATH_BUILD_STAGING}/opentofu"
-  export DEV_BUILD_OPENTOFU_OUTPUT="${DEV_PATH_TMP}/opentofu"
+
+  # Test / OpenTofu / Work paths
+  export DEV_TEST_OPENTOFU_OUTPUT="${DEV_PATH_TMP}/opentofu"
+  export DEV_TEST_OPENTOFU_LOGS="${DEV_PATH_LOGS}/opentofu"
 
   # Test / OpenTofu / Cases path
   export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
   export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
   export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/tests"
 
-  # Test / OpenTofu / Plan file
+  # Test / OpenTofu / Artifacts
   export DEV_TEST_OPENTOFU_PLAN='test.plan'
+  export DEV_TEST_OPENTOFU_LOG='test.log'
+
+  # Deploy / OpenTofu / Artifacts
+  export DEV_DEPLOY_OPENTOFU_LOG='apply.log'
 }
 
 #
@@ -60,7 +67,13 @@
 }
 
 #
-# Secrets
+# External
 #
-# * Use .secrets.env file or CICD secrets to override values
-#
+
+# shellcheck disable=SC2154
+{
+  # Lib / OpenTofu / CLI setup
+  export TF_IN_AUTOMATION='ON'
+  export TF_LOG='debug'
+  export TF_LOG_PATH=''
+}
