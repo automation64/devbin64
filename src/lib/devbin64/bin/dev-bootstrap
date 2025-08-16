@@ -138,7 +138,6 @@ declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
 declare DEV_BOOTSTRAP_DIR_MODE='0755'
 declare DEV_BOOTSTRAP_FILE_MODE='0644'
 declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
-declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
 
 # DevBin64 / State file name
 declare DEV_BOOTSTRAP_STATE='.devbin64'
@@ -248,8 +247,22 @@ function dev_bootstrap_lib_base_run() {
 
 function dev_bootstrap_dir_create() {
   local path=''
+  local path_list=''
+
+  path_list=+" $DEV_PATH_BIN"
+  path_list=+" $DEV_PATH_BUILD"
+  path_list=+" $DEV_PATH_DOCS"
+  path_list=+" $DEV_PATH_ETC"
+  path_list=+" $DEV_PATH_LIB"
+  path_list=+" $DEV_PATH_LOGS"
+  path_list=+" $DEV_PATH_SRC"
+  path_list=+" $DEV_PATH_TEST"
+  path_list=+" $DEV_PATH_TMP"
+  path_list=+" $DEV_PATH_VAR"
+  path_list=+" $DEV_PATH_VAULT"
+
   # shellcheck disable=SC2086
-  for path in $DEV_BOOTSTRAP_PATHS; do
+  for path in $path_list; do
     [[ -d "$path" ]] && continue
     echo "Task: create main directory structure (${path})"
     mkdir \
@@ -509,12 +522,12 @@ declare -i dev_bootstrap_status=0
 
 echo "Process: [${dev_bootstrap_process}] started"
 dev_bootstrap_initialize &&
-  dev_bootstrap_dir_create &&
   dev_bootstrap_dot_env_create &&
   dev_bootstrap_env_create &&
   dev_bootstrap_dot_local_create &&
   dev_bootstrap_dot_secrets_create &&
   dev_bootstrap_dot_env_load &&
+  dev_bootstrap_dir_create &&
   dev_bootstrap_gitignore_create &&
   dev_bootstrap_bin_populate_base &&
   dev_bootstrap_bin_populate_optional &&
