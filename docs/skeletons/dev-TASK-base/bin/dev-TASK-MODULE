@@ -29,8 +29,8 @@ function my_X_TASK_X() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
+  bl64_msg_show_about
   # X_INITILIZE_PLACEHOLDER_X
-  bl64_msg_show_about &&
   #bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
   #  'X_GLOBAL_VAR_X'
 }
