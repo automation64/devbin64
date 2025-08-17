@@ -385,11 +385,11 @@ export DEV_MODULE_LOAD=""
 #
 ' \
     "$DEV_BASE_DOT_LOCAL" \
+    "$DEV_BASE_DOT_SECRETS" \
+    "$DEV_BASE_ENV" \
     "$DEV_BASE_LOCAL" \
     "$DEV_BASE_POST" \
-    "$DEV_BASE_DOT_SECRETS" \
     "$DEV_BASE_SECRETS" \
-    "$DEV_BASE_ENV" \
     >"$file_target" &&
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
     dev_bootstrap_duplicate_remove "$file_old" "$file_new"
