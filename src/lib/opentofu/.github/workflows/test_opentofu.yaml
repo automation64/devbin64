@@ -34,6 +34,9 @@ jobs:
       - name: "Prepare Source"
         run: "./bin/dev-build-opentofu"
 
-      - name: "Run Test"
-        run: "./bin/dev-test-opentofu"
+      - name: "Run Test - TF Plan"
+        run: "./bin/dev-test-opentofu-plan"
+
+      - name: "Run Test - TF Test"
+        run: "./bin/dev-test-opentofu-test"
 ...
