@@ -26,9 +26,13 @@ function my_test() {
   local job_list=''
 
   for job in $DEV_TEST_ACT_WORKFLOWS; do
-    job_list+="--job ${job}"
+    job_list+=" --job ${job}"
   done
-  "$DEV_LIB_ACT_BIN" $job_list
+
+  # shellcheck disable=SC2086
+  "$DEV_LIB_ACT_BIN" \
+    --env-file=/dev/null \
+    $job_list
 }
 
 function my_initialize() {

@@ -24,6 +24,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 function my_lint() {
   bl64_dbg_app_show_function
   "$DEV_LIB_ACT_BIN" \
+    --env-file=/dev/null \
     --verbose \
     --validate \
     --strict
@@ -32,7 +33,7 @@ function my_lint() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_X_MODULE_UPPER_X_BIN"
+  bl64_check_command "$DEV_LIB_ACT_BIN"
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
