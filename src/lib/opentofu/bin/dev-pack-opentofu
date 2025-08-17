@@ -28,19 +28,22 @@ function my_pack() {
   bl64_dbg_app_show_function
   local source=''
 
-  bl64_dbg_app_show_comments 'If gitops is enabled, module export must be disabled'
-  bl64_lib_flag_is_enabled "$DEV_ENV_GITOPS_ENABLED" && return 0
-  bl64_lib_flag_is_enabled "$DEV_ENV_OPENTOFU_EXPORT_ENABLED" || return 0
+  bl64_lib_flag_is_enabled "$DEV_ENV_GITOPS_ENABLED" &&
+    bl64_msg_show_error 'task not supported for GitOps64 repositories (DEV_ENV_GITOPS_ENABLED)' &&
+    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
 
-  bl64_msg_show_info 'Prepare repository for module export requirements'
-  cd "$DEV_PATH_SRC" || return $?
-  for source in *.tf *.tofu; do
-    bl64_fs_symlink_create \
-      "${DEV_PATH_SRC}/${source}" \
-      "${DEV_PATH_ROOT}/${source}" \
-      'ON' ||
-      return $?
-  done
+  ! bl64_lib_flag_is_enabled "$DEV_ENV_OPENTOFU_EXPORT_ENABLED" &&
+    bl64_msg_show_error 'module export is disabled (DEV_ENV_OPENTOFU_EXPORT_ENABLED)' &&
+    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+
+  bl64_msg_show_task 'Remove previous module version from the repository root'
+  bl64_fs_file_remove ./*.tofu
+
+  bl64_msg_show_task 'Promote new module version to the repository root'
+  bl64_fs_file_copy \
+    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+    "$DEV_PATH_ROOT" \
+    "$DEV_PATH_SRC"/*.tofu
 }
 
 function my_initialize() {
@@ -51,7 +54,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_help_about_set 'Prepare module for export'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
