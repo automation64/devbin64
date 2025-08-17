@@ -18,7 +18,7 @@ on:
       - "src/**"
 
 jobs:
-  sast-tflint:
+  lint-tflint:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -32,5 +32,5 @@ jobs:
         run: "./bin/dev-lib-tflint"
 
       - name: "Run Linter"
-        run: "./bin/dev-sast-tflint"
+        run: "./bin/dev-lint-tflint"
 ...

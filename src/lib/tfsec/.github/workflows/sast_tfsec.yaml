@@ -32,5 +32,5 @@ jobs:
         run: "./bin/dev-lib-tfsec"
 
       - name: "Run Lint"
-        run: "./bin/dev-lint-tfsec"
+        run: "./bin/dev-sast-tfsec"
 ...
