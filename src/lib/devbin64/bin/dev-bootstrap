@@ -133,12 +133,16 @@ export DEV_PATH_ROOT=''
 export DEV_PATH_TMP=''
 export DEV_PROFILE=''
 
-# DevBin64 / Constants
+# DevBin64 / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
-declare DEV_BOOTSTRAP_DIR_MODE='0755'
-declare DEV_BOOTSTRAP_FILE_MODE='0644'
 declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
 
+# DevBin64 / Default permissions
+declare DEV_BOOTSTRAP_DIR_MODE='0755'
+declare DEV_BOOTSTRAP_FILE_MODE='0644'
+
+# DevBin64 / GitIgnore template
+declare DEV_BOOTSTRAP_DOT_GITIGNORE='dot.gitignore'
 # DevBin64 / State file name
 declare DEV_BOOTSTRAP_STATE='.devbin64'
 # DevBin64 / Optional modules
@@ -197,7 +201,7 @@ function dev_bootstrap_bin_detect_optional() {
   if [[ -n "$DEV_BOOTSTRAP_MODULES" ]]; then
     if [[ ! -f "$DEV_BOOTSTRAP_MODULE_STATE" ]]; then
       for module in $DEV_BOOTSTRAP_MODULES; do
-        echo "$module" >> "$DEV_BOOTSTRAP_MODULE_STATE" || return $?
+        echo "$module" >>"$DEV_BOOTSTRAP_MODULE_STATE" || return $?
       done
     else
       return 0
@@ -267,8 +271,21 @@ function dev_bootstrap_dir_create() {
     echo "Task: create main directory structure (${path})"
     mkdir \
       -m "$DEV_BOOTSTRAP_DIR_MODE" \
-      "$path"
+      "$path" || return $?
   done
+
+  echo "Task: create empty directory placeholders (${DEV_BASE_GITKEEP})"
+  touch \
+    "build/${DEV_BASE_GITKEEP}" \
+    "etc/${DEV_BASE_GITKEEP}" \
+    "docs/${DEV_BASE_GITKEEP}" \
+    "lib/${DEV_BASE_GITKEEP}" \
+    "logs/${DEV_BASE_GITKEEP}" \
+    "src/${DEV_BASE_GITKEEP}" \
+    "test/${DEV_BASE_GITKEEP}" \
+    "tmp/${DEV_BASE_GITKEEP}" \
+    "var/${DEV_BASE_GITKEEP}" \
+    "vault/${DEV_BASE_GITKEEP}"
 }
 
 function dev_bootstrap_dot_env_create() {
@@ -386,6 +403,15 @@ function dev_bootstrap_env_create() {
   fi
 }
 
+function dev_bootstrap_gitignore_create() {
+  local file_target='.gitignore'
+  if [[ ! -f "$file_target" ]]; then
+    echo "Task: create environment file (${file_target})"
+    cat "$DEV_BOOTSTRAP_DOT_GITIGNORE" >"$file_target"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target"
+  fi
+}
+
 function dev_bootstrap_dot_local_create() {
   local file_target=''
   local file_old="$DEV_BASE_DOT_LOCAL"
@@ -419,31 +445,17 @@ function dev_bootstrap_dot_secrets_create() {
     dev_bootstrap_duplicate_remove "$file_old" "$file_new"
 }
 
-function dev_bootstrap_gitignore_create() {
+function dev_bootstrap_dot_gitignore_create() {
   local file_target=''
-  local file_old=".gitignore"
+  local file_old="$DEV_BOOTSTRAP_DOT_GITIGNORE"
   local file_new="${file_old}.new"
 
-  echo "Task: create gitignore file (${file_old})"
+  echo "Task: create ignore file (${file_old})"
   if [[ -f "$file_old" ]]; then
     file_target="$file_new"
   else
     file_target="$file_old"
   fi
-
-  echo "Task: create empty directory placeholders (${DEV_BASE_GITKEEP})"
-  touch \
-    "build/${DEV_BASE_GITKEEP}" \
-    "etc/${DEV_BASE_GITKEEP}" \
-    "docs/${DEV_BASE_GITKEEP}" \
-    "lib/${DEV_BASE_GITKEEP}" \
-    "logs/${DEV_BASE_GITKEEP}" \
-    "src/${DEV_BASE_GITKEEP}" \
-    "test/${DEV_BASE_GITKEEP}" \
-    "tmp/${DEV_BASE_GITKEEP}" \
-    "var/${DEV_BASE_GITKEEP}" \
-    "vault/${DEV_BASE_GITKEEP}" ||
-    return $?
 
   # shellcheck disable=SC2016
   printf '#
@@ -527,8 +539,9 @@ dev_bootstrap_initialize &&
   dev_bootstrap_dot_local_create &&
   dev_bootstrap_dot_secrets_create &&
   dev_bootstrap_dot_env_load &&
-  dev_bootstrap_dir_create &&
+  dev_bootstrap_dot_gitignore_create &&
   dev_bootstrap_gitignore_create &&
+  dev_bootstrap_dir_create &&
   dev_bootstrap_bin_populate_base &&
   dev_bootstrap_bin_populate_optional &&
   dev_bootstrap_lib_local_run &&

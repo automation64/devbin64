@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Module
   - Act
 
+### Changed
+
+- Bash
+  - dev-test-bash: allow default container, add test path prefix if not present
+- TestMansh
+  - dev-test-testmansh: allow default container, add test path prefix if not present
+- DevBin64
+  - dev-bootstrap: do not replace existing .gitignore
+
 ## [7.9.1]
 
 ### Added
