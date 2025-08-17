@@ -104,7 +104,7 @@ builtin unset MAILPATH
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.9.1'
+declare DEV_BIN64_VERSION='7.10.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
@@ -249,17 +249,17 @@ function dev_bootstrap_dir_create() {
   local path=''
   local path_list=''
 
-  path_list=+" $DEV_PATH_BIN"
-  path_list=+" $DEV_PATH_BUILD"
-  path_list=+" $DEV_PATH_DOCS"
-  path_list=+" $DEV_PATH_ETC"
-  path_list=+" $DEV_PATH_LIB"
-  path_list=+" $DEV_PATH_LOGS"
-  path_list=+" $DEV_PATH_SRC"
-  path_list=+" $DEV_PATH_TEST"
-  path_list=+" $DEV_PATH_TMP"
-  path_list=+" $DEV_PATH_VAR"
-  path_list=+" $DEV_PATH_VAULT"
+  path_list+=" $DEV_PATH_BIN"
+  path_list+=" $DEV_PATH_BUILD"
+  path_list+=" $DEV_PATH_DOCS"
+  path_list+=" $DEV_PATH_ETC"
+  path_list+=" $DEV_PATH_LIB"
+  path_list+=" $DEV_PATH_LOGS"
+  path_list+=" $DEV_PATH_SRC"
+  path_list+=" $DEV_PATH_TEST"
+  path_list+=" $DEV_PATH_TMP"
+  path_list+=" $DEV_PATH_VAR"
+  path_list+=" $DEV_PATH_VAULT"
 
   # shellcheck disable=SC2086
   for path in $path_list; do
