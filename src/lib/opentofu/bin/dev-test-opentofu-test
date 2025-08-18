@@ -39,7 +39,10 @@ function my_prepare() {
 
   if [[ -d "$DEV_TEST_OPENTOFU_CASES_TEST" ]]; then
     bl64_msg_show_task 'Prepare test cases'
-    bl64_fs_run_cp -r "$DEV_TEST_OPENTOFU_CASES_TEST" "$MY_STAGING"
+    bl64_fs_path_copy \
+      "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+      "$MY_STAGING" \
+      "$DEV_TEST_OPENTOFU_CASES_TEST"
   fi
 }
 

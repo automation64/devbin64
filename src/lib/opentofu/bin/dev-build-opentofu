@@ -41,12 +41,18 @@ function my_build() {
   bl64_msg_show_task 'Create staging environment'
   bl64_fs_run_mkdir -p "$MY_STAGING" &&
     bl64_msg_show_task 'Promote source code to staging' &&
-    bl64_fs_run_cp "$MY_SOURCE"/* "$MY_STAGING" ||
+    bl64_fs_path_copy \
+      "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+      "$MY_STAGING" \
+      "$MY_SOURCE"/* ||
     return $?
 
   if [[ -d "$MY_CONFIG" ]]; then
     bl64_msg_show_task 'Promote configuration files to staging'
-    bl64_fs_run_cp "$MY_CONFIG"/* "$MY_STAGING"
+    bl64_fs_path_copy \
+      "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+      "$MY_STAGING" \
+      "$MY_CONFIG"/*
   fi
 }
 

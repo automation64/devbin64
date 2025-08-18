@@ -40,7 +40,7 @@ function my_pack() {
   bl64_fs_file_remove ./*.tofu
 
   bl64_msg_show_task 'Promote new module version to the repository root'
-  bl64_fs_file_copy \
+  bl64_fs_path_copy \
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
     "$DEV_PATH_ROOT" \
     "$DEV_PATH_SRC"/*.tofu
