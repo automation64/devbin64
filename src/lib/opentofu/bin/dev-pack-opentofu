@@ -26,7 +26,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 
 function my_pack() {
   bl64_dbg_app_show_function
-  local source=''
 
   bl64_lib_flag_is_enabled "$DEV_ENV_GITOPS_ENABLED" &&
     bl64_msg_show_error 'task not supported for GitOps64 repositories (DEV_ENV_GITOPS_ENABLED)' &&
@@ -40,10 +39,9 @@ function my_pack() {
   bl64_fs_file_remove ./*.tofu
 
   bl64_msg_show_task 'Promote new module version to the repository root'
-  bl64_fs_path_copy \
-    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
-    "$DEV_PATH_ROOT" \
-    "$DEV_PATH_SRC"/*.tofu
+  bl64_fs_path_merge \
+    "$DEV_PATH_SRC" \
+    "$DEV_PATH_ROOT"
 }
 
 function my_initialize() {

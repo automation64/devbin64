@@ -35,14 +35,16 @@ function my_prepare() {
 
   bl64_msg_show_task 'Prepare log store'
   bl64_fs_path_remove "$MY_LOGS"
-  bl64_fs_run_mkdir -p "$MY_LOGS" || return $?
+  bl64_fs_dir_create \
+    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+    "$MY_LOGS" ||
+    return $?
 
   if [[ -d "$DEV_TEST_OPENTOFU_CASES_TEST" ]]; then
     bl64_msg_show_task 'Prepare test cases'
-    bl64_fs_path_copy \
-      "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
-      "$MY_STAGING" \
-      "$DEV_TEST_OPENTOFU_CASES_TEST"
+    bl64_fs_path_merge \
+      "$DEV_TEST_OPENTOFU_CASES_TEST" \
+      "$MY_STAGING"
   fi
 }
 

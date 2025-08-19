@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Module
   - Act
+- DevBin64
+  - dev-set: auto-load profile env files
 
 ### Changed
 

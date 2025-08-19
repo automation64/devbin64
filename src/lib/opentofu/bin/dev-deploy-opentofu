@@ -19,7 +19,10 @@ source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2
 source ./bin/dev-env-gitops &&
   source ./bin/dev-env-opentofu || exit 1
 # shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 declare MY_MODULE="${1:-}"
 declare MY_VERSION="${2:-}"
@@ -28,19 +31,24 @@ declare MY_LOGS=''
 
 function my_deploy() {
   bl64_dbg_app_show_function
+  local auto_deploy='-auto-approve'
 
   bl64_msg_show_task 'Prepare log store'
   bl64_fs_path_remove "$MY_LOGS"
-  bl64_fs_run_mkdir -p "$MY_LOGS" || return $?
+  bl64_fs_dir_create \
+    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$MY_LOGS" ||
+    return $?
 
   bl64_msg_show_task 'Run deploy phase'
+  bl64_lib_flag_is_enabled "$DEV_DEPLOY_OPENTOFU_AUTO_APPLY" || auto_deploy=''
   cd "$MY_STAGING" &&
     "$DEV_LIB_OPENTOFU_BIN" \
       init \
       -input=false &&
     "$DEV_LIB_OPENTOFU_BIN" \
       apply \
-      -input=false
+      -input=false \
+      $auto_deploy
 }
 
 function my_initialize() {
@@ -60,13 +68,14 @@ function my_initialize() {
     bl64_check_directory "$MY_STAGING" &&
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
-    db64_profile_check &&
+    db64_profile_check_set &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
       'DEV_PROFILE' \
       'MY_MODULE' \
       'MY_VERSION' \
       'MY_STAGING' \
-      'MY_LOGS'
+      'MY_LOGS' \
+      'DEV_DEPLOY_OPENTOFU_AUTO_APPLY'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable

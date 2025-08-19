@@ -64,6 +64,9 @@
   
   # Build / OpenTofu / Reset staging path before build?
   export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-YES}"
+
+  # Deploy / OpenTofu / Auto-approve and apply without confirmation?
+  export DEV_DEPLOY_OPENTOFU_AUTO_APPLY="${DEV_DEPLOY_OPENTOFU_AUTO_APPLY:-NO}"
 }
 
 #
