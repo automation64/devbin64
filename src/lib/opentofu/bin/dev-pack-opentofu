@@ -16,7 +16,7 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-gitops &&
+source ./bin/dev-env-iac64 &&
   source ./bin/dev-env-opentofu || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -27,8 +27,8 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
 function my_pack() {
   bl64_dbg_app_show_function
 
-  bl64_lib_flag_is_enabled "$DEV_ENV_GITOPS_ENABLED" &&
-    bl64_msg_show_error 'task not supported for GitOps64 repositories (DEV_ENV_GITOPS_ENABLED)' &&
+  bl64_lib_flag_is_enabled "$DEV_ENV_IAC64_ENABLED" &&
+    bl64_msg_show_error 'task not supported for GitOps64 repositories (DEV_ENV_IAC64_ENABLED)' &&
     return $BL64_LIB_ERROR_TASK_REQUIREMENTS
 
   ! bl64_lib_flag_is_enabled "$DEV_ENV_OPENTOFU_EXPORT_ENABLED" &&

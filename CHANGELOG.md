@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Module
   - Act
+  - IAC64
 - DevBin64
   - dev-set: auto-load profile env files
 
@@ -22,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-test-testmansh: allow default container, add test path prefix if not present
 - DevBin64
   - dev-bootstrap: do not replace existing .gitignore
+
+### Removed
+
+- GitOps
+  - Migrated to IAC64
 
 ## [7.9.1]
 
