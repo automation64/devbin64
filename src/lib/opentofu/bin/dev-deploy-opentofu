@@ -56,7 +56,7 @@ function my_initialize() {
   bl64_msg_show_about
 
   if ! bl64_lib_flag_is_enabled "$DEV_ENV_IAC64_ENABLED"; then
-    bl64_msg_show_error 'incompatible task. GitOps64 must be enabled for repository: DEV_ENV_IAC64_ENABLED="YES"'
+    bl64_msg_show_error 'incompatible task. IaC64 must be enabled for repository: DEV_ENV_IAC64_ENABLED="YES"'
     return $BL64_LIB_ERROR_TASK_REQUIREMENTS
   fi
 

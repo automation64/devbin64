@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Module
   - Act
-  - IAC64
+  - IaC64
 - DevBin64
   - dev-set: auto-load profile env files
 
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - GitOps
-  - Migrated to IAC64
+  - Migrated to IaC64
 
 ## [7.9.1]
 

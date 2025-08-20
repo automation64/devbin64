@@ -21,13 +21,13 @@
 
 # shellcheck disable=SC2154
 {
-  # Env / GitOps / Resource Tags
+  # Env / IaC64 / Resource Tags
   export DEV_ENV_IAC64_TAG_ANSIBLE='ans'
   export DEV_ENV_IAC64_TAG_OPENTOFU='otf'
   export DEV_ENV_IAC64_TAG_SHELL='sh'
   export DEV_ENV_IAC64_TAG_TERRAFORM='tf'
 
-  # Env / GitOps / GitOps64 enabled?
+  # Env / IaC64 / IaC64 enabled?
   export DEV_ENV_IAC64_ENABLED="${DEV_ENV_IAC64_ENABLED:-NO}"
 }
 
