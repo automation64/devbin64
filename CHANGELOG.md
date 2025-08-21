@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.9.0]
+## [7.10.0]
+
+### Added
+
+- Module
+  - Act
+  - IaC64
+- DevBin64
+  - dev-set: auto-load profile env files
+
+### Changed
+
+- Bash
+  - dev-test-bash: allow default container, add test path prefix if not present
+- TestMansh
+  - dev-test-testmansh: allow default container, add test path prefix if not present
+- DevBin64
+  - dev-bootstrap: do not replace existing .gitignore
+
+### Removed
+
+- GitOps
+  - Migrated to IaC64
+
+## [7.9.1]
 
 ### Added
 
@@ -15,14 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - TFSec
   - GitOps
 - DevBin64
-  - dev-set: added public functions
+  - dev-set: added public functions, profile normalization
 - GIT
   - dev-git-repo-create
 
 ### Fixed
 
 - DevBin64
-  - doc.env: Removed incompatible default declaration of DEV_PROFILE variable
+  - doc.env: Removed incompatible default declaration of DEV_PROFILE variable, added missing build variables
 
 ## [7.8.0]
 

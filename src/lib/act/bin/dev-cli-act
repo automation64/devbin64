@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-prep: 1.0.0
+# * template-cli: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -16,42 +16,21 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-opentofu || exit 1
+source ./bin/dev-env-act || exit 1
 # shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-
-function my_prepare() {
-  bl64_dbg_app_show_function
-  local source=''
-
-  bl64_lib_flag_is_enabled "$DEV_ENV_OPENTOFU_EXPORT_ENABLED" || return 0
-
-  bl64_msg_show_info 'Prepare repository for module export requirements'
-  cd "$DEV_PATH_SRC" || return $?
-  for source in *.tf; do
-    bl64_fs_symlink_create \
-      "${DEV_PATH_SRC}/${source}" \
-      "${DEV_PATH_ROOT}/${source}" \
-      'ON' ||
-      return $?
-  done
-}
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_file "${DEV_PATH_ROOT}/README.md" 'terraform registry modules are required to have a README.md file' &&
-    bl64_check_file "${DEV_PATH_ROOT}/LICENSE" 'terraform registry modules are required to have a LICENSE file'
+  bl64_check_command "$DEV_LIB_ACT_BIN"
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Prepare repository for module specific requirements'
+bl64_msg_help_about_set 'Run dev time tool'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_prepare
+"$DEV_LIB_ACT_BIN" "$@"
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

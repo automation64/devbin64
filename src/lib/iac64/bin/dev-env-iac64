@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Template: 1.0.1
-# Version: 1.1.1
+# template-env: 1.0.2
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,25 +13,42 @@
 # limitations under the License.
 #######################################
 
-export DEV_PROFILE
-declare MY_PROFILE="${1:-}"
+#
+# Globals
+#
+# * Use .env file to override values
+#
 
-function dev_init_profile() {
-  db64_profile_is_set || return 0
-  [[ -d "${DEV_PATH_ETC}/${DEV_BASE_PROFILE}/${DEV_PROFILE}" ]] && return 0
-  ./bin/dev-profile-create
+# shellcheck disable=SC2154
+{
+  # Env / IaC64 / Resource Tags
+  export DEV_ENV_IAC64_TAG_ANSIBLE='ans'
+  export DEV_ENV_IAC64_TAG_OPENTOFU='otf'
+  export DEV_ENV_IAC64_TAG_SHELL='sh'
+  export DEV_ENV_IAC64_TAG_TERRAFORM='tf'
+
+  # Env / IaC64 / IaC64 enabled?
+  export DEV_ENV_IAC64_ENABLED="${DEV_ENV_IAC64_ENABLED:-NO}"
 }
 
-function dev_init_initialize() {
-  [[ -n "$MY_PROFILE" ]] && DEV_PROFILE="$MY_PROFILE"
-  # shellcheck source=bin/dev-set
-  source ./bin/dev-set ||
-    { echo 'dev-set:Error: unable to load dev environment' 2>&1 && return 1; }
+#
+# Locals
+#
+# * Use .local.env file or CICD variables to override values
+#
+
+# shellcheck disable=SC2154
+{
+  :
 }
 
-[[ -n "$DEV_CICD_DEBUG" ]] && set -x
+#
+# Secrets
+#
+# * Use .secrets.env file or CICD secrets to override values
+#
 
-dev_init_initialize &&
-  dev_init_profile &&
-  unset dev_init_initialize &&
-  unset dev_init_profile
+# shellcheck disable=SC2154
+{
+  :
+}

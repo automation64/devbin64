@@ -104,7 +104,7 @@ builtin unset MAILPATH
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='7.9.0'
+declare DEV_BIN64_VERSION='7.10.0'
 # DevBin64 / List of optional modules for adding after bootstrap is complete
 declare DEV_BOOTSTRAP_MODULES="${DEV_BOOTSTRAP_MODULES:-}"
 
@@ -133,13 +133,16 @@ export DEV_PATH_ROOT=''
 export DEV_PATH_TMP=''
 export DEV_PROFILE=''
 
-# DevBin64 / Constants
+# DevBin64 / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
+declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
+
+# DevBin64 / Default permissions
 declare DEV_BOOTSTRAP_DIR_MODE='0755'
 declare DEV_BOOTSTRAP_FILE_MODE='0644'
-declare DEV_BOOTSTRAP_INSTALLER64_NAME='inst64'
-declare DEV_BOOTSTRAP_PATHS='bin build docs etc lib logs src test tmp var vault'
 
+# DevBin64 / GitIgnore template
+declare DEV_BOOTSTRAP_DOT_GITIGNORE='dot.gitignore'
 # DevBin64 / State file name
 declare DEV_BOOTSTRAP_STATE='.devbin64'
 # DevBin64 / Optional modules
@@ -198,7 +201,7 @@ function dev_bootstrap_bin_detect_optional() {
   if [[ -n "$DEV_BOOTSTRAP_MODULES" ]]; then
     if [[ ! -f "$DEV_BOOTSTRAP_MODULE_STATE" ]]; then
       for module in $DEV_BOOTSTRAP_MODULES; do
-        echo "$module" >> "$DEV_BOOTSTRAP_MODULE_STATE" || return $?
+        echo "$module" >>"$DEV_BOOTSTRAP_MODULE_STATE" || return $?
       done
     else
       return 0
@@ -248,14 +251,41 @@ function dev_bootstrap_lib_base_run() {
 
 function dev_bootstrap_dir_create() {
   local path=''
+  local path_list=''
+
+  path_list+=" $DEV_PATH_BIN"
+  path_list+=" $DEV_PATH_BUILD"
+  path_list+=" $DEV_PATH_DOCS"
+  path_list+=" $DEV_PATH_ETC"
+  path_list+=" $DEV_PATH_LIB"
+  path_list+=" $DEV_PATH_LOGS"
+  path_list+=" $DEV_PATH_SRC"
+  path_list+=" $DEV_PATH_TEST"
+  path_list+=" $DEV_PATH_TMP"
+  path_list+=" $DEV_PATH_VAR"
+  path_list+=" $DEV_PATH_VAULT"
+
   # shellcheck disable=SC2086
-  for path in $DEV_BOOTSTRAP_PATHS; do
+  for path in $path_list; do
     [[ -d "$path" ]] && continue
     echo "Task: create main directory structure (${path})"
     mkdir \
       -m "$DEV_BOOTSTRAP_DIR_MODE" \
-      "$path"
+      "$path" || return $?
   done
+
+  echo "Task: create empty directory placeholders (${DEV_BASE_GITKEEP})"
+  touch \
+    "build/${DEV_BASE_GITKEEP}" \
+    "etc/${DEV_BASE_GITKEEP}" \
+    "docs/${DEV_BASE_GITKEEP}" \
+    "lib/${DEV_BASE_GITKEEP}" \
+    "logs/${DEV_BASE_GITKEEP}" \
+    "src/${DEV_BASE_GITKEEP}" \
+    "test/${DEV_BASE_GITKEEP}" \
+    "tmp/${DEV_BASE_GITKEEP}" \
+    "var/${DEV_BASE_GITKEEP}" \
+    "vault/${DEV_BASE_GITKEEP}"
 }
 
 function dev_bootstrap_dot_env_create() {
@@ -279,20 +309,20 @@ function dev_bootstrap_dot_env_create() {
 # * Automatically loaded by dev-set
 # * Do not include local variables (workstation specific) and secrets. Use .local.env and .secrets.env instead
 # * Version: 1.0.0
-# * Template: 4.2.1
+# * Template: 4.2.2
 #
 
 # Main / Base file and directory names
 export DEV_BASE_BUILD="build"
 export DEV_BASE_CHANGELOG="CHANGELOG.md"
-export DEV_BASE_DOT_LOCAL="dot.local.env"
-export DEV_BASE_DOT_SECRETS="dot.secrets.env"
-export DEV_BASE_ENV=".env"
+export DEV_BASE_DOT_LOCAL="%s"
+export DEV_BASE_DOT_SECRETS="%s"
+export DEV_BASE_ENV="%s"
 export DEV_BASE_GITKEEP=".gitkeep"
-export DEV_BASE_LOCAL=".local.env"
-export DEV_BASE_POST=".post.env"
+export DEV_BASE_LOCAL="%s"
+export DEV_BASE_POST="%s"
 export DEV_BASE_PROFILE="prof"
-export DEV_BASE_SECRETS=".secrets.env"
+export DEV_BASE_SECRETS="%s"
 export DEV_BASE_SRC="src"
 export DEV_BASE_TEST="test"
 
@@ -334,6 +364,9 @@ export DEV_PATH_TMP="${DEV_PATH_ROOT}/tmp"
 
 # Main / Profile dependant variables
 export DEV_PATH_PROF_BUILD="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
+export DEV_PATH_PROF_BUILD_PREPARE="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}/prepare"
+export DEV_PATH_PROF_BUILD_STAGING="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}/staging"
+export DEV_PATH_PROF_BUILD_PACK="${DEV_PATH_BUILD}/${DEV_BASE_PROFILE}/${DEV_PROFILE}/pack"
 export DEV_PATH_PROF_ETC="${DEV_PATH_ETC}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
 export DEV_PATH_PROF_LOGS="${DEV_PATH_LOGS}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
 export DEV_PATH_PROF_TMP="${DEV_PATH_TMP}/${DEV_BASE_PROFILE}/${DEV_PROFILE}"
@@ -352,11 +385,11 @@ export DEV_MODULE_LOAD=""
 #
 ' \
     "$DEV_BASE_DOT_LOCAL" \
+    "$DEV_BASE_DOT_SECRETS" \
+    "$DEV_BASE_ENV" \
     "$DEV_BASE_LOCAL" \
     "$DEV_BASE_POST" \
-    "$DEV_BASE_DOT_SECRETS" \
     "$DEV_BASE_SECRETS" \
-    "$DEV_BASE_ENV" \
     >"$file_target" &&
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
     dev_bootstrap_duplicate_remove "$file_old" "$file_new"
@@ -367,6 +400,15 @@ function dev_bootstrap_env_create() {
     echo "Task: create environment file (${DEV_BASE_ENV})"
     cat "$DEV_BASE_DOT_ENV" >"$DEV_BASE_ENV"
     chmod "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_ENV"
+  fi
+}
+
+function dev_bootstrap_gitignore_create() {
+  local file_target='.gitignore'
+  if [[ ! -f "$file_target" ]]; then
+    echo "Task: create environment file (${file_target})"
+    cat "$DEV_BOOTSTRAP_DOT_GITIGNORE" >"$file_target"
+    chmod "$DEV_BOOTSTRAP_FILE_MODE" "$file_target"
   fi
 }
 
@@ -403,31 +445,17 @@ function dev_bootstrap_dot_secrets_create() {
     dev_bootstrap_duplicate_remove "$file_old" "$file_new"
 }
 
-function dev_bootstrap_gitignore_create() {
+function dev_bootstrap_dot_gitignore_create() {
   local file_target=''
-  local file_old=".gitignore"
+  local file_old="$DEV_BOOTSTRAP_DOT_GITIGNORE"
   local file_new="${file_old}.new"
 
-  echo "Task: create gitignore file (${file_old})"
+  echo "Task: create ignore file (${file_old})"
   if [[ -f "$file_old" ]]; then
     file_target="$file_new"
   else
     file_target="$file_old"
   fi
-
-  echo "Task: create empty directory placeholders (${DEV_BASE_GITKEEP})"
-  touch \
-    "build/${DEV_BASE_GITKEEP}" \
-    "etc/${DEV_BASE_GITKEEP}" \
-    "docs/${DEV_BASE_GITKEEP}" \
-    "lib/${DEV_BASE_GITKEEP}" \
-    "logs/${DEV_BASE_GITKEEP}" \
-    "src/${DEV_BASE_GITKEEP}" \
-    "test/${DEV_BASE_GITKEEP}" \
-    "tmp/${DEV_BASE_GITKEEP}" \
-    "var/${DEV_BASE_GITKEEP}" \
-    "vault/${DEV_BASE_GITKEEP}" ||
-    return $?
 
   # shellcheck disable=SC2016
   printf '#
@@ -506,13 +534,14 @@ declare -i dev_bootstrap_status=0
 
 echo "Process: [${dev_bootstrap_process}] started"
 dev_bootstrap_initialize &&
-  dev_bootstrap_dir_create &&
   dev_bootstrap_dot_env_create &&
   dev_bootstrap_env_create &&
   dev_bootstrap_dot_local_create &&
   dev_bootstrap_dot_secrets_create &&
   dev_bootstrap_dot_env_load &&
+  dev_bootstrap_dot_gitignore_create &&
   dev_bootstrap_gitignore_create &&
+  dev_bootstrap_dir_create &&
   dev_bootstrap_bin_populate_base &&
   dev_bootstrap_bin_populate_optional &&
   dev_bootstrap_lib_local_run &&

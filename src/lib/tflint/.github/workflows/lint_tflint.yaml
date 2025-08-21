@@ -1,6 +1,6 @@
 ---
 # Template: 1.1.0
-name: "SAST / TFSec"
+name: "Lint / TFLint"
 
 env:
   DEV_CICD_DEBUG: ""
@@ -18,7 +18,7 @@ on:
       - "src/**"
 
 jobs:
-  sast:
+  lint-tflint:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -29,8 +29,8 @@ jobs:
         run: "./bin/dev-lib-base"
 
       - name: "Download tools"
-        run: "./bin/dev-lib-tfsec"
+        run: "./bin/dev-lib-tflint"
 
-      - name: "Run SAST"
-        run: "./bin/dev-sast-tfsec"
+      - name: "Run Linter"
+        run: "./bin/dev-lint-tflint"
 ...

@@ -16,55 +16,32 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-gitops &&
-  source ./bin/dev-env-opentofu || exit 1
-
+source ./bin/dev-env-act || exit 1
 # shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-
-declare MY_MODULE="${1:-}"
-declare MY_VERSION="${2:-}"
-declare MY_STAGING=''
-
-function my_prepare() {
-  bl64_dbg_app_show_function
-  local test="${DEV_PATH_TEST}/opentofu"
-  if [[ -d "$test" ]]; then
-    bl64_fs_run_cp "$test"/* "$MY_STAGING"
-  fi
-}
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 function my_test() {
   bl64_dbg_app_show_function
-  cd "$MY_STAGING" &&
-    "$DEV_LIB_OPENTOFU_BIN" init -input=false &&
-    "$DEV_LIB_OPENTOFU_BIN" plan -input=false -concise
+  local job=''
+  local job_list=''
+
+  for job in $DEV_TEST_ACT_WORKFLOWS; do
+    job_list+=" --job ${job}"
+  done
+
+  # shellcheck disable=SC2086
+  "$DEV_LIB_ACT_BIN" \
+    --env-file=/dev/null \
+    $job_list
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  if [[ "$DEV_ENV_GITOPS_ENABLED" == 'YES' ]]; then
-    db64_profile_check_set &&
-      bl64_check_parameter 'MY_MODULE' &&
-      bl64_check_parameter 'MY_VERSION' ||
-      return $?
-    MY_STAGING="${DEV_PATH_PROF_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-  else
-    MY_STAGING="${DEV_PATH_BUILD}/${DEV_ENV_GITOPS_TAG_OPENTOFU}"
-  fi
-
-  bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
-    bl64_check_directory "$MY_STAGING" &&
+  bl64_check_command "$DEV_LIB_ACT_BIN" &&
+    bl64_check_export 'DEV_TEST_ACT_WORKFLOWS' &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
-      'DEV_ENV_GITOPS_ENABLED' \
-      'DEV_PROFILE' \
-      'MY_MODULE' \
-      'MY_VERSION' \
-      'MY_STAGING'
+      'DEV_TEST_ACT_WORKFLOWS'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
@@ -73,6 +50,5 @@ bl64_msg_help_about_set 'Test source code'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_prepare &&
-  my_test
+my_test
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
