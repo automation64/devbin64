@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env: 1.0.2
+# template-env: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,8 +21,12 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / IaC64 / Module environment definition version
+  export DEV_ENV_IAC64_VERSION='1.1.0'
   # Env / IaC64 / Resource Tags
   export DEV_ENV_IAC64_TAG_ANSIBLE='ans'
+  export DEV_ENV_IAC64_TAG_KUSTOMIZE='kst'
+  export DEV_ENV_IAC64_TAG_HELM='hlm'
   export DEV_ENV_IAC64_TAG_OPENTOFU='otf'
   export DEV_ENV_IAC64_TAG_SHELL='sh'
   export DEV_ENV_IAC64_TAG_TERRAFORM='tf'

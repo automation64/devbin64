@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Module
   - KubeCTL
+- IAC64
+  - dev-deploy-iac64-kustomize
 
 ### Changed
 
