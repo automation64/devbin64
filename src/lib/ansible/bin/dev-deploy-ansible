@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-test: 1.0.0
+# * template-task: 1.8.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -16,66 +16,43 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-opentofu || exit 1
-
+source ./bin/dev-env-kustomize || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ans.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
-declare MY_STAGING="${1:-${DEV_BUILD_OPENTOFU_STAGING}}"
-declare MY_LOGS="${2:-${DEV_TEST_OPENTOFU_LOGS}}"
+declare MY_PLAYBOOK="${1:-}"
+declare MY_INVENTORY="${2:-}"
 
-function my_prepare() {
+function my_deploy() {
   bl64_dbg_app_show_function
-
-  bl64_msg_show_task 'Prepare log store'
-  bl64_fs_path_remove "$MY_LOGS"
-  bl64_fs_dir_create \
-    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
-    "$MY_LOGS" ||
-    return $?
-
-  if [[ -d "$DEV_TEST_OPENTOFU_CASES_TEST" ]]; then
-    bl64_msg_show_task 'Prepare test cases'
-    bl64_fs_path_merge \
-      "$DEV_TEST_OPENTOFU_CASES_TEST" \
-      "$MY_STAGING"
-  fi
-}
-
-function my_test() {
-  bl64_dbg_app_show_function
-  bl64_msg_show_task 'Run test phase'
-  TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
-  cd "$MY_STAGING" &&
-    "$DEV_LIB_OPENTOFU_BIN" \
-      init \
-      -input=false &&
-    "$DEV_LIB_OPENTOFU_BIN" \
-      test
+  bl64_ans_run_ansible_playbook \
+    --inventory "$MY_INVENTORY" \
+    "$MY_PLAYBOOK"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
-    bl64_check_parameter 'MY_STAGING' &&
-    bl64_check_parameter 'MY_LOGS' &&
-    bl64_check_directory "$MY_STAGING" &&
+  bl64_ans_setup "$BL64_VAR_DEFAULT" &&
+    bl64_check_parameter 'MY_PLAYBOOK' &&
+    bl64_check_parameter 'MY_INVENTORY' &&
+    bl64_check_file "$MY_PLAYBOOK" &&
+    bl64_check_file "$MY_INVENTORY" &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
-      'DEV_TEST_OPENTOFU_CASES_TEST' \
-      'MY_STAGING' \
-      'MY_LOGS'
+      'MY_PLAYBOOK' \
+      'MY_INVENTORY'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.0.0'
-bl64_msg_help_about_set 'Test source code with tofu test'
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Deploy Ansible objects from staging area'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_prepare &&
-  my_test
+my_deploy
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

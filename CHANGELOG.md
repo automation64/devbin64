@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0]
+
+### Added
+
+- Module
+  - kustomize
+- IAC64
+  - Added drivers: kustomize, ansible, opentofu
+- Ansible
+  - CLI installer
+  - Deployer
+- Kubelinter
+  - CLI installer
+- Kubescape
+  - CLI installer
+
+### Changed
+
+- IAC64
+  - Updated prefix definitions
+  - Added OpenTofu driver
+- OpenTofu
+  - Migrated IAC64 code
+- Kubelint
+  - **breaking-change** Renamed to Kubelinter
+
+### Fixed
+
+- All
+  - dev-lib-*: disabled CLI promotion to searchable path
+
 ## [7.10.0]
 
 ### Added

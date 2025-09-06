@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 1.0.1
+# template-env: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,6 +21,8 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / Kubescape / Module environment definition version
+  export DEV_ENV_KUBESCAPE_VERSION='1.0.2'
   # Env / Kubescape / Container Registry for tools
   export DEV_ENV_KUBESCAPE_REGISTRY="${DEV_ENV_KUBESCAPE_REGISTRY:-ghcr.io/automation64}"
   # Env / Kubescape / Container path for project mounts
@@ -31,6 +33,10 @@
   export DEV_LINT_KUBESCAPE_CONTAINER="${DEV_LINT_KUBESCAPE_CONTAINER:-k8s-lint/alpine-3-k8s-lint}"
   # Lint / Kubescape / Container entrypoint
   export DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT="${DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT:-/usr/local/bin/kubescape}"
+  # Lib / Kubescape / Installer
+  export DEV_LIB_KUBESCAPE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubescape"
+  # Lib / Kubescape / Target
+  export DEV_LIB_KUBESCAPE_TARGET="${DEV_LIB_KUBESCAPE_TARGET:-${DEV_PATH_LIB}/kscp}"
 }
 
 #
@@ -42,7 +48,7 @@
 # shellcheck disable=SC2154
 {
   # Lib / Kubescape / Command
-  export DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_BIN:-/usr/local/bin/kubescape}"
+  export DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_BIN:-${DEV_LIB_KUBESCAPE_TARGET}/kubescape}"
 }
 
 #
@@ -50,3 +56,17 @@
 #
 # * Use .secrets.env file or CICD secrets to override values
 #
+
+# shellcheck disable=SC2154
+{
+  :
+}
+
+#
+# External
+#
+
+# shellcheck disable=SC2154
+{
+  :
+}

@@ -21,10 +21,10 @@
 
 # shellcheck disable=SC2154
 {
-  # Env / X_MODULE_X / Module environment definition version
+  # Env / X_MODULE_TITLE_X / Module environment definition version
   export DEV_ENV_X_MODULE_CAPS_X_VERSION='1.0.0'
   # X_GLOBAL_PLACEHOLDER_X
-  # X_TASK_X / X_MODULE_X / X_VARIABLE_DESCRIPTION_X
+  # X_TASK_X / X_MODULE_TITLE_X / X_VARIABLE_DESCRIPTION_X
   # export DEV_X_TASK_CAPS_X_X_MODULE_CAPS_X_X_VARIABLE_CAPS_X="X_VALUE_X"
 }
 

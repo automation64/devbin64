@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 2.0.0
+# template-env: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,6 +21,8 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / Ansible / Module environment definition version
+  export DEV_ENV_X_MODULE_CAPS_X_VERSION='2.1.0'
   # Env / Bash / Registry for lab and testing containers
   export DEV_ENV_ANSIBLE_REGISTRY="${DEV_ENV_ANSIBLE_REGISTRY:-ghcr.io/automation64}"
   # Env / Bash / Container path for project mounts
@@ -36,6 +38,10 @@
   export DEV_PACK_ANSIBLE_GALAXY_NAMESPACE="${DEV_PACK_ANSIBLE_GALAXY_NAMESPACE:-}"
   # Lab / Ansible / Default image
   export DEV_LAB_ANSIBLE_IMAGE="${DEV_LAB_ANSIBLE_IMAGE:-ansible-test/ubuntu-21.4-ansible-test}"
+  # Lib / Ansible / Installer
+  export DEV_LIB_ANSIBLE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansible"
+  # Lib / Ansible / Target
+  export DEV_LIB_ANSIBLE_TARGET="${DEV_LIB_ANSIBLE_TARGET:-${DEV_PATH_LIB}/ans}"
 }
 
 #
@@ -44,8 +50,27 @@
 # * Use .local.env file or CICD variables to override values
 #
 
+# shellcheck disable=SC2154
+{
+  :
+}
+
 #
 # Secrets
 #
 # * Use .secrets.env file or CICD secrets to override values
 #
+
+# shellcheck disable=SC2154
+{
+  :
+}
+
+#
+# External
+#
+
+# shellcheck disable=SC2154
+{
+  :
+}

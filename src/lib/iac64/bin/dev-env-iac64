@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env: 1.0.2
+# template-env: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,14 +21,27 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / IaC64 / Module environment definition version
+  export DEV_ENV_IAC64_VERSION='2.0.0'
   # Env / IaC64 / Resource Tags
   export DEV_ENV_IAC64_TAG_ANSIBLE='ans'
+  export DEV_ENV_IAC64_TAG_KUSTOMIZE='kst'
+  export DEV_ENV_IAC64_TAG_HELM='hlm'
   export DEV_ENV_IAC64_TAG_OPENTOFU='otf'
   export DEV_ENV_IAC64_TAG_SHELL='sh'
   export DEV_ENV_IAC64_TAG_TERRAFORM='tf'
 
-  # Env / IaC64 / IaC64 enabled?
-  export DEV_ENV_IAC64_ENABLED="${DEV_ENV_IAC64_ENABLED:-NO}"
+  # Lib / IaC64 / Drivers
+  export DEV_LIB_IAC64_DRV_OPENTOFU_BUILD="${DEV_PATH_BIN}/dev-build-opentofu"
+  export DEV_LIB_IAC64_DRV_OPENTOFU_TEST_PLAN="${DEV_PATH_BIN}/dev-test-opentofu-test"
+  export DEV_LIB_IAC64_DRV_OPENTOFU_TEST_TEST="${DEV_PATH_BIN}/dev-test-opentofu-plan"
+  export DEV_LIB_IAC64_DRV_OPENTOFU_DEPLOY="${DEV_PATH_BIN}/dev-deploy-opentofu"
+  export DEV_LIB_IAC64_DRV_KUSTOMIZE_DEPLOY="${DEV_PATH_BIN}/dev-deploy-kustomize"
+  export DEV_LIB_IAC64_DRV_ANSIBLE_DEPLOY="${DEV_PATH_BIN}/dev-deploy-ansible"
+
+  # Build / IaC64 / Source module
+  export DEV_BUILD_IAC64_MODULE="${DEV_BUILD_IAC64_MODULE:-main}"
+  export DEV_BUILD_IAC64_VERSION="${DEV_BUILD_IAC64_VERSION:-1.0.0}"
 }
 
 #

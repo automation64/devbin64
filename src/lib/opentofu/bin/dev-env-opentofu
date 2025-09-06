@@ -41,7 +41,7 @@
   # Test / OpenTofu / Cases path
   export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
   export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
-  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/tests"
+  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/test"
 
   # Test / OpenTofu / Artifacts
   export DEV_TEST_OPENTOFU_PLAN='test.plan'

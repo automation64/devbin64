@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# template-env: 1.1.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+#
+# Globals
+#
+# * Use .env file to override values
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Kubelinter / Module environment definition version
+  export DEV_ENV_KUBELINTER_VERSION='1.0.2'
+  # Env / Kubelinter / Container Registry for tools
+  export DEV_ENV_KUBELINTER_REGISTRY="${DEV_ENV_KUBELINTER_REGISTRY:-ghcr.io/automation64}"
+  # Env / Kubelinter / Container path for project mounts
+  export DEV_ENV_KUBELINTER_CONTAINER_PATH_ROOT='/project'
+  # Lint / Kubelinter / Target
+  export DEV_LINT_KUBELINTER_TARGET="${DEV_LINT_KUBELINTER_TARGET:-${DEV_BASE_SRC}}"
+  # Lint / Kubelinter / Container with linting tool
+  export DEV_LINT_KUBELINTER_CONTAINER="${DEV_LINT_KUBELINTER_CONTAINER:-k8s-lint/alpine-3-k8s-lint}"
+  # Lint / Kubelinter / Container entrypoint
+  export DEV_LINT_KUBELINTER_CONTAINER_ENTRYPOINT="${DEV_LINT_KUBELINTER_CONTAINER_ENTRYPOINT:-/usr/local/bin/kube-linter}"
+  # Lib / Kubelinter / Installer
+  export DEV_LIB_KUBELINTER_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubelinter"
+  # Lib / Kubelinter / Target
+  export DEV_LIB_KUBELINTER_TARGET="${DEV_LIB_KUBELINTER_TARGET:-${DEV_PATH_LIB}/klnt}"
+}
+
+#
+# Locals
+#
+# * Use .local.env file or CICD variables to override values
+#
+
+# shellcheck disable=SC2154
+{
+  # Lib / Kubelinter / Command
+  export DEV_LIB_KUBELINTER_BIN="${DEV_LIB_KUBELINTER_BIN:-${DEV_LIB_KUBELINTER_TARGET}/kube-linter}"
+}
+
+#
+# Secrets
+#
+# * Use .secrets.env file or CICD secrets to override values
+#
+
+# shellcheck disable=SC2154
+{
+  :
+}
+
+#
+# External
+#
+
+# shellcheck disable=SC2154
+{
+  :
+}
