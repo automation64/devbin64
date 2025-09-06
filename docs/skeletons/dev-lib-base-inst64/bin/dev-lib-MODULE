@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-lib-inst64: 1.1.0
+# * template-lib-inst64: 1.2.0
 # * template-task: 1.8.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -33,6 +33,7 @@ function my_download() {
   bl64_dbg_app_show_function
   INST64_X_MODULE_UPPER_X_TARGET="$DEV_LIB_X_MODULE_UPPER_X_TARGET" \
     INST64_X_MODULE_UPPER_X_SYSTEM_WIDE='NO' \
+    INST64_CLI_PROMOTE='NO' \
     "${DEV_LIB_X_MODULE_UPPER_X_INSTALLER}"
 }
 

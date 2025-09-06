@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Module
-  - KubeCTL
+  - kustomize
 - IAC64
   - dev-deploy-iac64-kustomize
 
@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added OpenTofu driver
 - OpenTofu
   - Migrated IAC64 code
+
+### Fixed
+
+- All
+  - dev-lib-*: disabled CLI promotion to searchable path
 
 ## [7.10.0]
 
