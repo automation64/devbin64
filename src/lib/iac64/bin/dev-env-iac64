@@ -37,6 +37,7 @@
   export DEV_LIB_IAC64_DRV_OPENTOFU_TEST_TEST="${DEV_PATH_BIN}/dev-test-opentofu-plan"
   export DEV_LIB_IAC64_DRV_OPENTOFU_DEPLOY="${DEV_PATH_BIN}/dev-deploy-opentofu"
   export DEV_LIB_IAC64_DRV_KUSTOMIZE_DEPLOY="${DEV_PATH_BIN}/dev-deploy-kustomize"
+  export DEV_LIB_IAC64_DRV_ANSIBLE_DEPLOY="${DEV_PATH_BIN}/dev-deploy-ansible"
 
   # Build / IaC64 / Source module
   export DEV_BUILD_IAC64_MODULE="${DEV_BUILD_IAC64_MODULE:-main}"

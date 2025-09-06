@@ -12,7 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Module
   - kustomize
 - IAC64
-  - dev-deploy-iac64-kustomize
+  - Added drivers: kustomize, ansible, opentofu
+- Ansible
+  - CLI installer
+  - Deployer
 
 ### Changed
 

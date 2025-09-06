@@ -15,9 +15,9 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source=bin/dev-env-ansible
-source ./bin/dev-env-ansible || exit 1
-# shellcheck source=lib/bl64/bashlib64-core.bash
+# shellcheck source-path=bin
+source ./bin/dev-env-kustomize || exit 1
+# shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
@@ -25,39 +25,31 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ans.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
-declare MY_TARGET="${*:-${DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS}}"
+declare MY_PLAYBOOK="${1:-}"
+declare MY_INVENTORY="${2:-}"
 
 function my_deploy() {
   bl64_dbg_app_show_function
-  local pack_current=''
-
-  bl64_fs_path_remove "$DEV_PATH_BUILD_PACK" &&
-    bl64_fs_dir_create \
-      '0755' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_PATH_BUILD_PACK" &&
-    cd "$DEV_PATH_BUILD_PACK" ||
-    return $?
-
-  for pack_current in $MY_TARGET; do
-    bl64_msg_show_phase "pack Ansible Collection (${pack_current})"
-    bl64_ans_run_ansible_galaxy \
-      collection build "${DEV_PACK_ANSIBLE_BASE_COLLECTIONS}/${pack_current}" ||
-      return $?
-  done
+  bl64_ans_run_ansible_playbook \
+    --inventory "$MY_INVENTORY" \
+    "$MY_PLAYBOOK"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_parameter 'MY_TARGET' &&
-    bl64_check_parameter 'DEV_PACK_ANSIBLE_GALAXY_NAMESPACE' &&
-    bl64_check_directory "$DEV_PACK_ANSIBLE_BASE_COLLECTIONS" &&
-    bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_PACK_ANSIBLE_CFG" &&
+  bl64_ans_setup "$BL64_VAR_DEFAULT" &&
+    bl64_check_parameter 'MY_PLAYBOOK' &&
+    bl64_check_parameter 'MY_INVENTORY' &&
+    bl64_check_file "$MY_PLAYBOOK" &&
+    bl64_check_file "$MY_INVENTORY" &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
-      'MY_TARGET'
+      'MY_PLAYBOOK' \
+      'MY_INVENTORY'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.0.3'
+bl64_lib_script_version_set '1.0.0'
 bl64_msg_help_about_set 'Deploy Ansible objects from staging area'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
