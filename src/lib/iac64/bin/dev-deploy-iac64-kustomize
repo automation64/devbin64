@@ -26,25 +26,26 @@ declare MY_VERSION="${2:-$DEV_BUILD_IAC64_VERSION}"
 
 function my_deploy() {
   bl64_dbg_app_show_function
-  "$DEV_LIB_IAC64_DRV_OPENTOFU_TEST_TEST" \
-    "${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}" \
-    "${DEV_PATH_PROF_LOGS}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
+  "$DEV_LIB_IAC64_DRV_KUSTOMIZE_DEPLOY" \
+    "${DEV_PATH_PROF_ETC}/${MY_MODULE}/${DEV_ENV_IAC64_TAG_KUSTOMIZE}/${MY_VERSION}"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
   db64_profile_check_set &&
-    bl64_check_command "$DEV_LIB_IAC64_DRV_OPENTOFU_TEST_TEST" &&
+    bl64_check_command "$DEV_LIB_IAC64_DRV_KUSTOMIZE_DEPLOY" &&
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
-      'DEV_PROFILE'
+      'DEV_PROFILE' \
+      'MY_MODULE' \
+      'MY_VERSION'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Test OpenTofu source code with tofu test'
+bl64_msg_help_about_set 'Deploy kubernetes objects from staging area'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
