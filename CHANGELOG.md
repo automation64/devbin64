@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - IAC64
   - Updated prefix definitions
+  - Added OpenTofu driver
+- OpenTofu
+  - Migrated IAC64 code
 
 ## [7.10.0]
 

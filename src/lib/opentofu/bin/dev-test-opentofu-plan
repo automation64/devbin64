@@ -16,8 +16,7 @@
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
-source ./bin/dev-env-iac64 &&
-  source ./bin/dev-env-opentofu || exit 1
+source ./bin/dev-env-opentofu || exit 1
 
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -25,11 +24,9 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
-declare MY_MODULE="${1:-}"
-declare MY_VERSION="${2:-}"
-declare MY_STAGING=''
-declare MY_OUTPUT=''
-declare MY_LOGS=''
+declare MY_STAGING="${1:-${DEV_BUILD_OPENTOFU_STAGING}}"
+declare MY_OUTPUT="${2:-${DEV_TEST_OPENTOFU_OUTPUT}}"
+declare MY_LOGS="${3:-${DEV_TEST_OPENTOFU_LOGS}}"
 
 function my_prepare() {
   bl64_dbg_app_show_function
@@ -59,6 +56,7 @@ function my_prepare() {
 function my_test() {
   bl64_dbg_app_show_function
   bl64_msg_show_task 'Run plan phase'
+  TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
   cd "$MY_STAGING" &&
     "$DEV_LIB_OPENTOFU_BIN" \
       init \
@@ -72,28 +70,12 @@ function my_test() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  if [[ "$DEV_ENV_IAC64_ENABLED" == 'YES' ]]; then
-    db64_profile_check_set &&
-      bl64_check_parameter 'MY_MODULE' &&
-      bl64_check_parameter 'MY_VERSION' ||
-      return $?
-    MY_STAGING="${DEV_PATH_PROF_BUILD_STAGING}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-    MY_OUTPUT="${DEV_PATH_PROF_TMP}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-    MY_LOGS="${DEV_PATH_PROF_LOGS}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"
-  else
-    MY_STAGING="${DEV_BUILD_OPENTOFU_STAGING}"
-    MY_OUTPUT="${DEV_TEST_OPENTOFU_OUTPUT}"
-    MY_LOGS="${DEV_TEST_OPENTOFU_LOGS}"
-  fi
-  TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
-
   bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
+    bl64_check_parameter 'MY_STAGING' &&
+    bl64_check_parameter 'MY_OUTPUT' &&
+    bl64_check_parameter 'MY_LOGS' &&
     bl64_check_directory "$MY_STAGING" &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
-      'DEV_ENV_IAC64_ENABLED' \
-      'DEV_PROFILE' \
-      'MY_MODULE' \
-      'MY_VERSION' \
       'DEV_TEST_OPENTOFU_CASES_PLAN' \
       'MY_STAGING' \
       'MY_OUTPUT' \
@@ -101,8 +83,8 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.1.0'
-bl64_msg_help_about_set 'Test source code: tofu plan'
+bl64_lib_script_version_set '2.0.0'
+bl64_msg_help_about_set 'Test source code with tofu plan'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
