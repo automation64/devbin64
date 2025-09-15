@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-env-inst64: 1.1.0
+# template-env-inst64: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -22,7 +22,7 @@
 # shellcheck disable=SC2154
 {
   # Env / OpenTofu / Module environment definition version
-  export DEV_ENV_OPENTOFU_VERSION='1.1.0'
+  export DEV_ENV_OPENTOFU_VERSION='1.2.0'
   # Env / OpenTofu / Enable export to Terraform compatible registry
   export DEV_ENV_OPENTOFU_EXPORT_ENABLED="${DEV_ENV_OPENTOFU_EXPORT_ENABLED:-YES}"
 
@@ -32,11 +32,11 @@
   export DEV_LIB_OPENTOFU_TARGET="${DEV_LIB_OPENTOFU_TARGET:-${DEV_PATH_LIB}/otf}"
 
   # Build / OpenTofu / Staging path
-  export DEV_BUILD_OPENTOFU_STAGING="${DEV_PATH_BUILD_STAGING}/opentofu"
+  export DEV_BUILD_OPENTOFU_STAGING="${DEV_PATH_PROF_VAR}/opentofu"
 
   # Test / OpenTofu / Work paths
-  export DEV_TEST_OPENTOFU_OUTPUT="${DEV_PATH_TMP}/opentofu"
-  export DEV_TEST_OPENTOFU_LOGS="${DEV_PATH_LOGS}/opentofu"
+  export DEV_TEST_OPENTOFU_OUTPUT="${DEV_PATH_PROF_TMP}/opentofu"
+  export DEV_TEST_OPENTOFU_LOGS="${DEV_PATH_PROF_LOGS}/opentofu"
 
   # Test / OpenTofu / Cases path
   export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
@@ -47,7 +47,7 @@
   export DEV_TEST_OPENTOFU_PLAN='test.plan'
   export DEV_TEST_OPENTOFU_LOG='test.log'
 
-  # Deploy / OpenTofu / Artifacts
+  # Deploy / OpenTofu / Log file
   export DEV_DEPLOY_OPENTOFU_LOG='apply.log'
 }
 
@@ -63,7 +63,7 @@
   export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-${DEV_LIB_OPENTOFU_TARGET}/tofu}"
   
   # Build / OpenTofu / Reset staging path before build?
-  export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-YES}"
+  export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-NO}"
 
   # Deploy / OpenTofu / Auto-approve and apply without confirmation?
   export DEV_DEPLOY_OPENTOFU_AUTO_APPLY="${DEV_DEPLOY_OPENTOFU_AUTO_APPLY:-NO}"

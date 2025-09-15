@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-env-inst64: 1.0.1
+# template-env: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,6 +21,8 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / TFSec / Module environment definition version
+  export DEV_ENV_TFSEC_VERSION='1.1.0'
   # Lib / TFSec / Installer
   export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
   # Lib / TFSec / Target
@@ -28,7 +30,7 @@
   # SAST /TFSec / Target
   export DEV_SAST_TFSEC_TARGET="${DEV_SAST_TFSEC_TARGET:-${DEV_PATH_SRC}}"
   # SAST /TFSec / Output format
-  export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-sarif}"
+  export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-lovely}"
 }
 
 #
@@ -48,3 +50,17 @@
 #
 # * Use .secrets.env file or CICD secrets to override values
 #
+
+# shellcheck disable=SC2154
+{
+  :
+}
+
+#
+# External
+#
+
+# shellcheck disable=SC2154
+{
+  :
+}

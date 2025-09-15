@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-task: 1.8.0
+# template-task: 1.8.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -18,7 +18,9 @@ source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2
 # shellcheck source-path=bin
 source ./bin/dev-env-opentofu || exit 1
 # shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
@@ -36,14 +38,21 @@ function my_build() {
   fi
 
   bl64_msg_show_task 'Create staging environment'
+  # shellcheck disable=SC2046
+  bl64_fs_file_remove \
+    $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tofu) \
+    $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tf) \
+    $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tfvars)
   bl64_fs_dir_create \
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
     "$MY_STAGING" ||
     return $?
-  bl64_msg_show_task 'Promote source code to staging' &&
-    bl64_fs_path_merge \
-      "$MY_SOURCE" \
-      "$MY_STAGING" ||
+
+  bl64_msg_show_task 'Promote source code to staging'
+
+  bl64_fs_path_merge \
+    "$MY_SOURCE" \
+    "$MY_STAGING" ||
     return $?
 
   if [[ -d "$MY_CONFIG" ]]; then
@@ -57,7 +66,7 @@ function my_build() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-    bl64_check_parameter 'MY_SOURCE' &&
+  bl64_check_parameter 'MY_SOURCE' &&
     bl64_check_parameter 'MY_STAGING' &&
     bl64_check_directory "$MY_SOURCE" &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
@@ -68,7 +77,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.0.0'
+bl64_lib_script_version_set '2.1.0'
 bl64_msg_help_about_set 'Build runtime environment from the source module'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 

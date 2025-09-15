@@ -1,11 +1,10 @@
 ---
-# Template: 1.1.0
-name: "X_TASK_TITLE_X / X_TARGET_TITLE_X"
+# template-gh-lint: 1.1.0
+name: "Lint / X_TARGET_TITLE_X"
 
 env:
   DEV_CICD_DEBUG: ""
   BL64_LIB_CICD: "YES"
-  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
 
 on:
   pull_request:
@@ -14,10 +13,11 @@ on:
   push:
     branches:
       - "feature/**"
-    # X_PATHS_PLACEHOLDER_X
+    paths:
+      - "src/**"
 
 jobs:
-  X_TASK_X-X_TARGET_X:
+  lint-X_TARGET_X:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -30,5 +30,8 @@ jobs:
       - name: "Download tools"
         run : "X_TOOLS_PLACEHOLDER_X"
 
-      # X_STEPS_PLACEHOLDER_X
+      # X_PREPARE_APP_PLACEHOLDER_X
+
+      - name: "Run Linter"
+        run: "X_PLACEHOLDER_3_X"
 ...

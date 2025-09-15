@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# template-task: 1.8.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-opentofu || exit 1
+# shellcheck source-path=lib/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+
+declare MY_STAGING="${1:-${DEV_BUILD_OPENTOFU_STAGING}}"
+declare MY_LOGS="${2:-${DEV_TEST_OPENTOFU_LOGS}}"
+
+function my_deploy() {
+  bl64_dbg_app_show_function
+  local auto_deploy='-auto-approve'
+  TF_LOG_PATH="${MY_LOGS}/${DEV_DEPLOY_OPENTOFU_LOG}"
+
+  bl64_msg_show_task 'Prepare log store'
+  bl64_fs_path_remove "$MY_LOGS"
+  bl64_fs_dir_create \
+    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$MY_LOGS" ||
+    return $?
+
+  bl64_msg_show_task 'Run init phase'
+  bl64_lib_flag_is_enabled "$DEV_DEPLOY_OPENTOFU_AUTO_APPLY" || auto_deploy=''
+  cd "$MY_STAGING" &&
+    "$DEV_LIB_OPENTOFU_BIN" \
+      init \
+      -input=false ||
+    return $?
+  bl64_msg_show_task 'Run deploy phase'
+  "$DEV_LIB_OPENTOFU_BIN" \
+    destroy \
+    -input=false \
+    -auto-approve \
+    $auto_deploy
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_about
+  bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
+    bl64_check_directory "$MY_STAGING" &&
+    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'MY_STAGING' \
+      'MY_LOGS' \
+      'DEV_DEPLOY_OPENTOFU_AUTO_APPLY'
+}
+
+[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Remove deployed infrastructure'
+bl64_msg_all_enable_verbose && my_initialize || exit $?
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+my_deploy
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

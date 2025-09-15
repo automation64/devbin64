@@ -1,5 +1,5 @@
 ---
-# Template: 1.2.0
+# template-gh-test: 1.2.0
 name: "Test / OpenTofu"
 
 env:
@@ -16,9 +16,10 @@ on:
       - "feature/**"
     paths:
       - "src/**"
+      - "test/**"
 
 jobs:
-  test-opentofu:
+  test-opentofu-plan:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -34,9 +35,25 @@ jobs:
       - name: "Prepare Source"
         run: "./bin/dev-build-opentofu"
 
-      - name: "Run Test - TF Plan"
+      - name: "Run tests"
         run: "./bin/dev-test-opentofu-plan"
 
-      - name: "Run Test - TF Test"
+  test-opentofu-test:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Download tools"
+        run: "./bin/dev-lib-opentofu"
+
+      - name: "Prepare Source"
+        run: "./bin/dev-build-opentofu"
+
+      - name: "Run tests"
         run: "./bin/dev-test-opentofu-test"
 ...

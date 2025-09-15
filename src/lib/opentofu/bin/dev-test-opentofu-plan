@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-test: 1.0.0
+# template-test: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -55,16 +55,18 @@ function my_prepare() {
 
 function my_test() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task 'Run plan phase'
+  bl64_msg_show_task 'Run init phase'
   TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
   cd "$MY_STAGING" &&
     "$DEV_LIB_OPENTOFU_BIN" \
       init \
-      -input=false &&
-    "$DEV_LIB_OPENTOFU_BIN" \
-      plan \
-      -input=false \
-      -out="${MY_OUTPUT}/${DEV_TEST_OPENTOFU_PLAN}"
+      -input=false ||
+      return $?
+  bl64_msg_show_task 'Run plan phase'
+  "$DEV_LIB_OPENTOFU_BIN" \
+    plan \
+    -input=false \
+    -out="${MY_OUTPUT}/${DEV_TEST_OPENTOFU_PLAN}"
 }
 
 function my_initialize() {
@@ -83,7 +85,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.0.0'
+bl64_lib_script_version_set '2.0.1'
 bl64_msg_help_about_set 'Test source code with tofu plan'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
