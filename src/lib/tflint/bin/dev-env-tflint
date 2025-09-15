@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-env-inst64: 1.0.1
+# template-env: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,6 +21,8 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / TFLint / Module environment definition version
+  export DEV_ENV_TFLINT_VERSION='1.1.0'
   # Lib / TFLint / Installer
   export DEV_LIB_TFLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tflint"
   # Lib / TFLint / Target
@@ -28,7 +30,7 @@
   # Lint / TFLint / Target
   export DEV_LINT_TFLINT_TARGET="${DEV_LINT_TFLINT_TARGET:-${DEV_PATH_SRC}}"
   # Lint / TFLint / Format
-  export DEV_LINT_TFLINT_FORMAT="${DEV_LINT_TFLINT_FORMAT:-sarif}"
+  export DEV_LINT_TFLINT_FORMAT="${DEV_LINT_TFLINT_FORMAT:-compact}"
 }
 
 #
@@ -48,3 +50,17 @@
 #
 # * Use .secrets.env file or CICD secrets to override values
 #
+
+# shellcheck disable=SC2154
+{
+  :
+}
+
+#
+# External
+#
+
+# shellcheck disable=SC2154
+{
+  :
+}

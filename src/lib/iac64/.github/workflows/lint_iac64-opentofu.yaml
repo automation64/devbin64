@@ -1,0 +1,38 @@
+---
+# template-gh-lint: 1.1.0
+name: "Lint / IAC64 / OpenTofu"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+    paths:
+      - "src/*/otf/**"
+
+jobs:
+  lint-iac64-opentofu:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Download tools"
+        run : "./bin/dev-lib-iac64-opentofu"
+
+      - name: "Prepare Source"
+        run: "./bin/dev-build-iac64-opentofu"
+
+      - name: "Run Linter"
+        run: "./bin/dev-lint-iac64-opentofu"
+...

@@ -1,5 +1,5 @@
 ---
-# Template: 1.2.0
+# template-gh-test: 1.2.0
 name: "Test / X_TARGET_TITLE_X"
 
 env:

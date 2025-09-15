@@ -1,0 +1,34 @@
+---
+# template-gh-task: 1.1.0
+name: "X_TASK_TITLE_X / X_TARGET_TITLE_X"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+    # X_PATHS_PLACEHOLDER_X
+
+jobs:
+  X_TASK_X-X_TARGET_X:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Download tools"
+        run : "X_TOOLS_PLACEHOLDER_X"
+
+      # X_STEPS_PLACEHOLDER_X
+...

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * template-sast: 1.0.0
+# template-sast: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -24,12 +24,15 @@ declare MY_TARGET="${*:-${DEV_SAST_TFSEC_TARGET}}"
 
 function my_sast() {
   bl64_dbg_app_show_function
+  local tfvars="${MY_TARGET}/terraform.tfvars"
+
+  [[ -f "$tfvars" ]] || tfvars=''
+
   "$DEV_LIB_TFSEC_BIN" \
-    --concise-output \
     --no-code \
     --no-module-downloads \
     --format="$DEV_SAST_TFSEC_FORMAT" \
-    "${MY_TARGET}"
+    ${tfvars:+--tfvars-file "${tfvars}"} "${MY_TARGET}"
 }
 
 function my_initialize() {
@@ -39,7 +42,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.1'
+bl64_lib_script_version_set '1.1.0'
 bl64_msg_help_about_set 'Static test source code security'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
