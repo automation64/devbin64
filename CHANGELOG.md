@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.0]
+
+### Added
+
+- GIT
+  - dev-release-git
+  - dev-git-branch-delete
+- Bash
+  - dev-lab-bash: test env flag
+  - dev-test-bash: cool down between tests
+- OpenTofu
+  - gitignore
+  - dev-lint-opentofu
+- TFLint
+  - GitHub: added built step
+- TFSec
+  - GitHub: added built step
+  - Config file
+- Act
+  - Max concurrent jobs
+
+### Changed
+
+- DevBin64
+  - **breaking-change** `.env` is now deprecated. A new format is now available as `.dev.env`
+  - dev-set: Repository check now looks for bootstrap watermark. Secrets now loaded from vault/
+- GitLeaks
+  - Increase verbosity
+
+### Removed
+
+- DevBin64
+  - dev-bootstrap: Creation of optional `.local.env` and `.secrets.env`
+
 ## [9.0.0]
 
 ### Added

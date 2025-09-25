@@ -61,6 +61,12 @@ function my_build() {
       "$MY_CONFIG" \
       "$MY_STAGING"
   fi
+
+  bl64_msg_show_task 'Run init phase'
+  cd "$MY_STAGING" &&
+    "$DEV_LIB_OPENTOFU_BIN" \
+      init \
+      -input=false
 }
 
 function my_initialize() {
@@ -77,7 +83,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.1.0'
+bl64_lib_script_version_set '2.1.1'
 bl64_msg_help_about_set 'Build runtime environment from the source module'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 

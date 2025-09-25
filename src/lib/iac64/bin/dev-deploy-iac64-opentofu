@@ -33,6 +33,7 @@ function my_deploy() {
     bl64_msg_show_warning 'Guardrail is disabled, proceeding with deployment (DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED=NO)'
     bl64_msg_show_warning '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
   fi
+  DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='NO'
   "$DEV_LIB_IAC64_DRV_OPENTOFU_DEPLOY" \
     "${DEV_PATH_PROF_VAR}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}" \
     "${DEV_PATH_PROF_LOGS}/${DEV_ENV_IAC64_TAG_OPENTOFU}/${MY_MODULE}/${MY_VERSION}"

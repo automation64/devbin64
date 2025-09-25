@@ -30,7 +30,8 @@ jobs:
       - name: "Download tools"
         run : "X_TOOLS_PLACEHOLDER_X"
 
-      # X_PREPARE_APP_PLACEHOLDER_X
+      # - name: "Prepare for testing"
+      #   run : "X_BUILD_PLACEHOLDER_X"
 
       - name: "Run Linter"
         run: "X_PLACEHOLDER_3_X"

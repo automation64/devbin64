@@ -23,14 +23,19 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_OPENTOFU_BIN"
+  bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
+    bl64_check_directory "$DEV_BUILD_OPENTOFU_STAGING" &&
+    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'DEV_BUILD_OPENTOFU_STAGING'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.1'
-bl64_msg_help_about_set 'Run dev time tool'
+bl64_lib_script_version_set '1.1.0'
+bl64_msg_help_about_set 'Run dev time tool on staging area'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-"$DEV_LIB_OPENTOFU_BIN" "$@"
+"$DEV_LIB_OPENTOFU_BIN" \
+  -chdir="$DEV_BUILD_OPENTOFU_STAGING" \
+  "$@"
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

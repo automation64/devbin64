@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+source ./bin/dev-set
+
+[[ -d "$DEV_PATH_ROOT" ]] &&
+  [[ -d "$DEV_PATH_SRC" ]] &&
+  [[ -d "$DEV_PATH_TEST" ]] &&
+  [[ -d "$DEV_PATH_ETC" ]] &&
+  [[ -d "$DEV_PATH_DOCS" ]] &&
+  [[ -d "$DEV_PATH_BIN" ]] &&
+  [[ -d "$DEV_PATH_VAR" ]] &&
+  [[ -d "$DEV_PATH_LIB" ]] &&
+  [[ -d "$DEV_PATH_BUILD" ]] &&
+  [[ -d "$DEV_PATH_VAULT" ]] &&
+  [[ -d "$DEV_PATH_LOGS" ]] &&
+  [[ -d "$DEV_PATH_TMP" ]]

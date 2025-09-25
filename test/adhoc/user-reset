@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
 source test/lib/runtime.bash
-exit 0
+
+cd "$HOME"
+rm -Rf test-repo

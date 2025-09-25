@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+source ./bin/dev-set
+
+[[ -n "$DEV_PATH_ROOT" ]] &&
+  [[ -n "$DEV_PATH_SRC" ]] &&
+  [[ -n "$DEV_PATH_TEST" ]] &&
+  [[ -n "$DEV_PATH_ETC" ]] &&
+  [[ -n "$DEV_PATH_DOCS" ]] &&
+  [[ -n "$DEV_PATH_BIN" ]] &&
+  [[ -n "$DEV_PATH_VAR" ]] &&
+  [[ -n "$DEV_PATH_LIB" ]] &&
+  [[ -n "$DEV_PATH_BUILD" ]] &&
+  [[ -n "$DEV_PATH_BUILD_PREPARE" ]] &&
+  [[ -n "$DEV_PATH_BUILD_STAGING" ]] &&
+  [[ -n "$DEV_PATH_BUILD_PACK" ]] &&
+  [[ -n "$DEV_PATH_VAULT" ]] &&
+  [[ -n "$DEV_PATH_LOGS" ]] &&
+  [[ -n "$DEV_PATH_TMP" ]] &&
+  [[ -n "$DEV_PATH_PROF_BUILD" ]] &&
+  [[ -n "$DEV_PATH_PROF_BUILD_PREPARE" ]] &&
+  [[ -n "$DEV_PATH_PROF_BUILD_STAGING" ]] &&
+  [[ -n "$DEV_PATH_PROF_BUILD_PACK" ]] &&
+  [[ -n "$DEV_PATH_PROF_ETC" ]] &&
+  [[ -n "$DEV_PATH_PROF_LOGS" ]] &&
+  [[ -n "$DEV_PATH_PROF_TMP" ]] &&
+  [[ -n "$DEV_PATH_PROF_VAR" ]] &&
+  [[ -n "$DEV_PATH_PROF_VAULT" ]]

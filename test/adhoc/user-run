@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[[ ! -d /project ]] && echo 'Fatal: test for lab container only' && exit 1
+source test/lib/runtime.bash
 
 export DEV_BOOTSTRAP_PATH_ROOT='/project/src'
 
