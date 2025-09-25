@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+declare src='/project/src'
+
+source test/lib/runtime.bash
+
+./test/adhoc/system-sync
+./test/adhoc/user-reset
+
+cd "$src/lib"
+modules="$(ls -1 | grep -v devbin64)"
+
+cd "$HOME"
+mkdir test-repo
+cd test-repo
+echo "$modules" > .devbin64-modules
+
+/opt/devbin64/bin/dev-bootstrap

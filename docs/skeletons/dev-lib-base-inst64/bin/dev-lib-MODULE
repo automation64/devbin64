@@ -14,20 +14,12 @@
 # limitations under the License.
 #######################################
 
-#
-# Imports
-#
-
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=bin
 source ./bin/dev-env-X_MODULE_X || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-
-#
-# Functions
-#
 
 function my_download() {
   bl64_dbg_app_show_function
@@ -39,12 +31,9 @@ function my_download() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
+  bl64_msg_show_about
   bl64_check_file "$DEV_LIB_X_MODULE_UPPER_X_INSTALLER"
 }
-
-#
-# Main
-#
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '1.0.0'

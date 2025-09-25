@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+source ./bin/dev-set
+
+[[ -n "$DEV_BASE_BUILD" ]] &&
+  [[ -n "$DEV_BASE_CHANGELOG" ]] &&
+  [[ -n "$DEV_BASE_DOT_ENV" ]] &&
+  [[ -n "$DEV_BASE_DOT_LOCAL" ]] &&
+  [[ -n "$DEV_BASE_DOT_SECRETS" ]] &&
+  [[ -n "$DEV_BASE_ENV" ]] &&
+  [[ -n "$DEV_BASE_GITKEEP" ]] &&
+  [[ -n "$DEV_BASE_LOCAL" ]] &&
+  [[ -n "$DEV_BASE_POST" ]] &&
+  [[ -n "$DEV_BASE_PROFILE" ]] &&
+  [[ -n "$DEV_BASE_SECRETS" ]] &&
+  [[ -n "$DEV_BASE_SRC" ]] &&
+  [[ -n "$DEV_BASE_TEST" ]]

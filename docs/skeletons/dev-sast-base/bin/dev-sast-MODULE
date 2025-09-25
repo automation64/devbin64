@@ -31,7 +31,9 @@ function my_sast() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_X_MODULE_UPPER_X_BIN"
+  bl64_check_command "$DEV_LIB_X_MODULE_UPPER_X_BIN" &&
+    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'MY_TARGET'
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET"

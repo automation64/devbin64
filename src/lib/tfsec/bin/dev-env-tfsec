@@ -31,6 +31,8 @@
   export DEV_SAST_TFSEC_TARGET="${DEV_SAST_TFSEC_TARGET:-${DEV_PATH_SRC}}"
   # SAST /TFSec / Output format
   export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-lovely}"
+  # SAST /TFSec / Configuration
+  export DEV_SAST_TFSEC_CONFIG="${DEV_PATH_ROOT}/.tfsec.yml"
 }
 
 #

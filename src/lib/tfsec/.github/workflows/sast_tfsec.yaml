@@ -1,5 +1,5 @@
 ---
-# template-gh-sast: 1.1.0
+# template-gh-sast: 1.2.0
 name: "SAST / TFSec"
 
 env:
@@ -30,6 +30,9 @@ jobs:
 
       - name: "Download tools"
         run: "./bin/dev-lib-tfsec"
+
+      - name: "Prepare for testing"
+        run: "./bin/dev-build-opentofu"
 
       - name: "Run Lint"
         run: "./bin/dev-sast-tfsec"

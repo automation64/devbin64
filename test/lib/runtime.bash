@@ -1,4 +1,7 @@
+#!/usr/bin/env bash
+
 export BL64_LIB_CICD="YES"
+export TEST_TARGET="${HOME}/repo"
 
 if [[ "$(uname -s)" == 'Linux' ]]; then
   if [[ "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" != 'ON' ]]; then

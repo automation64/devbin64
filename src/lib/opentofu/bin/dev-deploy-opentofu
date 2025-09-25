@@ -29,7 +29,15 @@ declare MY_LOGS="${2:-${DEV_TEST_OPENTOFU_LOGS}}"
 function my_deploy() {
   bl64_dbg_app_show_function
   local auto_deploy='-auto-approve'
-  TF_LOG_PATH="${MY_LOGS}/${DEV_DEPLOY_OPENTOFU_LOG}"
+
+  if bl64_lib_flag_is_enabled "$DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED"; then
+    bl64_msg_show_fatal 'Guardrail is enabled, skipping deployment (DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED=YES)'
+    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+  else
+    bl64_msg_show_warning '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    bl64_msg_show_warning 'Guardrail is disabled, proceeding with deployment (DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED=NO)'
+    bl64_msg_show_warning '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+  fi
 
   bl64_msg_show_task 'Prepare log store'
   bl64_fs_path_remove "$MY_LOGS"
@@ -37,19 +45,15 @@ function my_deploy() {
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$MY_LOGS" ||
     return $?
 
-  bl64_msg_show_task 'Run init phase'
+  bl64_msg_show_task 'Run deploy phase'
   bl64_lib_flag_is_enabled "$DEV_DEPLOY_OPENTOFU_AUTO_APPLY" || auto_deploy=''
+  TF_LOG_PATH="${MY_LOGS}/${DEV_DEPLOY_OPENTOFU_LOG}"
   cd "$MY_STAGING" &&
     "$DEV_LIB_OPENTOFU_BIN" \
-      init \
-      -input=false ||
-    return $?
-  bl64_msg_show_task 'Run deploy phase'
-  "$DEV_LIB_OPENTOFU_BIN" \
-    apply \
-    -input=false \
-    -auto-approve \
-    $auto_deploy
+      apply \
+      -input=false \
+      -auto-approve \
+      $auto_deploy
 }
 
 function my_initialize() {
@@ -64,7 +68,7 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.0.0'
+bl64_lib_script_version_set '2.0.1'
 bl64_msg_help_about_set 'Deploy infrastructure'
 bl64_msg_all_enable_verbose && my_initialize || exit $?
 

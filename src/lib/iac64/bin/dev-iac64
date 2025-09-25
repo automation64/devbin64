@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# template-task: 3.3.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=bin
+source ./bin/dev-env-iac64 || exit 1
+# shellcheck source-path=lib/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+
+declare MY_COMMAND="${1:-$BL64_VAR_NULL}"
+declare MY_OPTION=''
+declare MY_PROFILE=''
+declare MY_MODULE=''
+declare MY_VERSION=''
+declare MY_DRIVER=''
+
+function my_run() {
+  bl64_dbg_app_show_function
+  DEV_PROFILE="$MY_PROFILE"
+  "${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER}" \
+    "$MY_MODULE" \
+    "$MY_VERSION"
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_about
+
+  case "$MY_COMMAND" in
+    build) ;;
+    lint) ;;
+    sast) ;;
+    deploy) ;;
+    remove) ;;
+    help) bl64_msg_help_show ;;
+    *) bl64_msg_help_show && return 1 ;;
+  esac
+
+  bl64_check_parameter 'MY_PROFILE' &&
+    bl64_check_parameter 'MY_MODULE' &&
+    bl64_check_parameter 'MY_VERSION' &&
+    bl64_check_parameter 'MY_DRIVER' &&
+    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'MY_PROFILE' \
+      'MY_MODULE' \
+      'MY_VERSION' \
+      'MY_DRIVER' \
+      'MY_COMMAND'
+}
+
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-d driver> [-D Debug] [-h]'
+bl64_msg_help_about_set 'IAC64 CLI'
+bl64_msg_help_parameters_set \
+  'Commands:
+
+build      : Prepare the staging area from the module source code
+lint       : Lint the source on the staging area
+sast       : Run static application security testing on the source code on the staging area
+deploy     : Deploy source code from the staging area to the target infrastructure. WARNING: destructive action.
+remove     : Remove deployed infrastructure. WARNING: destructive action.
+help       : Show this help message.
+
+Parameters:
+
+-p profile : configuration profile name
+-m module  : module name
+-v version : module version
+-d driver  : configuration driver name
+-D Debug   : Enable debugging mode. Format: one of BL64_DBG_TARGET_*'
+
+shift
+[[ $# == 0 ]] && bl64_msg_help_show && exit 1
+while getopts ':p:m:v:d:D:h' MY_OPTION; do
+  case "$MY_OPTION" in
+    p) MY_PROFILE="$OPTARG" ;;
+    m) MY_MODULE="$OPTARG" ;;
+    v) MY_VERSION="$OPTARG" ;;
+    d) MY_DRIVER="$OPTARG" ;;
+    D) DEV_CICD_DEBUG="$OPTARG" ;;
+    *) bl64_msg_help_show && exit 1 ;;
+  esac
+done
+bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_all_enable_verbose && my_initialize || exit $?
+
+bl64_msg_show_batch_start "${BL64_SCRIPT_ID}:$MY_COMMAND"
+my_run
+bl64_msg_show_batch_finish $? "${BL64_SCRIPT_ID}:$MY_COMMAND"

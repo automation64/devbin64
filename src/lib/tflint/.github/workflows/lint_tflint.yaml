@@ -1,5 +1,5 @@
 ---
-# template-gh-lint: 1.1.0
+# template-gh-lint: 1.2.0
 name: "Lint / TFLint"
 
 env:
@@ -29,6 +29,9 @@ jobs:
 
       - name: "Download tools"
         run: "./bin/dev-lib-tflint"
+
+      - name: "Prepare for testing"
+        run: "./bin/dev-build-opentofu"
 
       - name: "Run Linter"
         run: "./bin/dev-lint-tflint"

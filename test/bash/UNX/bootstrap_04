@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+[[ -f 'bin/dev-env-bashlib64' ]] &&
+  [[ -f 'bin/dev-lib-bashlib64' ]] &&
+  [[ -f 'bin/dev-init' ]] &&
+  [[ -f 'bin/dev-lib-base' ]] &&
+  [[ -f 'bin/dev-profile-create' ]] &&
+  [[ -f 'bin/dev-profile-remove' ]] &&
+  [[ -f 'bin/dev-profile-list' ]] &&
+  [[ -f 'bin/dev-set' ]] &&
+  [[ -f 'bin/dev-env-installer64' ]] &&
+  [[ -f 'bin/dev-lib-installer64' ]]

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-[[ ! -d /project ]] && echo 'Fatal: test for lab container only' && exit 1
+source test/lib/runtime.bash
 
 export DEV_BOOTSTRAP_PATH_ROOT='/project/src'
 cd src/lib
 modules="$(ls -1 | grep -v devbin64)"
 
-./test/adhoc/reset_user.sh
+./test/adhoc/user_reset.sh
 
 cd "$HOME"
 mkdir test-repo
