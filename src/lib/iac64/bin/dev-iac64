@@ -26,13 +26,60 @@ declare MY_PROFILE=''
 declare MY_MODULE=''
 declare MY_VERSION=''
 declare MY_DRIVER=''
+declare MY_CONFIRMATION='NONE'
+
+declare MY_COMMAND_BUILD='build'
+declare MY_COMMAND_BLT='blt'
+declare MY_COMMAND_LINT='lint'
+declare MY_COMMAND_SAST='sast'
+declare MY_COMMAND_TEST='test'
+declare MY_COMMAND_DEPLOY='deploy'
+declare MY_COMMAND_REMOVE='remove'
+declare MY_COMMAND_HELP='help'
+
+declare MY_FLAG_CONFIRM_DEPLOY='CONFIRM_DEPLOY'
+declare MY_FLAG_CONFIRM_REMOVE='CONFIRM_REMOVE'
+
+export DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='YES'
+export DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='YES'
+export DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='YES'
+export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='YES'
+
+function my_run_command() {
+  local command="$1"
+  DEV_PROFILE="$MY_PROFILE"
+  "${DEV_PATH_BIN}/dev-${command}-iac64-${MY_DRIVER}" \
+    "$MY_MODULE" \
+    "$MY_VERSION"
+}
 
 function my_run() {
   bl64_dbg_app_show_function
-  DEV_PROFILE="$MY_PROFILE"
-  "${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER}" \
-    "$MY_MODULE" \
-    "$MY_VERSION"
+  case "$MY_COMMAND" in
+    "$MY_COMMAND_BLT")
+      bl64_msg_show_phase "$MY_COMMAND_BUILD"
+      my_run_command "$MY_COMMAND_BUILD" &&
+        bl64_msg_show_phase "$MY_COMMAND_LINT" &&
+        my_run_command "$MY_COMMAND_LINT" &&
+        bl64_msg_show_phase "$MY_COMMAND_TEST" &&
+        my_run_command "$MY_COMMAND_TEST"
+      ;;
+    "$MY_COMMAND_DEPLOY")
+      if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
+        DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='NO'
+        DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='NO'
+      fi
+      my_run_command "$MY_COMMAND"
+      ;;
+    "$MY_COMMAND_REMOVE")
+      if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
+        DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='NO'
+        DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='NO'
+      fi
+      my_run_command "$MY_COMMAND"
+      ;;
+    *) my_run_command "$MY_COMMAND" ;;
+  esac
 }
 
 function my_initialize() {
@@ -40,12 +87,13 @@ function my_initialize() {
   bl64_msg_show_about
 
   case "$MY_COMMAND" in
-    build) ;;
-    lint) ;;
-    sast) ;;
-    deploy) ;;
-    remove) ;;
-    help) bl64_msg_help_show ;;
+    "$MY_COMMAND_BUILD") ;;
+    "$MY_COMMAND_BLT") ;;
+    "$MY_COMMAND_LINT") ;;
+    "$MY_COMMAND_SAST") ;;
+    "$MY_COMMAND_TEST") ;;
+    "$MY_COMMAND_DEPLOY") ;;
+    "$MY_COMMAND_REMOVE") ;;
     *) bl64_msg_help_show && return 1 ;;
   esac
 
@@ -58,21 +106,24 @@ function my_initialize() {
       'MY_MODULE' \
       'MY_VERSION' \
       'MY_DRIVER' \
-      'MY_COMMAND'
+      'MY_COMMAND' \
+      'MY_CONFIRMATION'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.1.0'
 bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-d driver> [-D Debug] [-h]'
 bl64_msg_help_about_set 'IAC64 CLI'
 bl64_msg_help_parameters_set \
-  'Commands:
+  "Commands:
 
-build      : Prepare the staging area from the module source code
-lint       : Lint the source on the staging area
-sast       : Run static application security testing on the source code on the staging area
-deploy     : Deploy source code from the staging area to the target infrastructure. WARNING: destructive action.
-remove     : Remove deployed infrastructure. WARNING: destructive action.
-help       : Show this help message.
+${MY_COMMAND_BUILD}      : Prepare the staging area from the module source code
+${MY_COMMAND_LINT}       : Lint the source on the staging area
+${MY_COMMAND_TEST}       : Test the source on the staging area
+${MY_COMMAND_BLT}        : Combine build, lint and test operations
+${MY_COMMAND_SAST}       : Run static application security testing on the source code on the staging area
+${MY_COMMAND_DEPLOY}     : Deploy source code from the staging area to the target infrastructure. WARNING: destructive action.
+${MY_COMMAND_REMOVE}     : Remove deployed infrastructure. WARNING: destructive action.
+${MY_COMMAND_HELP}       : Show this help message.
 
 Parameters:
 
@@ -80,18 +131,20 @@ Parameters:
 -m module  : module name
 -v version : module version
 -d driver  : configuration driver name
--D Debug   : Enable debugging mode. Format: one of BL64_DBG_TARGET_*'
+-Z confirm : confirm destructive actions (deploy/remove). Valid values: ${MY_FLAG_CONFIRM_DEPLOY}, ${MY_FLAG_CONFIRM_REMOVE}
+-D Debug   : Enable debugging mode. Format: one of BL64_DBG_TARGET_*"
 
+[[ "$MY_COMMAND" == "$MY_COMMAND_HELP" ]] && bl64_msg_help_show && exit 0
 shift
-[[ $# == 0 ]] && bl64_msg_help_show && exit 1
-while getopts ':p:m:v:d:D:h' MY_OPTION; do
-  case "$MY_OPTION" in
+# shellcheck disable=SC2249
+while getopts ':p:m:v:d:Z:D:h' MY_OPTION; do
+  case "${MY_OPTION:-}" in
     p) MY_PROFILE="$OPTARG" ;;
     m) MY_MODULE="$OPTARG" ;;
     v) MY_VERSION="$OPTARG" ;;
     d) MY_DRIVER="$OPTARG" ;;
+    Z) MY_CONFIRMATION="$OPTARG" ;;
     D) DEV_CICD_DEBUG="$OPTARG" ;;
-    *) bl64_msg_help_show && exit 1 ;;
   esac
 done
 bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_all_enable_verbose && my_initialize || exit $?
