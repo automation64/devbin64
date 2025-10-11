@@ -16,13 +16,13 @@
 #
 # Globals
 #
-# * Use .env file to override values
+# * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
   # Env / TFSec / Module environment definition version
-  export DEV_ENV_TFSEC_VERSION='1.1.0'
+  export DEV_ENV_TFSEC_VERSION='1.2.0'
   # Lib / TFSec / Installer
   export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
   # Lib / TFSec / Target
@@ -43,26 +43,15 @@
 
 # shellcheck disable=SC2154
 {
+  # Lib / TFSec / Skip installation?
+  export DEV_LIB_TFSEC_SKIP='YES'
   # Lib / TFSec / Command
-  export DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_BIN:-${DEV_LIB_TFSEC_TARGET}/tfsec}"
-}
-
-#
-# Secrets
-#
-# * Use .secrets.env file or CICD secrets to override values
-#
-
-# shellcheck disable=SC2154
-{
-  :
-}
-
-#
-# External
-#
-
-# shellcheck disable=SC2154
-{
-  :
+  export DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_BIN:-}"
+  if [[ -z "$DEV_LIB_TFSEC_BIN" ]]; then
+    DEV_LIB_TFSEC_BIN="$(bl64_bsh_command_locate_user 'tfsec')"
+    if [[ -z "$DEV_LIB_TFSEC_BIN" ]]; then
+      DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_TARGET}/tfsec"
+      DEV_LIB_TFSEC_SKIP='NO'
+    fi
+  fi
 }

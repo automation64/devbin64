@@ -16,7 +16,7 @@
 #
 # Globals
 #
-# * Use .env file to override values
+# * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
@@ -46,9 +46,3 @@
   # Lib / Go / Command
   export DEV_LIB_GO_BIN="${DEV_LIB_GO_BIN:-/usr/local/bin/go}"
 }
-
-#
-# Secrets
-#
-# * Use .secrets.env file or CICD secrets to override values
-#

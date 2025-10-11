@@ -19,7 +19,7 @@ on:
       - "test/**"
 
 jobs:
-  test-opentofu-plan:
+  test-opentofu:
     runs-on: "ubuntu-latest"
     steps:
 
@@ -36,24 +36,5 @@ jobs:
         run: "./bin/dev-build-opentofu"
 
       - name: "Run tests"
-        run: "./bin/dev-test-opentofu-plan"
-
-  test-opentofu-test:
-    runs-on: "ubuntu-latest"
-    steps:
-
-      - name: "Check out repository code"
-        uses: "actions/checkout@main"
-
-      - name: "Prepare environment"
-        run: "./bin/dev-lib-base"
-
-      - name: "Download tools"
-        run: "./bin/dev-lib-opentofu"
-
-      - name: "Prepare Source"
-        run: "./bin/dev-build-opentofu"
-
-      - name: "Run tests"
-        run: "./bin/dev-test-opentofu-test"
+        run: "./bin/dev-test-opentofu"
 ...

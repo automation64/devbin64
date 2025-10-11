@@ -15,18 +15,20 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=bin
-source ./bin/dev-env-iac64 || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+# shellcheck source-path=bin
+source ./bin/dev-env-iac64 || exit 1
 
 declare MY_COMMAND="${1:-$BL64_VAR_NULL}"
 declare MY_OPTION=''
 declare MY_PROFILE=''
 declare MY_MODULE=''
 declare MY_VERSION=''
+declare MY_SHARED=''
 declare MY_DRIVER=''
 declare MY_CONFIRMATION='NONE'
+declare MY_DRIVER_TAG=''
 
 declare MY_COMMAND_BUILD='build'
 declare MY_COMMAND_BLT='blt'
@@ -35,22 +37,30 @@ declare MY_COMMAND_SAST='sast'
 declare MY_COMMAND_TEST='test'
 declare MY_COMMAND_DEPLOY='deploy'
 declare MY_COMMAND_REMOVE='remove'
+declare MY_COMMAND_CONSOLE='console'
 declare MY_COMMAND_HELP='help'
 
 declare MY_FLAG_CONFIRM_DEPLOY='CONFIRM_DEPLOY'
 declare MY_FLAG_CONFIRM_REMOVE='CONFIRM_REMOVE'
 
+declare MY_DRIVER_TAG=''
+declare MY_TASK=''
+
 export DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='YES'
 export DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='YES'
 export DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='YES'
 export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='YES'
+export DEV_VERBOSE='TIME'
 
 function my_run_command() {
-  local command="$1"
+  bl64_check_command "$MY_TASK" "the requested command for the driver is not available (${MY_TASK})" ||
+    return $?
+
   DEV_PROFILE="$MY_PROFILE"
-  "${DEV_PATH_BIN}/dev-${command}-iac64-${MY_DRIVER}" \
+  "$MY_TASK" \
     "$MY_MODULE" \
-    "$MY_VERSION"
+    "$MY_VERSION" \
+    "$MY_SHARED"
 }
 
 function my_run() {
@@ -58,27 +68,39 @@ function my_run() {
   case "$MY_COMMAND" in
     "$MY_COMMAND_BLT")
       bl64_msg_show_phase "$MY_COMMAND_BUILD"
+      MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_BUILD}-iac64-${MY_DRIVER}"
       my_run_command "$MY_COMMAND_BUILD" &&
         bl64_msg_show_phase "$MY_COMMAND_LINT" &&
-        my_run_command "$MY_COMMAND_LINT" &&
+        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_LINT}-iac64-${MY_DRIVER}" &&
+        my_run_command &&
         bl64_msg_show_phase "$MY_COMMAND_TEST" &&
-        my_run_command "$MY_COMMAND_TEST"
+        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_TEST}-iac64-${MY_DRIVER}" &&
+        my_run_command
       ;;
     "$MY_COMMAND_DEPLOY")
       if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
         DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='NO'
         DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='NO'
       fi
-      my_run_command "$MY_COMMAND"
+      my_run_command
       ;;
     "$MY_COMMAND_REMOVE")
       if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
         DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='NO'
         DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='NO'
       fi
-      my_run_command "$MY_COMMAND"
+      my_run_command
       ;;
-    *) my_run_command "$MY_COMMAND" ;;
+    "$MY_COMMAND_CONSOLE")
+      bl64_msg_show_info 'Starting interactive console in the staging area. To exit, type "exit" or press Ctrl+D.'
+      DEV_PROFILE="$MY_PROFILE"
+      source ./bin/dev-set &&
+        cd "${DEV_PATH_PROF_VAR}/${MY_DRIVER_TAG}/${MY_MODULE}/${MY_VERSION}" &&
+        /usr/bin/env "$SHELL"
+      ;;
+    *)
+      my_run_command
+      ;;
   esac
 }
 
@@ -94,9 +116,11 @@ function my_initialize() {
     "$MY_COMMAND_TEST") ;;
     "$MY_COMMAND_DEPLOY") ;;
     "$MY_COMMAND_REMOVE") ;;
+    "$MY_COMMAND_CONSOLE") ;;
     *) bl64_msg_help_show && return 1 ;;
   esac
 
+  MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER}"
   bl64_check_parameter 'MY_PROFILE' &&
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
@@ -110,9 +134,9 @@ function my_initialize() {
       'MY_CONFIRMATION'
 }
 
-bl64_lib_script_version_set '1.1.0'
-bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-d driver> [-D Debug] [-h]'
-bl64_msg_help_about_set 'IAC64 CLI'
+bl64_lib_script_version_set '1.2.0'
+bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-K|-O> [-s shared] [-D Debug] [-h]'
+bl64_msg_help_about_set 'IAC64 - Infrastructure as Code (IaC) development tool for infrastructure automation.'
 bl64_msg_help_parameters_set \
   "Commands:
 
@@ -123,31 +147,59 @@ ${MY_COMMAND_BLT}        : Combine build, lint and test operations
 ${MY_COMMAND_SAST}       : Run static application security testing on the source code on the staging area
 ${MY_COMMAND_DEPLOY}     : Deploy source code from the staging area to the target infrastructure. WARNING: destructive action.
 ${MY_COMMAND_REMOVE}     : Remove deployed infrastructure. WARNING: destructive action.
+${MY_COMMAND_CONSOLE}    : Run interactive console in the staging area.
 ${MY_COMMAND_HELP}       : Show this help message.
 
-Parameters:
-
+Target
 -p profile : configuration profile name
--m module  : module name
--v version : module version
--d driver  : configuration driver name
+-m module  : module name.
+-v version : module version.
+-s shared  : (optional) shared module version
+
+Driver
+-A  : Ansible driver
+-B  : Bash driver
+-K  : Kustomize driver
+-O  : OpenTofu driver
+
+Guardrail
 -Z confirm : confirm destructive actions (deploy/remove). Valid values: ${MY_FLAG_CONFIRM_DEPLOY}, ${MY_FLAG_CONFIRM_REMOVE}
--D Debug   : Enable debugging mode. Format: one of BL64_DBG_TARGET_*"
+
+Options
+-V format  : verbose message format. Format: FULL|TASK|CALLER|TIME|HOST
+-D Debug   : Enable debugging mode. Format: ALL|LIB|APP"
 
 [[ "$MY_COMMAND" == "$MY_COMMAND_HELP" ]] && bl64_msg_help_show && exit 0
 shift
 # shellcheck disable=SC2249
-while getopts ':p:m:v:d:Z:D:h' MY_OPTION; do
+while getopts ':p:m:v:s:d:Z:D:ABKO' MY_OPTION; do
   case "${MY_OPTION:-}" in
     p) MY_PROFILE="$OPTARG" ;;
     m) MY_MODULE="$OPTARG" ;;
     v) MY_VERSION="$OPTARG" ;;
-    d) MY_DRIVER="$OPTARG" ;;
+    s) MY_SHARED="$OPTARG" ;;
     Z) MY_CONFIRMATION="$OPTARG" ;;
+    V) DEV_VERBOSE=="$OPTARG" ;;
     D) DEV_CICD_DEBUG="$OPTARG" ;;
+    A)
+      MY_DRIVER='ansible'
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_ANSIBLE"
+      ;;
+    B)
+      MY_DRIVER='bash'
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_BASH"
+      ;;
+    K)
+      MY_DRIVER='kustomize'
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_KUSTOMIZE"
+      ;;
+    O)
+      MY_DRIVER='opentofu'
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_OPENTOFU"
+      ;;
   esac
 done
-bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_all_enable_verbose && my_initialize || exit $?
+bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "${BL64_SCRIPT_ID}:$MY_COMMAND"
 my_run

@@ -15,8 +15,6 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=bin
-source ./bin/dev-env-opentofu || exit 1
 # shellcheck source-path=lib/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
@@ -24,6 +22,8 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+# shellcheck source-path=bin
+source ./bin/dev-env-opentofu || exit 1
 
 declare MY_SOURCE="${1:-${DEV_PATH_SRC}}"
 declare MY_STAGING="${2:-${DEV_BUILD_OPENTOFU_STAGING}}"
@@ -37,12 +37,17 @@ function my_build() {
     bl64_fs_path_remove "$MY_STAGING"
   fi
 
+  if bl64_lib_flag_is_enabled "$DEV_BUILD_OPENTOFU_CLEANUP"; then
+    bl64_msg_show_task 'Cleanup staging environment'
+    # shellcheck disable=SC2046
+    bl64_fs_file_remove \
+      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tofu) \
+      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tf) \
+      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.auto.tfvars) \
+      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tfvars)
+  fi
+
   bl64_msg_show_task 'Create staging environment'
-  # shellcheck disable=SC2046
-  bl64_fs_file_remove \
-    $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tofu) \
-    $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tf) \
-    $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tfvars)
   bl64_fs_dir_create \
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
     "$MY_STAGING" ||
@@ -83,9 +88,9 @@ function my_initialize() {
 }
 
 [[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '2.1.1'
+bl64_lib_script_version_set '2.2.0'
 bl64_msg_help_about_set 'Build runtime environment from the source module'
-bl64_msg_all_enable_verbose && my_initialize || exit $?
+bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_build
