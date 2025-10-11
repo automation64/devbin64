@@ -16,13 +16,13 @@
 #
 # Globals
 #
-# * Use .env file to override values
+# * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
   # Env / TFLint / Module environment definition version
-  export DEV_ENV_TFLINT_VERSION='1.1.0'
+  export DEV_ENV_TFLINT_VERSION='1.2.0'
   # Lib / TFLint / Installer
   export DEV_LIB_TFLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tflint"
   # Lib / TFLint / Target
@@ -41,26 +41,15 @@
 
 # shellcheck disable=SC2154
 {
+  # Lib / TFLint / Skip installation?
+  export DEV_LIB_TFLINT_SKIP='YES'
   # Lib / TFLint / Command
-  export DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_BIN:-${DEV_LIB_TFLINT_TARGET}/tflint}"
-}
-
-#
-# Secrets
-#
-# * Use .secrets.env file or CICD secrets to override values
-#
-
-# shellcheck disable=SC2154
-{
-  :
-}
-
-#
-# External
-#
-
-# shellcheck disable=SC2154
-{
-  :
+  export DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_BIN:-}"
+  if [[ -z "$DEV_LIB_TFLINT_BIN" ]]; then
+    DEV_LIB_TFLINT_BIN="$(bl64_bsh_command_locate_user 'tflint')"
+    if [[ -z "$DEV_LIB_TFLINT_BIN" ]]; then
+      DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_TARGET}/tflint"
+      DEV_LIB_TFLINT_SKIP='NO'
+    fi
+  fi
 }

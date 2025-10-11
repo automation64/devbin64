@@ -16,13 +16,13 @@
 #
 # Globals
 #
-# * Use .env file to override values
+# * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
   # Env / OpenTofu / Module environment definition version
-  export DEV_ENV_OPENTOFU_VERSION='1.3.0'
+  export DEV_ENV_OPENTOFU_VERSION='1.4.0'
   # Env / OpenTofu / Enable export to Terraform compatible registry
   export DEV_ENV_OPENTOFU_EXPORT_ENABLED="${DEV_ENV_OPENTOFU_EXPORT_ENABLED:-YES}"
 
@@ -37,6 +37,8 @@
   export DEV_BUILD_OPENTOFU_STAGING="${DEV_BUILD_OPENTOFU_STAGING:-${DEV_PATH_PROF_VAR}/opentofu}"
   # Build / OpenTofu / Reset staging path before build?
   export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-NO}"
+  # Build / OpenTofu / Cleanup staging path before build?
+  export DEV_BUILD_OPENTOFU_CLEANUP="${DEV_BUILD_OPENTOFU_RESET:-YES}"
 
   # Lint / OpenTofu / Target
   export DEV_LINT_OPENTOFU_TARGET="${DEV_LINT_OPENTOFU_TARGET:-${DEV_BUILD_OPENTOFU_STAGING}}"
@@ -74,8 +76,21 @@
 
 # shellcheck disable=SC2154
 {
+  # Lib / OpenTofu / Skip installation?
+  export DEV_LIB_OPENTOFU_SKIP='YES'
   # Lib / OpenTofu / Command
-  export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-${DEV_LIB_OPENTOFU_TARGET}/tofu}"
+  export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-}"
+  if [[ -z "$DEV_LIB_OPENTOFU_BIN" ]]; then
+    DEV_LIB_OPENTOFU_BIN="$(bl64_bsh_command_locate_user 'tofu' "$DEV_LIB_OPENTOFU_TARGET")"
+    if [[ -z "$DEV_LIB_OPENTOFU_BIN" ]]; then
+      DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_TARGET}/tofu"
+      DEV_LIB_OPENTOFU_SKIP='NO'
+    fi
+  else
+    if [[ ! -x "$DEV_LIB_OPENTOFU_BIN" ]]; then
+      DEV_LIB_OPENTOFU_SKIP='NO'
+    fi
+  fi
 }
 
 #

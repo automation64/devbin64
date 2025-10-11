@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0]
+
+### Added
+
+- iac64
+  - Shared module support, console command
+
+### Changed
+
+- installer64, bashlib64, devbin64, opentofu, tfsec, tflint
+  - skip install if already installed
+- devbin64
+  - dev-set: DEV_VERBOSE: now sets the verbose format (bl64). The value propagates to all devbin64 scripts
+- opentofu
+  - merged test and plan tasks
+
 ## [10.0.2]
 
 ### Added
