@@ -27,7 +27,7 @@
   # Lib / BashLib64 / Skip installation?
   export DEV_LIB_BASHLIB64_SKIP='YES'
   # Lib / BashLib64 / Location
-  export DEV_LIB_BASHLIB64_TARGET
+  export DEV_LIB_BASHLIB64_TARGET="${DEV_LIB_BASHLIB64_TARGET:-}"
   if [[ -z "$DEV_LIB_BASHLIB64_TARGET" ]]; then
     if [[ -f '/opt/bl64/bashlib64.bash' ]]; then
       DEV_LIB_BASHLIB64_TARGET='/opt/bl64'
@@ -48,7 +48,7 @@
   # Lib / Installer64 / Skip installation?
   export DEV_LIB_INSTALLER64_SKIP='YES'
   # Lib / Installer64 / Location
-  export DEV_LIB_INSTALLER64_TARGET
+  export DEV_LIB_INSTALLER64_TARGET="${DEV_LIB_INSTALLER64_TARGET:-}"
   if [[ -z "$DEV_LIB_INSTALLER64_TARGET" ]]; then
     if [[ -f '/opt/inst64/install-installer64' ]]; then
       DEV_LIB_INSTALLER64_TARGET='/opt/inst64'
