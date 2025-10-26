@@ -269,6 +269,22 @@ function dev_bootstrap_dir_create() {
   local path=''
   local path_list=''
 
+  [[ -n "$DEV_PATH_BIN" ]] &&
+    [[ -n "$DEV_PATH_BUILD" ]] &&
+    [[ -n "$DEV_PATH_DOCS" ]] &&
+    [[ -n "$DEV_PATH_ETC" ]] &&
+    [[ -n "$DEV_PATH_LIB" ]] &&
+    [[ -n "$DEV_PATH_LOGS" ]] &&
+    [[ -n "$DEV_PATH_SRC" ]] &&
+    [[ -n "$DEV_PATH_TEST" ]] &&
+    [[ -n "$DEV_PATH_TMP" ]] &&
+    [[ -n "$DEV_PATH_VAR" ]] &&
+    [[ -n "$DEV_PATH_VAULT" ]] ||
+    {
+      dev_bootstrap_msg_show_error 'one or more DEV_PATH_* variables are not defined'
+      return 1
+    }
+
   path_list+=" $DEV_PATH_BIN"
   path_list+=" $DEV_PATH_BUILD"
   path_list+=" $DEV_PATH_DOCS"
@@ -422,7 +438,7 @@ function dev_bootstrap_dot_gitignore_create() {
 
 function dev_bootstrap_dot_env_load() {
   dev_bootstrap_msg_show_task "load project variables (bin/dev-set)"
-  source "${DEV_PATH_BIN}/dev-set" >/dev/null
+  source "${DEV_PATH_BIN}/dev-set"
 }
 
 function dev_bootstrap_legacy() {
