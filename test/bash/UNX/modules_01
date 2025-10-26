@@ -6,22 +6,9 @@ source test/lib/runtime.bash
 # Prepare Test
 #
 
-install_target='/tmp/devbin64'
-test_target="${HOME}/repo"
-modules="$(ls -1 "${DEV_ENV_BASH_CONTAINER_PATH_SRC}/lib")"
-mkdir -p \
-  "$install_target" \
-  "${install_target}/bin" \
-  "$test_target" &&
-  cp -r "${DEV_ENV_BASH_CONTAINER_PATH_SRC}/lib" "$install_target" &&
-  cp "${DEV_ENV_BASH_CONTAINER_PATH_SRC}/lib/devbin64/bin/dev-bootstrap" "${install_target}/bin" &&
-  echo "$modules" >"$test_target/.devbin64-modules" &&
-  cd "$test_target" ||
-  exit $?
+export DEV_BOOTSTRAP_MODULES="$(ls -1 "src/lib")"
 
-#
-# Run Test
-#
-
-export DEV_BOOTSTRAP_PATH_ROOT="$install_target"
-"${install_target}/bin/dev-bootstrap"
+source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" &&
+  [[ -f .devbin64-modules ]]
