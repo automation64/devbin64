@@ -24,6 +24,60 @@ on:
       - "test/bash/**"
 
 jobs:
+  test-bash-linux:
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        target:
+          - "ALM"
+          - "ALP"
+          - "AMZ"
+          - "CNT"
+          - "DEB"
+          - "FD"
+          - "KL"
+          - "OEL"
+          - "RCK"
+          - "RHEL"
+          - "SLES"
+          - "UB"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Cache local tools"
+        uses: "actions/cache@v4"
+        with:
+          path: ./lib
+          key: ${{ runner.os }}-lib-cache
+          restore-keys: |
+            ${{ runner.os }}-lib-cache
+
+      - name: "Prepare environment"
+        run: |
+          ./bin/dev-lib-base &&
+          ./bin/dev-prep-project
+
+      - name: "Run OS specific tests"
+        run: |
+          source ./bin/dev-set &&
+          source ./bin/dev-env-bash &&
+          ./bin/dev-test-bash $DEV_TEST_BASH_CONTAINER_${{matrix.target}} ${DEV_TEST_BASH_CASES}/${{matrix.target}}
+
+      - name: "Run Linux generic tests"
+        run: |
+          source ./bin/dev-set &&
+          source ./bin/dev-env-bash &&
+          ./bin/dev-test-bash $DEV_TEST_BASH_CONTAINER_${{matrix.target}} ${DEV_TEST_BASH_CASES}/LNX
+
+      - name: "Run Unix generic tests"
+        run: |
+          source ./bin/dev-set &&
+          source ./bin/dev-env-bash &&
+          ./bin/dev-test-bash $DEV_TEST_BASH_CONTAINER_${{matrix.target}} ${DEV_TEST_BASH_CASES}/UNX
+
   test-bash-macos:
     runs-on: "macos-latest"
     steps:
