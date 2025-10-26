@@ -12,7 +12,7 @@
 #
 # Author: SerDigital64 (https://github.com/serdigital64)
 # Repository: https://github.com/automation64/devbin64
-# Version: 7.0.0
+# Version: 7.0.1
 #
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -161,6 +161,7 @@ declare DEV_CMD_DIFF='diff'
 declare DEV_CMD_MKDIR='mkdir'
 declare DEV_CMD_MV='mv'
 declare DEV_CMD_RM='rm'
+declare DEV_CMD_TOUCH='touch'
 
 # DevSet / Env initial values
 export DEV_BASE_DOT_ENV="dot.dev.env"
@@ -290,17 +291,17 @@ function dev_bootstrap_dir_create() {
   done
 
   dev_bootstrap_msg_show_task "create git path placeholders (${DEV_BASE_GITKEEP})"
-  touch \
-    "build/${DEV_BASE_GITKEEP}" \
-    "etc/${DEV_BASE_GITKEEP}" \
-    "docs/${DEV_BASE_GITKEEP}" \
-    "lib/${DEV_BASE_GITKEEP}" \
-    "logs/${DEV_BASE_GITKEEP}" \
-    "src/${DEV_BASE_GITKEEP}" \
-    "test/${DEV_BASE_GITKEEP}" \
-    "tmp/${DEV_BASE_GITKEEP}" \
-    "var/${DEV_BASE_GITKEEP}" \
-    "vault/${DEV_BASE_GITKEEP}"
+  "$DEV_CMD_TOUCH" \
+    "${DEV_PATH_BUILD}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_DOCS}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_ETC}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_LIB}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_LOGS}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_SRC}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_TEST}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_TMP}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_VAR}/${DEV_BASE_GITKEEP}" \
+    "${DEV_PATH_VAULT}/${DEV_BASE_GITKEEP}"
 }
 
 function dev_bootstrap_dot_env_create() {
