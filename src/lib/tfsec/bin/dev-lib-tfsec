@@ -35,7 +35,7 @@ source ./bin/dev-env-tfsec || exit 1
 
 function my_download() {
   bl64_dbg_app_show_function
-  [[ "$DEV_LIB_TFSEC_SKIP" == 'YES' ]] && return 0
+  bl64_lib_flag_is_enabled "$DEV_LIB_TFSEC_SKIP" && return 0
   INST64_TFSEC_TARGET="$DEV_LIB_TFSEC_TARGET" \
     INST64_SYSTEM_WIDE='NO' \
     INST64_CLI_PROMOTE='NO' \

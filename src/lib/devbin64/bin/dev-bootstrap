@@ -121,7 +121,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBootstrap / Current version
-declare DEV_BIN64_VERSION='10.1.2'
+declare DEV_BIN64_VERSION='10.2.0'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'

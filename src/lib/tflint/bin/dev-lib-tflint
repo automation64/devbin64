@@ -35,7 +35,7 @@ source ./bin/dev-env-tflint || exit 1
 
 function my_download() {
   bl64_dbg_app_show_function
-  [[ "$DEV_LIB_TFLINT_SKIP" == 'YES' ]] && return 0
+  bl64_lib_flag_is_enabled "$DEV_LIB_TFLINT_SKIP" && return 0
   INST64_TFLINT_TARGET="$DEV_LIB_TFLINT_TARGET" \
     INST64_SYSTEM_WIDE='NO' \
     INST64_CLI_PROMOTE='NO' \
