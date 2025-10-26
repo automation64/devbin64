@@ -4,7 +4,8 @@ source test/lib/runtime.bash &&
   ./test/lib/install.bash &&
   cd "$TEST_TARGET" ||
   exit $?
-
+pwd
+ls -al
 [[ -d bin ]] &&
   [[ -d build ]] &&
   [[ -d docs ]] &&
