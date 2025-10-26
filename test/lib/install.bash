@@ -5,7 +5,7 @@ install_target="${at64root}/devbin64"
 source_lib=''
 export DEV_BOOTSTRAP_PATH_ROOT="$install_target"
 
-if [[ -v DEV_TEST_BASH_CONTAINER_ENVIRONMENT ]]; then
+if [[ -v DEV_TEST_BASH_CONTAINER_ENVIRONMENT && -n "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" && -d "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" ]]; then
   source_lib="$DEV_ENV_BASH_CONTAINER_PATH_SRC"
 else
   source_lib='src'
