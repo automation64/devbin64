@@ -1,21 +1,10 @@
 #!/usr/bin/env bash
 
-at64root="${HOME}/at64"
-install_target="${at64root}/devbin64"
-export DEV_BOOTSTRAP_PATH_ROOT="$install_target"
-
-source_lib=''
-if [[ -v DEV_TEST_BASH_CONTAINER_ENVIRONMENT && -n "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" && -d "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" ]]; then
-  source_lib="$DEV_ENV_BASH_CONTAINER_PATH_SRC"
-else
-  source_lib='src'
-fi
-
 mkdir -p \
-  "$install_target" \
-  "${install_target}/bin" \
+  "$TEST_INSTALL_TARGET" \
+  "${TEST_INSTALL_TARGET}/bin" \
   "$TEST_TARGET" &&
-  cp -r "${source_lib}/lib" "$install_target" &&
-  cp "${source_lib}/lib/devbin64/bin/dev-bootstrap" "${install_target}/bin" &&
+  cp -r "${TEST_SOURCE_LIB}/lib" "$TEST_INSTALL_TARGET" &&
+  cp "${TEST_SOURCE_LIB}/lib/devbin64/bin/dev-bootstrap" "${TEST_INSTALL_TARGET}/bin" &&
   cd "$TEST_TARGET" &&
-  "${install_target}/bin/dev-bootstrap" >/dev/null 2>&1
+  "${TEST_INSTALL_TARGET}/bin/dev-bootstrap" >/dev/null 2>&1

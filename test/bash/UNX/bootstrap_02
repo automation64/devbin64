@@ -5,4 +5,4 @@ source test/lib/runtime.bash &&
   ./test/lib/install.bash &&
   cd "$TEST_TARGET" &&
   [[ -f .devbin64 ]] &&
-  "${install_target}/bin/dev-bootstrap" >/dev/null 2>&1
+  "${TEST_INSTALL_TARGET}/bin/dev-bootstrap" >/dev/null 2>&1
