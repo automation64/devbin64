@@ -5,22 +5,13 @@ source test/lib/runtime.bash &&
   cd "$TEST_TARGET" ||
   exit $?
 
-[[ -d bin ]] &&
-  [[ -d build ]] &&
-  [[ -d docs ]] &&
-  [[ -d etc ]] &&
-  [[ -d lib ]] &&
-  [[ -d logs ]] &&
-  [[ -d src ]] &&
-  [[ -d test ]] &&
-  [[ -d tmp ]] &&
-  [[ -d var ]] &&
-  [[ -d vault ]] ||
-  exit 1
-
-[[ -f .gitignore ]] &&
-  [[ -f .dev.env ]] &&
-  [[ -f dot.dev.env ]] &&
-  [[ -f dot.gitignore ]] &&
-  [[ -f dot.local.env ]] &&
-  [[ -f dot.secrets.env ]]
+[[ -f 'bin/dev-env-bashlib64' ]] &&
+  [[ -f 'bin/dev-lib-bashlib64' ]] &&
+  [[ -f 'bin/dev-init' ]] &&
+  [[ -f 'bin/dev-lib-base' ]] &&
+  [[ -f 'bin/dev-profile-create' ]] &&
+  [[ -f 'bin/dev-profile-remove' ]] &&
+  [[ -f 'bin/dev-profile-list' ]] &&
+  [[ -f 'bin/dev-set' ]] &&
+  [[ -f 'bin/dev-env-installer64' ]] &&
+  [[ -f 'bin/dev-lib-installer64' ]]

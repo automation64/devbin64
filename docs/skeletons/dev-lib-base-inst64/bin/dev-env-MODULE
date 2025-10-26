@@ -16,7 +16,9 @@
     DEV_LIB_X_MODULE_UPPER_X_BIN="$(bl64_bsh_command_locate_user 'X_COMMAND_X')"
     if [[ -z "$DEV_LIB_X_MODULE_UPPER_X_BIN" ]]; then
       DEV_LIB_X_MODULE_UPPER_X_BIN="${DEV_LIB_X_MODULE_UPPER_X_TARGET}/X_COMMAND_X"
-      DEV_LIB_X_MODULE_UPPER_X_SKIP='NO'
+      if [[ ! -x "${DEV_LIB_X_MODULE_UPPER_X_BIN}" ]]; then
+        DEV_LIB_X_MODULE_UPPER_X_SKIP='NO'
+      fi
     fi
   fi
 }

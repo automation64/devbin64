@@ -49,7 +49,9 @@
     DEV_LIB_TFLINT_BIN="$(bl64_bsh_command_locate_user 'tflint')"
     if [[ -z "$DEV_LIB_TFLINT_BIN" ]]; then
       DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_TARGET}/tflint"
-      DEV_LIB_TFLINT_SKIP='NO'
+      if [[ ! -x "${DEV_LIB_TFLINT_BIN}" ]]; then
+        DEV_LIB_TFLINT_SKIP='NO'
+      fi
     fi
   fi
 }

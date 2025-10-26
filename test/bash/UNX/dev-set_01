@@ -5,4 +5,4 @@ source test/lib/runtime.bash &&
   cd "$TEST_TARGET" ||
   exit $?
 
-./bin/dev-set
+source ./bin/dev-set

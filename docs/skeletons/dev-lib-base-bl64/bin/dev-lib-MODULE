@@ -29,7 +29,7 @@ function my_download() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  [[ "$DEV_LIB_X_MODULE_UPPER_X_SKIP" == 'YES' ]] && return 0
+  bl64_lib_flag_is_enabled "$DEV_LIB_X_MODULE_UPPER_X_SKIP" && return 0
   # X_INIT_PLACEHOLDER_X
 }
 

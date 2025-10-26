@@ -51,7 +51,9 @@
     DEV_LIB_TFSEC_BIN="$(bl64_bsh_command_locate_user 'tfsec')"
     if [[ -z "$DEV_LIB_TFSEC_BIN" ]]; then
       DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_TARGET}/tfsec"
-      DEV_LIB_TFSEC_SKIP='NO'
+      if [[ ! -x "${DEV_LIB_TFSEC_BIN}" ]]; then
+        DEV_LIB_TFSEC_SKIP='NO'
+      fi
     fi
   fi
 }

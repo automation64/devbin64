@@ -5,20 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [10.1.2]
+## [10.2.0]
 
 ### Added
 
-- iac64
+- Multiple
+  - GitHub actions cache
+  - Modules: bash, github, gitleaks
+
+## [10.1.3]
+
+### Added
+
+- IAC64
   - Shared module support, console command
 
 ### Changed
 
-- installer64, bashlib64, devbin64, opentofu, tfsec, tflint
-  - skip install if already installed
-- devbin64
+- Multiple
+  - dev-lib-*: skip install if already installed
+  - Modules: installer64, bashlib64, devbin64, opentofu, tfsec, tflint, act, gitleaks
+- DevBin64
   - dev-set: DEV_VERBOSE: now sets the verbose format (bl64). The value propagates to all devbin64 scripts
-- opentofu
+- OpenTofu
   - merged test and plan tasks
 
 ## [10.0.2]
