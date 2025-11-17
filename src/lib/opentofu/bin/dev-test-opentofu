@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-test: 1.0.0
+# template-test: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -15,19 +15,20 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+# shellcheck source-path=/opt/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-tf.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # shellcheck source-path=bin
 source ./bin/dev-env-opentofu || exit 1
 
 declare MY_STAGING="${1:-${DEV_BUILD_OPENTOFU_STAGING}}"
-declare MY_OUTPUT="${2:-${DEV_TEST_OPENTOFU_OUTPUT}}"
-declare MY_LOGS="${3:-${DEV_TEST_OPENTOFU_LOGS}}"
+declare MY_OUTPUT="${2:-${DEV_ENV_OPENTOFU_PATH_OUTPUT}}"
+declare MY_LOGS="${3:-${DEV_ENV_OPENTOFU_PATH_LOGS}}"
 
 function my_prepare() {
   bl64_dbg_app_show_function
@@ -66,7 +67,7 @@ function my_test_plan() {
   bl64_msg_show_task 'Run plan phase'
   TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
   cd "$MY_STAGING" &&
-    "$DEV_LIB_OPENTOFU_BIN" \
+    bl64_tf_run_tofu \
       plan \
       -input=false \
       -out="${MY_OUTPUT}/${DEV_TEST_OPENTOFU_PLAN}"
@@ -77,14 +78,15 @@ function my_test_test() {
   bl64_msg_show_task 'Run test phase'
   TF_LOG_PATH="${MY_LOGS}/${DEV_TEST_OPENTOFU_LOG}"
   cd "$MY_STAGING" &&
-    "$DEV_LIB_OPENTOFU_BIN" \
+    bl64_tf_run_tofu \
       test
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_OPENTOFU_BIN" &&
+  bl64_lib_script_minver_check '22.5.0' &&
+    bl64_tf_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_OPENTOFU_BIN")" &&
     bl64_check_parameter 'MY_STAGING' &&
     bl64_check_parameter 'MY_OUTPUT' &&
     bl64_check_parameter 'MY_LOGS' &&
@@ -96,10 +98,9 @@ function my_initialize() {
       'MY_LOGS'
 }
 
-[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '2.1.1'
 bl64_msg_help_about_set 'Test source code with tofu plan'
-bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && my_initialize || exit $?
+bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_prepare &&

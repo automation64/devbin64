@@ -92,7 +92,6 @@ function dev_lint_initialize() {
 
 declare dev_lint_target="${*:-$DEV_LINT_YAMLLINT_TARGET}"
 
-[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
 bl64_lib_script_version_set '2.2.1'
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 

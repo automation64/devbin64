@@ -1,19 +1,4 @@
 #!/usr/bin/env bash
-# Template: 1.1.1
-#######################################
-# Dev / Bootstrap
-#
-# * Boostrap repository creation:
-#   * create basic directory structure
-#   * download Installer64 and Bashlib64 tools
-#   * publish base DevBin64 modules
-#   * publish optional DevBin64 modules (defined in shell-env $DEV_BOOTSTRAP_MODULES or file $DEV_BOOTSTRAP_MODULES_OPTIONAL)
-# * If the repository is already present, refresh content from local store
-#
-# Author: SerDigital64 (https://github.com/serdigital64)
-# Repository: https://github.com/automation64/devbin64
-# Version: 7.0.1
-#
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -120,8 +105,11 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 # Globals
 #
 
+# DevBin64 / Current version
+declare DEV_BIN64_VERSION='11.0.0'
+
 # DevBootstrap / Current version
-declare DEV_BIN64_VERSION='10.2.0'
+declare DEV_BOOTSTRAP_VERSION='7.0.2'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -184,33 +172,34 @@ export DEV_PROFILE=''
 # Installer64 / Parameters
 export INST64_BASHLIB64_TARGET=''
 
+# DevBootstrap / Status
+declare MY_PROCESS='dev-bootstrap'
+declare -i MY_STATUS=0
+
 #
 # Functions
 #
 
-function dev_bootstrap_file_is_same() {
+function my_file_is_same() {
   local file_old="$1"
   local file_new="$2"
   "$DEV_CMD_DIFF" -q "$file_old" "$file_new" >/dev/null 2>&1
 }
 
-function dev_bootstrap_duplicate_remove() {
+function my_duplicate_remove() {
   local file_old="$1"
   local file_new="$2"
 
   [[ ! -e "$file_old" || ! -e "$file_new" ]] && return 0
 
-  if dev_bootstrap_file_is_same "$file_old" "$file_new" >/dev/null 2>&1; then
+  if my_file_is_same "$file_old" "$file_new" >/dev/null 2>&1; then
     "$DEV_CMD_RM" -f "$file_new"
-  else
-    "$DEV_CMD_CAT" "$file_new" >"$file_old" &&
-      "$DEV_CMD_RM" -f "$file_new"
   fi
 }
 
-function dev_bootstrap_bin_populate_base() {
+function my_bin_populate_base() {
   local file=''
-  dev_bootstrap_msg_show_task 'bootstrap helpers (dev/bin)'
+  my_bootstrap_msg_show_task 'bootstrap helpers (dev/bin)'
   if [[ ! -d "$DEV_PATH_BIN" ]]; then
     "$DEV_CMD_MKDIR" \
       -m "$DEV_BOOTSTRAP_DIR_MODE" \
@@ -223,7 +212,7 @@ function dev_bootstrap_bin_populate_base() {
   done
 }
 
-function dev_bootstrap_bin_detect_optional() {
+function my_bin_detect_optional() {
   local module=''
 
   if [[ -n "$DEV_BOOTSTRAP_MODULES" ]]; then
@@ -242,30 +231,30 @@ function dev_bootstrap_bin_detect_optional() {
   done
 }
 
-function dev_bootstrap_bin_populate_optional() {
+function my_bin_populate_optional() {
   local module_name=''
   local module_path=''
 
-  dev_bootstrap_bin_detect_optional
+  my_bin_detect_optional
   [[ -z "$DEV_BOOTSTRAP_MODULES" ]] && return 0
 
-  dev_bootstrap_msg_show_task "add optional modules (${DEV_BOOTSTRAP_MODULES})"
+  my_bootstrap_msg_show_task "add optional modules (${DEV_BOOTSTRAP_MODULES})"
   for module_name in $DEV_BOOTSTRAP_MODULES; do
     module_path="${DEV_BOOTSTRAP_PATH_LIB}/${module_name}/bin"
     if [[ -d "$module_path" ]]; then
       "$DEV_CMD_CP" "${module_path}/"* "$DEV_PATH_BIN"
     else
-      dev_bootstrap_msg_show_warning "optional module content not found (${module_path})"
+      my_bootstrap_msg_show_warning "optional module content not found (${module_path})"
     fi
   done
 }
 
-function dev_bootstrap_lib_base_run() {
-  dev_bootstrap_msg_show_task "deploy base tools (installer64 / bashlib64)"
+function my_lib_base_run() {
+  my_bootstrap_msg_show_task "deploy base tools (installer64 / bashlib64)"
   "${DEV_PATH_BIN}/dev-lib-base" >/dev/null 2>&1
 }
 
-function dev_bootstrap_dir_create() {
+function my_dir_create() {
   local path=''
   local path_list=''
 
@@ -281,7 +270,7 @@ function dev_bootstrap_dir_create() {
     [[ -n "$DEV_PATH_VAR" ]] &&
     [[ -n "$DEV_PATH_VAULT" ]] ||
     {
-      dev_bootstrap_msg_show_error 'one or more DEV_PATH_* variables are not defined'
+      my_bootstrap_msg_show_error 'one or more DEV_PATH_* variables are not defined'
       return 1
     }
 
@@ -300,13 +289,13 @@ function dev_bootstrap_dir_create() {
   # shellcheck disable=SC2086
   for path in $path_list; do
     [[ -d "$path" ]] && continue
-    dev_bootstrap_msg_show_task "create main directory structure (${path})"
+    my_bootstrap_msg_show_task "create main directory structure (${path})"
     "$DEV_CMD_MKDIR" \
       -m "$DEV_BOOTSTRAP_DIR_MODE" \
       "$path" || return $?
   done
 
-  dev_bootstrap_msg_show_task "create git path placeholders (${DEV_BASE_GITKEEP})"
+  my_bootstrap_msg_show_task "create git path placeholders (${DEV_BASE_GITKEEP})"
   "$DEV_CMD_TOUCH" \
     "${DEV_PATH_BUILD}/${DEV_BASE_GITKEEP}" \
     "${DEV_PATH_DOCS}/${DEV_BASE_GITKEEP}" \
@@ -320,12 +309,12 @@ function dev_bootstrap_dir_create() {
     "${DEV_PATH_VAULT}/${DEV_BASE_GITKEEP}"
 }
 
-function dev_bootstrap_dot_env_create() {
+function my_dot_env_create() {
   local file_target=''
   local file_old="$DEV_BASE_DOT_ENV"
   local file_new="${file_old}.new"
 
-  dev_bootstrap_msg_show_task "create environment file (${file_old})"
+  my_bootstrap_msg_show_task "create environment file (${file_old})"
   if [[ -f "$file_old" ]]; then
     file_target="$file_new"
   else
@@ -334,32 +323,32 @@ function dev_bootstrap_dot_env_create() {
 
   "$DEV_CMD_CP" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_ENV}" "$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
+    my_duplicate_remove "$file_old" "$file_new"
 }
 
-function dev_bootstrap_env_create() {
+function my_env_create() {
   if [[ ! -f "$DEV_BASE_ENV" ]]; then
-    dev_bootstrap_msg_show_task "create environment file (${DEV_BASE_ENV})"
+    my_bootstrap_msg_show_task "create environment file (${DEV_BASE_ENV})"
     "$DEV_CMD_CAT" "$DEV_BASE_DOT_ENV" >"$DEV_BASE_ENV"
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_ENV"
   fi
 }
 
-function dev_bootstrap_gitignore_create() {
+function my_gitignore_create() {
   local file_target='.gitignore'
   if [[ ! -f "$file_target" ]]; then
-    dev_bootstrap_msg_show_task "create environment file (${file_target})"
+    my_bootstrap_msg_show_task "create environment file (${file_target})"
     "$DEV_CMD_CAT" "$DEV_BOOTSTRAP_DOT_GITIGNORE" >"$file_target"
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target"
   fi
 }
 
-function dev_bootstrap_dot_local_create() {
+function my_dot_local_create() {
   local file_target=''
   local file_old="$DEV_BASE_DOT_LOCAL"
   local file_new="${file_old}.new"
 
-  dev_bootstrap_msg_show_task "create environment file (${file_old})"
+  my_bootstrap_msg_show_task "create environment file (${file_old})"
   if [[ -f "$file_old" ]]; then
     file_target="$file_new"
   else
@@ -368,15 +357,15 @@ function dev_bootstrap_dot_local_create() {
 
   "$DEV_CMD_CP" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${DEV_BASE_DOT_LOCAL}" "$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
+    my_duplicate_remove "$file_old" "$file_new"
 }
 
-function dev_bootstrap_dot_secrets_create() {
+function my_dot_secrets_create() {
   local file_target=''
   local file_old="$DEV_BASE_DOT_SECRETS"
   local file_new="${file_old}.new"
 
-  dev_bootstrap_msg_show_task "create environment file (${file_old})"
+  my_bootstrap_msg_show_task "create environment file (${file_old})"
   if [[ -f "$file_old" ]]; then
     file_target="$file_new"
   else
@@ -384,15 +373,15 @@ function dev_bootstrap_dot_secrets_create() {
   fi
   "$DEV_CMD_CP" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/${file_old}" "$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
+    my_duplicate_remove "$file_old" "$file_new"
 }
 
-function dev_bootstrap_dot_gitignore_create() {
+function my_dot_gitignore_create() {
   local file_target=''
   local file_old="$DEV_BOOTSTRAP_DOT_GITIGNORE"
   local file_new="${file_old}.new"
 
-  dev_bootstrap_msg_show_task "create ignore file (${file_old})"
+  my_bootstrap_msg_show_task "create ignore file (${file_old})"
   if [[ -f "$file_old" ]]; then
     file_target="$file_new"
   else
@@ -433,62 +422,62 @@ function dev_bootstrap_dot_gitignore_create() {
     "$DEV_BASE_GITKEEP" \
     >"$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    dev_bootstrap_duplicate_remove "$file_old" "$file_new"
+    my_duplicate_remove "$file_old" "$file_new"
 }
 
-function dev_bootstrap_dot_env_load() {
-  dev_bootstrap_msg_show_task "load project variables (bin/dev-set)"
+function my_dot_env_load() {
+  my_bootstrap_msg_show_task "load project variables (bin/dev-set)"
   source "${DEV_PATH_BIN}/dev-set"
 }
 
-function dev_bootstrap_legacy() {
+function my_legacy() {
   local file=''
-  dev_bootstrap_msg_show_task 'migrate legacy content'
+  my_bootstrap_msg_show_task 'migrate legacy content'
 
   file="${DEV_PATH_ROOT}/.env"
   if [[ -f "$file" ]]; then
-    if dev_bootstrap_file_is_same "$file" "${DEV_PATH_ROOT}/dot.env"; then
-      dev_bootstrap_msg_show_warning "legacy file detected. Removing it as it is no longer used (${file})"
+    if my_file_is_same "$file" "${DEV_PATH_ROOT}/dot.env"; then
+      my_bootstrap_msg_show_warning "legacy file detected. Removing it as it is no longer used (${file})"
       "$DEV_CMD_RM" -f "$file"
     else
-      dev_bootstrap_msg_show_warning 'legacy file detected. Original file renamed. (.env -> .env.needs-migration)'
-      dev_bootstrap_msg_show_warning 'pending migration detected. Manually migrate the content and remove the file (.env.pending-migration -> .dev.env)'
+      my_bootstrap_msg_show_warning 'legacy file detected. Original file renamed. (.env -> .env.needs-migration)'
+      my_bootstrap_msg_show_warning 'pending migration detected. Manually migrate the content and remove the file (.env.pending-migration -> .dev.env)'
       "$DEV_CMD_MV" -f "$file" "${file}.pending-migration"
     fi
   fi
 
   file="${DEV_PATH_ROOT}/dot.env"
   if [[ -f "$file" ]]; then
-    dev_bootstrap_msg_show_warning "legacy file detected. Removing it as it is no longer used (${file})"
+    my_bootstrap_msg_show_warning "legacy file detected. Removing it as it is no longer used (${file})"
     "$DEV_CMD_RM" -f "$file"
   fi
 
   file="${DEV_PATH_ROOT}/${DEV_BASE_SECRETS}"
   if [[ -f "$file" ]]; then
-    dev_bootstrap_msg_show_warning "legacy file detected. Moving it to the new location (${file} -> ${DEV_PATH_VAULT})"
+    my_bootstrap_msg_show_warning "legacy file detected. Moving it to the new location (${file} -> ${DEV_PATH_VAULT})"
     "$DEV_CMD_MV" -f "$file" "$DEV_PATH_VAULT"
   fi
 }
 
-function dev_bootstrap_msg_show_warning() {
+function my_bootstrap_msg_show_warning() {
   local msg="$1"
   echo "devbin64:Warning: ${msg}" 2>&1
 }
 
-function dev_bootstrap_msg_show_error() {
+function my_bootstrap_msg_show_error() {
   local msg="$1"
   echo "devbin64:Error: ${msg}" 2>&1
 }
 
-function dev_bootstrap_msg_show_task() {
+function my_bootstrap_msg_show_task() {
   local msg="$1"
   echo "devbin64:Task: ${msg}"
 }
 
-function dev_bootstrap_initialize() {
+function my_initialize() {
 
   if [[ -z "$(command -v "$DEV_CMD_DIFF" 2>/dev/null)" ]]; then
-    dev_bootstrap_msg_show_error "required command not found. Please install it and re-run the bootstrap process (${DEV_CMD_DIFF})"
+    my_bootstrap_msg_show_error "required command not found. Please install it and re-run the bootstrap process (${DEV_CMD_DIFF})"
     return 1
   fi
 
@@ -505,7 +494,7 @@ function dev_bootstrap_initialize() {
   INST64_BASHLIB64_TARGET="$DEV_LIB_BASHLIB64_TARGET"
 
   if [[ ! -d "$DEV_BOOTSTRAP_PATH_LIB" ]]; then
-    dev_bootstrap_msg_show_error "unable to locate module library (${DEV_BOOTSTRAP_PATH_LIB}). Verify or update DEV_BOOTSTRAP_PATH_LIB with the correct path location" 2>&1
+    my_bootstrap_msg_show_error "unable to locate module library (${DEV_BOOTSTRAP_PATH_LIB}). Verify or update DEV_BOOTSTRAP_PATH_LIB with the correct path location" 2>&1
     return 1
   fi
 }
@@ -514,31 +503,29 @@ function dev_bootstrap_initialize() {
 # Main
 #
 
-declare dev_bootstrap_process='dev-bootstrap'
-declare -i dev_bootstrap_status=0
+[[ -n "$DEV_BASH_DEBUG" ]] && set -x
 
-[[ -n "$DEV_CICD_DEBUG" ]] && set -x
-
-echo "Process: [${dev_bootstrap_process}] started"
-dev_bootstrap_initialize &&
+echo "Process: [${MY_PROCESS}] started"
+my_initialize &&
   echo "$DEV_BIN64_VERSION" >"$DEV_BOOTSTRAP_STATE" &&
-  dev_bootstrap_dot_env_create &&
-  dev_bootstrap_env_create &&
-  dev_bootstrap_dot_local_create &&
-  dev_bootstrap_dot_secrets_create &&
-  dev_bootstrap_bin_populate_base &&
-  dev_bootstrap_dot_env_load &&
-  dev_bootstrap_dot_gitignore_create &&
-  dev_bootstrap_gitignore_create &&
-  dev_bootstrap_dir_create &&
-  dev_bootstrap_bin_populate_optional &&
-  dev_bootstrap_legacy &&
-  dev_bootstrap_lib_base_run &&
-  dev_bootstrap_status=$?
+  my_dot_env_create &&
+  my_env_create &&
+  my_dot_local_create &&
+  my_dot_secrets_create &&
+  my_bin_populate_base &&
+  my_dot_env_load &&
+  my_dot_gitignore_create &&
+  my_gitignore_create &&
+  my_dir_create &&
+  my_bin_populate_optional &&
+  my_legacy &&
+  my_lib_base_run &&
+  MY_STATUS=$?
 
-if ((dev_bootstrap_status == 0)); then
-  echo "dev_bootstrap:Process: [${dev_bootstrap_process}] finished successfully"
+if ((MY_STATUS == 0)); then
+  echo "dev_bootstrap:Process: [${MY_PROCESS}] finished successfully"
 else
-  echo "dev_bootstrap:Process: [${dev_bootstrap_process}] finished with errors: exit-status-${dev_bootstrap_status}"
+  echo "dev_bootstrap:Process: [${MY_PROCESS}] finished with errors: exit-status-${MY_STATUS}"
 fi
-exit $dev_bootstrap_status
+# shellcheck disable=SC2086
+exit $MY_STATUS

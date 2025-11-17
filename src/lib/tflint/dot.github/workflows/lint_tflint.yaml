@@ -1,0 +1,49 @@
+---
+# template: 1.1.1
+# template-gh-lint: 1.3.0
+name: "Lint / TFLint"
+
+env:
+  DEV_CICD_DEBUG: ""
+  BL64_LIB_CICD: "YES"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+    paths:
+      - "src/**"
+
+jobs:
+  lint-tflint:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Cache local tools"
+        uses: "actions/cache@v4"
+        with:
+          path: ./lib
+          key: ${{ runner.os }}-lib-cache
+          restore-keys: |
+            ${{ runner.os }}-lib-cache
+
+      - name: "Prepare environment"
+        run: "./bin/dev-lib-base"
+
+      - name: "Download tools"
+        run: |
+          ./bin/dev-lib-opentofu
+          ./bin/dev-lib-tflint
+
+      - name: "Prepare for testing"
+        run: "./bin/dev-build-opentofu"
+
+      - name: "Run Linter"
+        run: "./bin/dev-lint-tflint"
+...

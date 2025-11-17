@@ -21,7 +21,7 @@ cd /project
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=lib/bl64
+# shellcheck source-path=/opt/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-rnd.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-iam.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-rbac.bash" &&

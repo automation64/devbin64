@@ -28,7 +28,7 @@
   # Lib / Hadolint / Installer
   export DEV_LIB_HADOLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-hadolint"
   # Lib / Hadolint / Target
-  export DEV_LIB_HADOLINT_TARGET="${DEV_LIB_HADOLINT_TARGET:-${DEV_PATH_LIB}/hadolint}"
+  export DEV_LIB_HADOLINT_TARGET="${DEV_PATH_LIB}/hadolint"
   # Lint / Hadolint / Configuration
   export DEV_LIB_HADOLINT_CFG='.hadolint.yaml'
   # Lint / Hadolint / Sources

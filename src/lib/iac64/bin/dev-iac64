@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 3.3.0
+# template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -15,8 +15,13 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+# shellcheck source-path=/opt/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # shellcheck source-path=bin
 source ./bin/dev-env-iac64 || exit 1
 
@@ -25,42 +30,38 @@ declare MY_OPTION=''
 declare MY_PROFILE=''
 declare MY_MODULE=''
 declare MY_VERSION=''
-declare MY_SHARED=''
-declare MY_DRIVER=''
-declare MY_CONFIRMATION='NONE'
+declare MY_SHARED='0.1.0'
+declare MY_DRIVER_NAME=''
 declare MY_DRIVER_TAG=''
+declare MY_CONFIRMATION='NONE'
 
-declare MY_COMMAND_BUILD='build'
 declare MY_COMMAND_BLT='blt'
+declare MY_COMMAND_BUILD='build'
+declare MY_COMMAND_CONSOLE='console'
+declare MY_COMMAND_DEPLOY='deploy'
+declare MY_COMMAND_HELP='help'
+declare MY_COMMAND_INIT='init'
 declare MY_COMMAND_LINT='lint'
+declare MY_COMMAND_NONE='none'
+declare MY_COMMAND_REMOVE='remove'
 declare MY_COMMAND_SAST='sast'
 declare MY_COMMAND_TEST='test'
-declare MY_COMMAND_DEPLOY='deploy'
-declare MY_COMMAND_REMOVE='remove'
-declare MY_COMMAND_CONSOLE='console'
-declare MY_COMMAND_HELP='help'
 
 declare MY_FLAG_CONFIRM_DEPLOY='CONFIRM_DEPLOY'
 declare MY_FLAG_CONFIRM_REMOVE='CONFIRM_REMOVE'
 
-declare MY_DRIVER_TAG=''
 declare MY_TASK=''
 
-export DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='YES'
-export DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='YES'
-export DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='YES'
-export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='YES'
 export DEV_VERBOSE='TIME'
 
 function my_run_command() {
   bl64_check_command "$MY_TASK" "the requested command for the driver is not available (${MY_TASK})" ||
     return $?
+  "$MY_TASK"
+}
 
-  DEV_PROFILE="$MY_PROFILE"
-  "$MY_TASK" \
-    "$MY_MODULE" \
-    "$MY_VERSION" \
-    "$MY_SHARED"
+function my_msg_task_not_implemented() {
+  bl64_msg_show_warning 'the command is not available for the current driver. No further action taken.'
 }
 
 function my_run() {
@@ -68,40 +69,65 @@ function my_run() {
   case "$MY_COMMAND" in
     "$MY_COMMAND_BLT")
       bl64_msg_show_phase "$MY_COMMAND_BUILD"
-      MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_BUILD}-iac64-${MY_DRIVER}"
+      my_env_export
+      MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_BUILD}-iac64-${MY_DRIVER_NAME}"
       my_run_command "$MY_COMMAND_BUILD" &&
         bl64_msg_show_phase "$MY_COMMAND_LINT" &&
-        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_LINT}-iac64-${MY_DRIVER}" &&
+        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_LINT}-iac64-${MY_DRIVER_NAME}" &&
         my_run_command &&
         bl64_msg_show_phase "$MY_COMMAND_TEST" &&
-        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_TEST}-iac64-${MY_DRIVER}" &&
+        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_TEST}-iac64-${MY_DRIVER_NAME}" &&
         my_run_command
       ;;
     "$MY_COMMAND_DEPLOY")
       if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
-        DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='NO'
         DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='NO'
       fi
+      my_env_export
       my_run_command
       ;;
     "$MY_COMMAND_REMOVE")
-      if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
-        DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='NO'
+      if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_REMOVE" ]]; then
         DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='NO'
       fi
+      my_env_export
       my_run_command
       ;;
     "$MY_COMMAND_CONSOLE")
       bl64_msg_show_info 'Starting interactive console in the staging area. To exit, type "exit" or press Ctrl+D.'
-      DEV_PROFILE="$MY_PROFILE"
+      my_env_export
       source ./bin/dev-set &&
-        cd "${DEV_PATH_PROF_VAR}/${MY_DRIVER_TAG}/${MY_MODULE}/${MY_VERSION}" &&
+        cd "${DEV_PATH_PROF_VAR}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}" &&
         /usr/bin/env "$SHELL"
       ;;
+    "$MY_COMMAND_NONE") my_msg_task_not_implemented ;;
     *)
+      my_env_export
       my_run_command
       ;;
   esac
+}
+
+function my_env_export() {
+  bl64_dbg_app_show_function
+  bl64_dbg_app_show_info 'DevBin64 settings'
+  DEV_PROFILE="$MY_PROFILE"
+
+  bl64_dbg_app_show_info 'IAC64 settings'
+  DEV_ENV_IAC64_MODULE_ID="$MY_MODULE"
+  DEV_ENV_IAC64_MODULE_VERSION="$MY_VERSION"
+  DEV_ENV_IAC64_MODULE_SHARED="$MY_SHARED"
+
+  DEV_ENV_IAC64_PATH_ETC_MODULE="${DEV_PATH_PROF_ETC}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
+  DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_PATH_PROF_ETC}/${DEV_BUILD_IAC64_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
+  DEV_ENV_IAC64_PATH_LOGS_MODULE="${DEV_PATH_PROF_LOGS}/${MY_DRIVER_TAG}/${MY_MODULE}/${MY_VERSION}"
+  DEV_ENV_IAC64_PATH_SRC_MODULE="${DEV_PATH_SRC}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
+  DEV_ENV_IAC64_PATH_SRC_SHARED="${DEV_PATH_SRC}/${DEV_BUILD_IAC64_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
+  DEV_ENV_IAC64_PATH_TMP_MODULE="${DEV_PATH_PROF_TMP}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
+  DEV_ENV_IAC64_PATH_VAR_MODULE="${DEV_PATH_PROF_VAR}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
+
+  bl64_dbg_app_show_info 'OpenTofu settings'
+  TF_VAR_IAC64__PROFILE_NAME="$MY_PROFILE"
 }
 
 function my_initialize() {
@@ -109,34 +135,59 @@ function my_initialize() {
   bl64_msg_show_about
 
   case "$MY_COMMAND" in
-    "$MY_COMMAND_BUILD") ;;
-    "$MY_COMMAND_BLT") ;;
-    "$MY_COMMAND_LINT") ;;
-    "$MY_COMMAND_SAST") ;;
-    "$MY_COMMAND_TEST") ;;
+    "$MY_COMMAND_INIT")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
+    "$MY_COMMAND_BUILD")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
+    "$MY_COMMAND_BLT")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
+    "$MY_COMMAND_LINT")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
+    "$MY_COMMAND_SAST")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
+    "$MY_COMMAND_TEST")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
+    "$MY_COMMAND_REMOVE")
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
     "$MY_COMMAND_DEPLOY") ;;
-    "$MY_COMMAND_REMOVE") ;;
     "$MY_COMMAND_CONSOLE") ;;
-    *) bl64_msg_help_show && return 1 ;;
+    *)
+      bl64_msg_show_error 'there is no such command'
+      return 1
+      ;;
   esac
 
-  MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER}"
-  bl64_check_parameter 'MY_PROFILE' &&
+  MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER_NAME}"
+  bl64_lib_script_minver_check '22.5.0' &&
+    bl64_check_parameter 'MY_PROFILE' &&
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
-    bl64_check_parameter 'MY_DRIVER' &&
+    bl64_check_parameter 'MY_DRIVER_NAME' &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
       'MY_PROFILE' \
       'MY_MODULE' \
       'MY_VERSION' \
-      'MY_DRIVER' \
-      'MY_COMMAND' \
-      'MY_CONFIRMATION'
+      'MY_SHARED' \
+      'MY_DRIVER_NAME'
 }
 
-bl64_lib_script_version_set '1.2.0'
-bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-K|-O> [-s shared] [-D Debug] [-h]'
-bl64_msg_help_about_set 'IAC64 - Infrastructure as Code (IaC) development tool for infrastructure automation.'
+bl64_lib_script_version_set '2.0.0'
+bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-D Debug] [-h]'
+bl64_msg_help_about_set 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
 bl64_msg_help_parameters_set \
   "Commands:
 
@@ -159,6 +210,7 @@ Target
 Driver
 -A  : Ansible driver
 -B  : Bash driver
+-H  : Helm driver
 -K  : Kustomize driver
 -O  : OpenTofu driver
 
@@ -166,40 +218,44 @@ Guardrail
 -Z confirm : confirm destructive actions (deploy/remove). Valid values: ${MY_FLAG_CONFIRM_DEPLOY}, ${MY_FLAG_CONFIRM_REMOVE}
 
 Options
--V format  : verbose message format. Format: FULL|TASK|CALLER|TIME|HOST
+-V format  : verbose message format. Format: FULL|PLAIN|CALLER|TIME|HOST
 -D Debug   : Enable debugging mode. Format: ALL|LIB|APP"
 
 [[ "$MY_COMMAND" == "$MY_COMMAND_HELP" ]] && bl64_msg_help_show && exit 0
 shift
 # shellcheck disable=SC2249
-while getopts ':p:m:v:s:d:Z:D:ABKO' MY_OPTION; do
+while getopts ':p:m:v:s:Z:V:D:ABHKO' MY_OPTION; do
   case "${MY_OPTION:-}" in
     p) MY_PROFILE="$OPTARG" ;;
     m) MY_MODULE="$OPTARG" ;;
     v) MY_VERSION="$OPTARG" ;;
     s) MY_SHARED="$OPTARG" ;;
     Z) MY_CONFIRMATION="$OPTARG" ;;
-    V) DEV_VERBOSE=="$OPTARG" ;;
+    V) DEV_VERBOSE="$OPTARG" ;;
     D) DEV_CICD_DEBUG="$OPTARG" ;;
     A)
-      MY_DRIVER='ansible'
-      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_ANSIBLE"
+      MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE"
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_DRIVER_TAG_ANSIBLE"
       ;;
     B)
-      MY_DRIVER='bash'
-      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_BASH"
+      MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_BASH"
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_DRIVER_TAG_BASH"
+      ;;
+    H)
+      MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_HELM"
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_DRIVER_TAG_HELM"
       ;;
     K)
-      MY_DRIVER='kustomize'
-      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_KUSTOMIZE"
+      MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE"
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_DRIVER_TAG_KUSTOMIZE"
       ;;
     O)
-      MY_DRIVER='opentofu'
-      MY_DRIVER_TAG="$DEV_ENV_IAC64_TAG_OPENTOFU"
+      MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_OPENTOFU"
+      MY_DRIVER_TAG="$DEV_ENV_IAC64_DRIVER_TAG_OPENTOFU"
       ;;
   esac
 done
-bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && my_initialize || exit $?
+bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 
 bl64_msg_show_batch_start "${BL64_SCRIPT_ID}:$MY_COMMAND"
 my_run

@@ -5,13 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.0.0]
+
+### Added
+
+- Multiple
+  - .github: GitHub actions cache
+    - Target modules: HadoLint, OpenTofu, ShellCheck, TestManSH, TFLint, TFSec, YAMLLint
+- Modules
+  - KubeCtl
+  - PklLang
+- IAC64
+  - Command: init
+  - Kustomize: test, lint, remove
+  - Bash: remove
+  - Helm: deploy, remove
+
+### Changed
+
+- Multiple
+  - dev-lib-*: skip install if already installed
+    - Target modules: ShellCheck, KubeLinter, KubeScape
+- DevBin64
+  - dev-bootstrap: now preserves previous template if customized
+- IAC64
+  - Normalized log file names
+
+### Fixed
+
+- DevBin64
+  - dev-set: github local env file name
+- TFSec, TFLint
+  - GH workflow: missing tofu installer
+- OpenTofu
+  - Staging cleanup
+
 ## [10.2.0]
 
 ### Added
 
 - Multiple
-  - GitHub actions cache
-  - Modules: bash, github, gitleaks
+  - .github: GitHub actions cache
+    - Target modules: Bash, GitHub, GitLeaks
 
 ## [10.1.3]
 
@@ -24,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Multiple
   - dev-lib-*: skip install if already installed
-  - Modules: installer64, bashlib64, devbin64, opentofu, tfsec, tflint, act, gitleaks
+    - Target modules: Installer64, BashLib64, DevBin64, OpenTofu, TFsec, TFlint, Act, GitLeaks
 - DevBin64
   - dev-set: DEV_VERBOSE: now sets the verbose format (bl64). The value propagates to all devbin64 scripts
 - OpenTofu
