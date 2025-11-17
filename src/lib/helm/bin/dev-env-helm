@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 1.0.1
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,20 +14,6 @@
 #######################################
 
 #
-# Globals
-#
-# * Use .dev.env file to override values
-#
-
-# shellcheck disable=SC2154
-{
-  # Lib / Helm / Installer
-  export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
-  # Lib / Helm / Target
-  export DEV_LIB_HELM_TARGET="${DEV_LIB_HELM_TARGET:-${DEV_PATH_LIB}/helm}"
-}
-
-#
 # Locals
 #
 # * Use .local.env file or CICD variables to override values
@@ -35,6 +21,33 @@
 
 # shellcheck disable=SC2154
 {
+  # Lib / Helm / Skip installation?
+  export DEV_LIB_HELM_SKIP='YES'
+  # Lib / Helm / Target
+  export DEV_LIB_HELM_TARGET="${DEV_PATH_LIB}/hlm"
   # Lib / Helm / Command
-  export DEV_LIB_HELM_BIN="${DEV_LIB_HELM_BIN:-${DEV_LIB_HELM_TARGET}/helm}"
+  export DEV_LIB_HELM_BIN="${DEV_LIB_HELM_BIN:-}"
+  if [[ -z "$DEV_LIB_HELM_BIN" ]]; then
+    DEV_LIB_HELM_BIN="$(bl64_bsh_command_locate_user 'helm')"
+    if [[ -z "$DEV_LIB_HELM_BIN" ]]; then
+      DEV_LIB_HELM_BIN="${DEV_LIB_HELM_TARGET}/helm"
+      if [[ ! -x "${DEV_LIB_HELM_BIN}" ]]; then
+        DEV_LIB_HELM_SKIP='NO'
+      fi
+    fi
+  fi
+}
+
+#
+# Internal variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Helm / Module environment definition version
+  export DEV_ENV_HELM_VERSION='1.1.0'
+  # Lib / Helm / Installer
+  export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
 }

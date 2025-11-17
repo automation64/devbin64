@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-lint: 1.0.0
+# template-lint: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -15,8 +15,9 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=lib/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+# shellcheck source-path=/opt/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-tf.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
@@ -31,20 +32,22 @@ function my_lint() {
   bl64_dbg_app_show_function
   bl64_msg_show_task 'Run validate phase'
   cd "$MY_TARGET" &&
-    "$DEV_LIB_OPENTOFU_BIN" \
+    bl64_tf_run_tofu \
       validate
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_OPENTOFU_BIN"
+  bl64_lib_script_minver_check '22.5.0' &&
+    bl64_tf_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_OPENTOFU_BIN")" &&
+    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+      'MY_TARGET'
 }
 
-[[ -n "$DEV_CICD_DEBUG" ]] && bl64_dbg_all_enable
-bl64_lib_script_version_set '1.0.2'
+bl64_lib_script_version_set '1.0.3'
 bl64_msg_help_about_set 'Lint source code'
-bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && my_initialize || exit $?
+bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_lint

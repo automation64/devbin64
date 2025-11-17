@@ -24,7 +24,7 @@
   # Lib / TaskFile / Installer
   export DEV_LIB_TASKFILE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-taskfile"
   # Lib / TaskFile / Target
-  export DEV_LIB_TASKFILE_TARGET="${DEV_LIB_TASKFILE_TARGET:-${DEV_PATH_LIB}/taskfile}"
+  export DEV_LIB_TASKFILE_TARGET="${DEV_PATH_LIB}/taskfile"
 }
 
 #

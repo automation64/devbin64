@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-source test/lib/runtime.bash
+export DEV_BOOTSTRAP_MODULES=''
+
+DEV_BOOTSTRAP_MODULES="$(ls -1 "src/lib")" &&
+  source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
 
 #
 # Prepare Test
 #
 
-export DEV_BOOTSTRAP_MODULES="$(ls -1 "src/lib")"
-
-source test/lib/runtime.bash &&
-  ./test/lib/install.bash &&
-  cd "$TEST_TARGET" &&
-  [[ -f .devbin64-modules ]]
+[[ -f .devbin64-modules ]]

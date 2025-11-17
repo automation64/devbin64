@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env: 1.1.0
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,19 +14,13 @@
 #######################################
 
 #
-# Globals
+# Module parameters
 #
 # * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
-  # Env / TFLint / Module environment definition version
-  export DEV_ENV_TFLINT_VERSION='1.2.0'
-  # Lib / TFLint / Installer
-  export DEV_LIB_TFLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tflint"
-  # Lib / TFLint / Target
-  export DEV_LIB_TFLINT_TARGET="${DEV_LIB_TFLINT_TARGET:-${DEV_PATH_LIB}/tfl}"
   # Lint / TFLint / Target
   export DEV_LINT_TFLINT_TARGET="${DEV_LINT_TFLINT_TARGET:-${DEV_PATH_SRC}}"
   # Lint / TFLint / Format
@@ -43,6 +37,8 @@
 {
   # Lib / TFLint / Skip installation?
   export DEV_LIB_TFLINT_SKIP='YES'
+  # Lib / TFLint / Target
+  export DEV_LIB_TFLINT_TARGET="${DEV_PATH_LIB}/tfl"
   # Lib / TFLint / Command
   export DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_BIN:-}"
   if [[ -z "$DEV_LIB_TFLINT_BIN" ]]; then
@@ -54,4 +50,18 @@
       fi
     fi
   fi
+}
+
+#
+# Internal variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / TFLint / Module environment definition version
+  export DEV_ENV_TFLINT_VERSION='1.2.0'
+  # Lib / TFLint / Installer
+  export DEV_LIB_TFLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tflint"
 }

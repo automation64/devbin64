@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+export DEV_BOOTSTRAP_MODULES=''
+export DEV_LIB_BASHLIB64_TARGET='/opt/bl64'
+declare module=''
+
+DEV_BOOTSTRAP_MODULES="$(ls -1 "src/lib")" &&
+  source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+source ./bin/dev-set &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" ||
+  exit 1
+
+for module in $DEV_BOOTSTRAP_MODULES; do
+  [[ "$module" =~ (devbin64|installer64|bashlib64) ]] && continue
+  source "./bin/dev-env-${module}" ||
+    exit $?
+done

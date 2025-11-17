@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env: 1.1.0
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,18 +14,16 @@
 #######################################
 
 #
-# Globals
+# Module parameters
 #
 # * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
-  # Env / X_MODULE_TITLE_X / Module environment definition version
-  export DEV_ENV_X_MODULE_CAPS_X_VERSION='1.0.0'
-  # X_GLOBAL_PLACEHOLDER_X
   # X_TASK_X / X_MODULE_TITLE_X / X_VARIABLE_DESCRIPTION_X
   # export DEV_X_TASK_CAPS_X_X_MODULE_CAPS_X_X_VARIABLE_CAPS_X="X_VALUE_X"
+  : # X_PARAMETERS_PLACEHOLDER_X
 }
 
 #
@@ -36,7 +34,7 @@
 
 # shellcheck disable=SC2154
 {
-  : # X_GLOBAL_PLACEHOLDER_X
+  : # X_LOCALS_PLACEHOLDER_X
 }
 
 #
@@ -47,14 +45,38 @@
 
 # shellcheck disable=SC2154
 {
-  : # X_GLOBAL_PLACEHOLDER_X
+  : # X_SECRETS_PLACEHOLDER_X
 }
 
 #
 # External
 #
+# * External tools only. Use to declare configuration env-vars
+#
 
 # shellcheck disable=SC2154
 {
-  : # X_GLOBAL_PLACEHOLDER_X
+  : # X_EXTERNAL_PLACEHOLDER_X
+}
+
+#
+# Internal variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / X_MODULE_TITLE_X / Module environment definition version
+  export DEV_ENV_X_MODULE_CAPS_X_VERSION='1.0.0'
+}
+
+#
+# Internal functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_X_MODULE_X_X_FUNCTION_X() {
+  bl64_dbg_app_show_function
 }

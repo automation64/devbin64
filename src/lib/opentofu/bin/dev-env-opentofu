@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env-inst64: 1.1.0
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -21,45 +21,22 @@
 
 # shellcheck disable=SC2154
 {
-  # Env / OpenTofu / Module environment definition version
-  export DEV_ENV_OPENTOFU_VERSION='1.4.0'
   # Env / OpenTofu / Enable export to Terraform compatible registry
   export DEV_ENV_OPENTOFU_EXPORT_ENABLED="${DEV_ENV_OPENTOFU_EXPORT_ENABLED:-YES}"
-
-  # Lib / OpenTofu / Installer
-  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
-  # Lib / OpenTofu / Target path
-  export DEV_LIB_OPENTOFU_TARGET="${DEV_LIB_OPENTOFU_TARGET:-${DEV_PATH_LIB}/otf}"
   # Lib / OpenTofu / Debug Level
   export DEV_LIB_OPENTOFU_SET_LOG="${DEV_LIB_OPENTOFU_SET_LOG:-warn}"
+  # Lib / OpenTofu / Auto-approve and apply without confirmation?
+  export DEV_LIB_OPENTOFU_AUTO_APPLY="${DEV_LIB_OPENTOFU_AUTO_APPLY:-NO}"
 
   # Build / OpenTofu / Staging path
   export DEV_BUILD_OPENTOFU_STAGING="${DEV_BUILD_OPENTOFU_STAGING:-${DEV_PATH_PROF_VAR}/opentofu}"
   # Build / OpenTofu / Reset staging path before build?
   export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-NO}"
   # Build / OpenTofu / Cleanup staging path before build?
-  export DEV_BUILD_OPENTOFU_CLEANUP="${DEV_BUILD_OPENTOFU_RESET:-YES}"
+  export DEV_BUILD_OPENTOFU_CLEANUP="${DEV_BUILD_OPENTOFU_CLEANUP:-YES}"
 
   # Lint / OpenTofu / Target
   export DEV_LINT_OPENTOFU_TARGET="${DEV_LINT_OPENTOFU_TARGET:-${DEV_BUILD_OPENTOFU_STAGING}}"
-
-  # Test / OpenTofu / Work paths
-  export DEV_TEST_OPENTOFU_OUTPUT="${DEV_PATH_PROF_TMP}/opentofu"
-  export DEV_TEST_OPENTOFU_LOGS="${DEV_PATH_PROF_LOGS}/opentofu"
-
-  # Test / OpenTofu / Cases path
-  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
-  export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
-  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/test"
-
-  # Test / OpenTofu / Artifacts
-  export DEV_TEST_OPENTOFU_PLAN='test.plan'
-  export DEV_TEST_OPENTOFU_LOG='test.log'
-
-  # Deploy / OpenTofu / Log file
-  export DEV_DEPLOY_OPENTOFU_LOG='apply.log'
-  # Deploy / OpenTofu / Auto-approve and apply without confirmation?
-  export DEV_DEPLOY_OPENTOFU_AUTO_APPLY="${DEV_DEPLOY_OPENTOFU_AUTO_APPLY:-NO}"
 
   # Deploy / OpenTofu / Enable guardrail to prevent unintended deployment
   export DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED="${DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED:-YES}"
@@ -78,6 +55,8 @@
 {
   # Lib / OpenTofu / Skip installation?
   export DEV_LIB_OPENTOFU_SKIP='YES'
+  # Lib / OpenTofu / Target path
+  export DEV_LIB_OPENTOFU_TARGET="${DEV_PATH_LIB}/otf"
   # Lib / OpenTofu / Command
   export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-}"
   if [[ -z "$DEV_LIB_OPENTOFU_BIN" ]]; then
@@ -93,6 +72,8 @@
 
 #
 # External
+#
+# * External tools only. Use to declare configuration env-vars
 #
 
 # shellcheck disable=SC2154
@@ -124,4 +105,35 @@
   export TF_VAR_DEV_PATH_PROF_TMP="$DEV_PATH_PROF_TMP"
   export TF_VAR_DEV_PATH_PROF_VAR="$DEV_PATH_PROF_VAR"
   export TF_VAR_DEV_PATH_PROF_VAULT="$DEV_PATH_PROF_VAULT"
+}
+
+#
+# Internal variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / OpenTofu / Module environment definition version
+  export DEV_ENV_OPENTOFU_VERSION='1.5.0'
+  # Env / OpenTofu / Work paths
+  export DEV_ENV_OPENTOFU_PATH_OUTPUT="${DEV_PATH_PROF_TMP}/opentofu"
+  export DEV_ENV_OPENTOFU_PATH_LOGS="${DEV_PATH_PROF_LOGS}/opentofu"
+
+  # Lib / OpenTofu / Installer
+  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
+  # Test / OpenTofu / Cases path
+  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
+  export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
+  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/test"
+
+  # Test / OpenTofu / Artifacts
+  export DEV_TEST_OPENTOFU_PLAN='test.plan'
+  export DEV_TEST_OPENTOFU_LOG='test.log'
+
+  # Deploy / OpenTofu / Log file
+  export DEV_DEPLOY_OPENTOFU_LOG='deploy.log'
+  # Remove / OpenTofu / Log file
+  export DEV_REMOVE_OPENTOFU_LOG='remove.log'
 }

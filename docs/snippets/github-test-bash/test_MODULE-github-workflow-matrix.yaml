@@ -11,4 +11,4 @@ jobs:
         run: |
           source ./bin/dev-set &&
           source ./bin/dev-env-X_MODULE_X &&
-          ./bin/dev-test-X_MODULE_X $DEV_TEST_X_MODULE_UPPER_X_CONTAINER_${{matrix.target}} ${DEV_TEST_X_MODULE_UPPER_X_CASES}/${{matrix.target}}
+          ./bin/dev-test-X_MODULE_X $DEV_TEST_X_MODULE_CAPS_X_CONTAINER_${{matrix.target}} ${DEV_TEST_X_MODULE_CAPS_X_CASES}/${{matrix.target}}

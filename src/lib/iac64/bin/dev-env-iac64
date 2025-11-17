@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env: 1.1.0
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,43 +14,15 @@
 #######################################
 
 #
-# Globals
+# Module parameters
 #
 # * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
-  # Env / IaC64 / Module environment definition version
-  export DEV_ENV_IAC64_VERSION='2.3.0'
-
-  # Env / IaC64 / Resource Tags
-  export DEV_ENV_IAC64_TAG_ANSIBLE='ans'
-  export DEV_ENV_IAC64_TAG_BASH='bsh'
-  export DEV_ENV_IAC64_TAG_HELM='hlm'
-  export DEV_ENV_IAC64_TAG_KUSTOMIZE='kst'
-  export DEV_ENV_IAC64_TAG_OPENTOFU='otf'
-  export DEV_ENV_IAC64_TAG_SHELL='sh'
-  export DEV_ENV_IAC64_TAG_TERRAFORM='tf'
-
-  # Lib / IaC64 / Drivers
-  export DEV_LIB_IAC64_DRV_ANSIBLE_DEPLOY="${DEV_PATH_BIN}/dev-deploy-ansible"
-  export DEV_LIB_IAC64_DRV_BASH_DEPLOY="${DEV_PATH_BIN}/dev-deploy-bash"
-  export DEV_LIB_IAC64_DRV_KUSTOMIZE_DEPLOY="${DEV_PATH_BIN}/dev-deploy-kustomize"
-  export DEV_LIB_IAC64_DRV_OPENTOFU_BUILD="${DEV_PATH_BIN}/dev-build-opentofu"
-  export DEV_LIB_IAC64_DRV_OPENTOFU_DEPLOY="${DEV_PATH_BIN}/dev-deploy-opentofu"
-  export DEV_LIB_IAC64_DRV_OPENTOFU_LIB="${DEV_PATH_BIN}/dev-lib-opentofu"
-  export DEV_LIB_IAC64_DRV_OPENTOFU_REMOVE="${DEV_PATH_BIN}/dev-remove-opentofu"
-  export DEV_LIB_IAC64_DRV_OPENTOFU_TEST="${DEV_PATH_BIN}/dev-test-opentofu"
-
-  # Lib / IaC64 / Tools
-  export DEV_LIB_IAC64_TOOL_TFLINT_LIB="${DEV_PATH_BIN}/dev-lib-tflint"
-  export DEV_LIB_IAC64_TOOL_TFLINT_LINT="${DEV_PATH_BIN}/dev-lint-tflint"
-  export DEV_LIB_IAC64_TOOL_TFSEC_LIB="${DEV_PATH_BIN}/dev-lib-tfsec"
-  export DEV_LIB_IAC64_TOOL_TFSEC_SAST="${DEV_PATH_BIN}/dev-sast-tfsec"
 
   # Build / IaC64 / Source module
-  export DEV_BUILD_IAC64_SHARED='shared'
   export DEV_BUILD_IAC64_MODULE="${DEV_BUILD_IAC64_MODULE:-main}"
   export DEV_BUILD_IAC64_VERSION="${DEV_BUILD_IAC64_VERSION:-0.1.0}"
 
@@ -59,4 +31,113 @@
 
   # Remove / IaC64 / Enable guardrail to prevent unintended removal
   export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED="${DEV_REMOVE_IAC64_GUARDRAIL_ENABLED:-YES}"
+}
+
+#
+# External
+#
+# * External tools only. Use to declare configuration env-vars
+#
+
+# shellcheck disable=SC2154
+{
+  # External / OpenTofu / IAC64 runtime
+  export TF_VAR_IAC64__PROFILE_NAME
+}
+
+#
+# Internal variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / IaC64 / Module environment definition version
+  export DEV_ENV_IAC64_VERSION='3.0.0'
+
+  # Env / IaC64 / Driver Name
+  export DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE='ansible'
+  export DEV_ENV_IAC64_DRIVER_NAME_BASH='bash'
+  export DEV_ENV_IAC64_DRIVER_NAME_HELM='helm'
+  export DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE='kustomize'
+  export DEV_ENV_IAC64_DRIVER_NAME_OPENTOFU='opentofu'
+
+  # Env / IaC64 / Resource Tags
+  export DEV_ENV_IAC64_DRIVER_TAG_ANSIBLE='ans'
+  export DEV_ENV_IAC64_DRIVER_TAG_BASH='bsh'
+  export DEV_ENV_IAC64_DRIVER_TAG_HELM='hlm'
+  export DEV_ENV_IAC64_DRIVER_TAG_KUSTOMIZE='kst'
+  export DEV_ENV_IAC64_DRIVER_TAG_OPENTOFU='otf'
+  export DEV_ENV_IAC64_DRIVER_TAG_SHELL='sh'
+  export DEV_ENV_IAC64_DRIVER_TAG_TERRAFORM='tf'
+
+  # Lib / IaC64 / Drivers
+  export DEV_LIB_IAC64_HELPER_BUILD_OPENTOFU="${DEV_PATH_BIN}/dev-build-opentofu"
+  export DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE="${DEV_PATH_BIN}/dev-deploy-ansible"
+  export DEV_LIB_IAC64_HELPER_DEPLOY_BASH="${DEV_PATH_BIN}/dev-deploy-bash"
+  export DEV_LIB_IAC64_HELPER_DEPLOY_HELM="${DEV_PATH_BIN}/dev-deploy-helm"
+  export DEV_LIB_IAC64_HELPER_DEPLOY_KUSTOMIZE="${DEV_PATH_BIN}/dev-deploy-kustomize"
+  export DEV_LIB_IAC64_HELPER_DEPLOY_OPENTOFU="${DEV_PATH_BIN}/dev-deploy-opentofu"
+  export DEV_LIB_IAC64_HELPER_REMOVE_BASH="${DEV_PATH_BIN}/dev-remove-bash"
+  export DEV_LIB_IAC64_HELPER_REMOVE_HELM="${DEV_PATH_BIN}/dev-remove-helm"
+  export DEV_LIB_IAC64_HELPER_REMOVE_KUSTOMIZE="${DEV_PATH_BIN}/dev-remove-kustomize"
+  export DEV_LIB_IAC64_HELPER_REMOVE_OPENTOFU="${DEV_PATH_BIN}/dev-remove-opentofu"
+  export DEV_LIB_IAC64_HELPER_TEST_KUSTOMIZE="${DEV_PATH_BIN}/dev-test-kustomize"
+  export DEV_LIB_IAC64_HELPER_TEST_OPENTOFU="${DEV_PATH_BIN}/dev-test-opentofu"
+
+  # Lib / IaC64 / Tools
+  export DEV_LIB_IAC64_TOOL_LIB_ANSIBLE="${DEV_PATH_BIN}/dev-lib-ansible"
+  export DEV_LIB_IAC64_TOOL_LIB_HELM="${DEV_PATH_BIN}/dev-lib-helm"
+  export DEV_LIB_IAC64_TOOL_LIB_KUBELINTER="${DEV_PATH_BIN}/dev-lib-kubelinter"
+  export DEV_LIB_IAC64_TOOL_LIB_KUBESCAPE="${DEV_PATH_BIN}/dev-lib-kubescape"
+  export DEV_LIB_IAC64_TOOL_LIB_KUBECTL="${DEV_PATH_BIN}/dev-lib-kubectl"
+  export DEV_LIB_IAC64_TOOL_LIB_OPENTOFU="${DEV_PATH_BIN}/dev-lib-opentofu"
+  export DEV_LIB_IAC64_TOOL_LIB_PKLLANG="${DEV_PATH_BIN}/dev-lib-pkllang"
+  export DEV_LIB_IAC64_TOOL_LIB_TFLINT="${DEV_PATH_BIN}/dev-lib-tflint"
+  export DEV_LIB_IAC64_TOOL_LIB_TFSEC="${DEV_PATH_BIN}/dev-lib-tfsec"
+  export DEV_LIB_IAC64_TOOL_LINT_TFLINT="${DEV_PATH_BIN}/dev-lint-tflint"
+  export DEV_LIB_IAC64_TOOL_LINT_KUBELINTER="${DEV_PATH_BIN}/dev-lint-kubelinter"
+  export DEV_LIB_IAC64_TOOL_SAST_TFSEC="${DEV_PATH_BIN}/dev-sast-tfsec"
+
+  # Build / IaC64 / Source module
+  export DEV_BUILD_IAC64_SHARED='shared'
+
+  # Build / IaC64 / Module runtime paths
+  export DEV_ENV_IAC64_PATH_ETC_MODULE="${DEV_ENV_IAC64_PATH_ETC_MODULE:-}"
+  export DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED:-}"
+  export DEV_ENV_IAC64_PATH_LOGS_MODULE="${DEV_ENV_IAC64_PATH_LOGS_MODULE:-}"
+  export DEV_ENV_IAC64_PATH_SRC_MODULE="${DEV_ENV_IAC64_PATH_SRC_MODULE:-}"
+  export DEV_ENV_IAC64_PATH_SRC_SHARED="${DEV_ENV_IAC64_PATH_SRC_SHARED:-}"
+  export DEV_ENV_IAC64_PATH_TMP_MODULE="${DEV_ENV_IAC64_PATH_TMP_MODULE:-}"
+  export DEV_ENV_IAC64_PATH_VAR_MODULE="${DEV_ENV_IAC64_PATH_VAR_MODULE:-}"
+
+  # Env / IaC64 / Current module information
+  export DEV_ENV_IAC64_MODULE_ID="${DEV_ENV_IAC64_MODULE_ID:-}"
+  export DEV_ENV_IAC64_MODULE_VERSION="${DEV_ENV_IAC64_MODULE_VERSION:-}"
+  export DEV_ENV_IAC64_MODULE_SHARED="${DEV_ENV_IAC64_MODULE_SHARED:-}"
+}
+
+#
+# Internal functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_iac64_check_guardrail_deploy() {
+  bl64_dbg_app_show_function
+  bl64_dbg_app_show_vars 'DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED'
+  if bl64_lib_flag_is_enabled "$DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED"; then
+    bl64_msg_show_fatal 'Guardrail is enabled. Deployment request cancelled.'
+    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+  fi
+}
+
+function dev_iac64_check_guardrail_remove() {
+  bl64_dbg_app_show_function
+  bl64_dbg_app_show_vars 'DEV_REMOVE_IAC64_GUARDRAIL_ENABLED'
+  if bl64_lib_flag_is_enabled "$DEV_REMOVE_IAC64_GUARDRAIL_ENABLED"; then
+    bl64_msg_show_fatal 'Guardrail is enabled. Removal request cancelled.'
+    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+  fi
 }

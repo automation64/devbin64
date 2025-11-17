@@ -15,15 +15,19 @@
     - [Installation](#installation)
   - [🚀 Usage](#-usage)
     - [Deploy to code repository](#deploy-to-code-repository)
-    - [Run CICD scripts](#run-cicd-scripts)
-    - [Load CICD environment variables](#load-cicd-environment-variables)
+    - [Run CI-CD tasks](#run-ci-cd-tasks)
+    - [Load CI-CD environment variables](#load-ci-cd-environment-variables)
   - [🏗️ Architecture](#️-architecture)
-    - [Directory Structure](#directory-structure)
+    - [Repository Directory Structure](#repository-directory-structure)
     - [Configuration Files](#configuration-files)
+    - [Standard module tasks](#standard-module-tasks)
     - [Module boilerplates](#module-boilerplates)
   - [🛠 Contributing](#-contributing)
+  - [⚠️ Disclaimer](#️-disclaimer)
   - [📜 License](#-license)
   - [👤 Author](#-author)
+
+---
 
 ## 📌 Overview
 
@@ -47,6 +51,8 @@ curl -sL https://raw.githubusercontent.com/automation64/installer64/main/src/boo
 sudo /opt/inst64/install-devbin64
 ```
 
+---
+
 ## 🚀 Usage
 
 ### Deploy to code repository
@@ -59,7 +65,7 @@ cd my-repo
 git init
 ```
 
-- (Optional) Select CICD modules for your repository.
+- (Optional) Select CI-CD modules for your repository.
 
 ```shell
 # List available modules
@@ -74,15 +80,15 @@ export DEV_BOOTSTRAP_MODULES='MODULE1 MODULE2 MODULEX'
 devbin64
 ```
 
-### Run CICD scripts
+### Run CI-CD tasks
 
 ```shell
 ./bin/dev-<TASK>-<MODULE>
 ```
 
-### Load CICD environment variables
+### Load CI-CD environment variables
 
-Make available in the current shell the DevBin64 environment variables: 
+Make available in the current shell the DevBin64 environment variables:
 
 ```shell
 source ./bin/dev-set
@@ -92,7 +98,7 @@ source ./bin/dev-set
 
 ## 🏗️ Architecture
 
-### Directory Structure
+### Repository Directory Structure
 
 The repository is organized as follows:
 
@@ -116,7 +122,24 @@ The repository includes the following configuration files:
 - `.gitignore`: Git ignore rules for the project.
 - `.local.env`: (Optional) Local environment variables.
 - `vault/.secrets.env`: (Optional) Secrets environment variables.
-- `doc.*`: Configuration file templates.
+- `dot.*`: Configuration file templates.
+
+### Standard module tasks
+
+Modules can implement one or more of the following CI-CD tasks:
+
+- `build`: build application from source code
+- `cli`: run dev-time CLI tool
+- `deploy`: deploy application package to environment
+- `env`: load dev-time shell environment variables
+- `lab`: run dev-time lab environment
+- `lib`: download dev-time tools
+- `lint`: lint source code
+- `pack`: prepare application for distribution
+- `release`: release application source code
+- `remove`: remove deployed application from environment
+- `sast`: run SAST on application source code
+- `test`: test application
 
 ### Module boilerplates
 
@@ -134,6 +157,12 @@ Additional module boilerplates are available in the **DevBin64** for adding to y
 Contributions are welcome! Help us improve by submitting issues, feature requests, or pull requests.
 
 - [Code of Conduct](https://github.com/automation64/devbin64/blob/main/CODE_OF_CONDUCT.md)
+
+---
+
+## ⚠️ Disclaimer
+
+This repository is provided "as is" without any warranties. The author is not responsible for any damages or issues arising from its use. Additionally, this project is not affiliated with or endorsed by any organization or entity. Use at your own risk.
 
 ---
 
