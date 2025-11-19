@@ -42,7 +42,7 @@
 # shellcheck disable=SC2154
 {
   # External / OpenTofu / IAC64 runtime
-  export TF_VAR_IAC64__PROFILE_NAME
+  export TF_VAR_iac64__profile_name
 }
 
 #
@@ -54,7 +54,7 @@
 # shellcheck disable=SC2154
 {
   # Env / IaC64 / Module environment definition version
-  export DEV_ENV_IAC64_VERSION='3.0.0'
+  export DEV_ENV_IAC64_VERSION='3.1.0'
 
   # Env / IaC64 / Driver Name
   export DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE='ansible'
@@ -103,7 +103,10 @@
   # Build / IaC64 / Source module
   export DEV_BUILD_IAC64_SHARED='shared'
 
-  # Build / IaC64 / Module runtime paths
+  # Env / IaC64 / File names and extensions
+  export DEV_ENV_IAC64_FILE_DOTENV='.iac64.env'
+
+  # Env / IaC64 / Propagated module variables. Automatically set by dev-iac64
   export DEV_ENV_IAC64_PATH_ETC_MODULE="${DEV_ENV_IAC64_PATH_ETC_MODULE:-}"
   export DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED:-}"
   export DEV_ENV_IAC64_PATH_LOGS_MODULE="${DEV_ENV_IAC64_PATH_LOGS_MODULE:-}"
@@ -111,8 +114,7 @@
   export DEV_ENV_IAC64_PATH_SRC_SHARED="${DEV_ENV_IAC64_PATH_SRC_SHARED:-}"
   export DEV_ENV_IAC64_PATH_TMP_MODULE="${DEV_ENV_IAC64_PATH_TMP_MODULE:-}"
   export DEV_ENV_IAC64_PATH_VAR_MODULE="${DEV_ENV_IAC64_PATH_VAR_MODULE:-}"
-
-  # Env / IaC64 / Current module information
+  export DEV_ENV_IAC64_PROFILE="${DEV_ENV_IAC64_PROFILE:-}"
   export DEV_ENV_IAC64_MODULE_ID="${DEV_ENV_IAC64_MODULE_ID:-}"
   export DEV_ENV_IAC64_MODULE_VERSION="${DEV_ENV_IAC64_MODULE_VERSION:-}"
   export DEV_ENV_IAC64_MODULE_SHARED="${DEV_ENV_IAC64_MODULE_SHARED:-}"

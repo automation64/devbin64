@@ -28,13 +28,13 @@ source ./bin/dev-env-X_MODULE_X || exit 1
 
 function my_download() {
   bl64_dbg_app_show_function
+  bl64_lib_flag_is_enabled "$DEV_LIB_X_MODULE_CAPS_X_SKIP" && return 0
   # X_DOWNLOAD_PLACEHOLDER_X
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_lib_flag_is_enabled "$DEV_LIB_X_MODULE_CAPS_X_SKIP" && return 0
   # X_INIT_PLACEHOLDER_X
 }
 
