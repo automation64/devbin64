@@ -4,7 +4,7 @@
 name: "Lint / TFLint"
 
 env:
-  DEV_CICD_DEBUG: ""
+  DEV_CICD_DEBUG: "NONE"
   BL64_LIB_CICD: "YES"
 
 on:

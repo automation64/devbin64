@@ -52,7 +52,29 @@ declare MY_FLAG_CONFIRM_REMOVE='CONFIRM_REMOVE'
 
 declare MY_TASK=''
 
-export DEV_VERBOSE='TIME'
+# shellcheck disable=SC1090,SC2086,SC2035
+function my_env_import() {
+  bl64_dbg_app_show_function
+  local dotenv=''
+
+  if [[ -d "$DEV_ENV_IAC64_PATH_ETC_MODULE" ]]; then
+    cd "$DEV_ENV_IAC64_PATH_ETC_MODULE" || return $?
+    for dotenv in $(bl64_bsh_pattern_match_file *${DEV_ENV_IAC64_FILE_DOTENV}); do
+      bl64_msg_show_task "importing shell environment file (${dotenv})"
+      source "$dotenv" || return $?
+    done
+  fi
+
+  if [[ -d "$DEV_ENV_IAC64_PATH_ETC_SHARED" ]]; then
+    cd "$DEV_ENV_IAC64_PATH_ETC_SHARED" || return $?
+    for dotenv in $(bl64_bsh_pattern_match_file *${DEV_ENV_IAC64_FILE_DOTENV}); do
+      bl64_msg_show_task "importing shell environment file (${dotenv})"
+      source "$dotenv" || return $?
+    done
+  fi
+  # shellcheck disable=SC2164
+  cd "$DEV_PATH_ROOT"
+}
 
 function my_run_command() {
   bl64_check_command "$MY_TASK" "the requested command for the driver is not available (${MY_TASK})" ||
@@ -64,56 +86,63 @@ function my_msg_task_not_implemented() {
   bl64_msg_show_warning 'the command is not available for the current driver. No further action taken.'
 }
 
+function my_run_blt() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_phase "$MY_COMMAND_BUILD"
+  MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_BUILD}-iac64-${MY_DRIVER_NAME}"
+  my_run_command "$MY_COMMAND_BUILD" &&
+    bl64_msg_show_phase "$MY_COMMAND_LINT" &&
+    MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_LINT}-iac64-${MY_DRIVER_NAME}" &&
+    my_run_command &&
+    bl64_msg_show_phase "$MY_COMMAND_TEST" &&
+    MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_TEST}-iac64-${MY_DRIVER_NAME}" &&
+    my_run_command
+}
+
+function my_run_console() {
+  bl64_dbg_app_show_function
+  bl64_fs_dir_create "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_ENV_IAC64_PATH_VAR_MODULE" &&
+    cd "$DEV_ENV_IAC64_PATH_VAR_MODULE" &&
+    bl64_msg_show_info 'Starting interactive console in the staging area. To exit, type "exit" or press Ctrl+D.' &&
+    /usr/bin/env "$SHELL"
+}
+
 function my_run() {
   bl64_dbg_app_show_function
+
+  my_env_export &&
+    my_env_import ||
+    return $?
+
   case "$MY_COMMAND" in
-    "$MY_COMMAND_BLT")
-      bl64_msg_show_phase "$MY_COMMAND_BUILD"
-      my_env_export
-      MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_BUILD}-iac64-${MY_DRIVER_NAME}"
-      my_run_command "$MY_COMMAND_BUILD" &&
-        bl64_msg_show_phase "$MY_COMMAND_LINT" &&
-        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_LINT}-iac64-${MY_DRIVER_NAME}" &&
-        my_run_command &&
-        bl64_msg_show_phase "$MY_COMMAND_TEST" &&
-        MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_TEST}-iac64-${MY_DRIVER_NAME}" &&
-        my_run_command
-      ;;
     "$MY_COMMAND_DEPLOY")
       if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
         DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='NO'
       fi
-      my_env_export
       my_run_command
       ;;
     "$MY_COMMAND_REMOVE")
       if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_REMOVE" ]]; then
         DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='NO'
       fi
-      my_env_export
       my_run_command
       ;;
-    "$MY_COMMAND_CONSOLE")
-      bl64_msg_show_info 'Starting interactive console in the staging area. To exit, type "exit" or press Ctrl+D.'
-      my_env_export
-      source ./bin/dev-set &&
-        cd "${DEV_PATH_PROF_VAR}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}" &&
-        /usr/bin/env "$SHELL"
-      ;;
+    "$MY_COMMAND_CONSOLE") my_run_console ;;
+    "$MY_COMMAND_BLT") my_run_blt ;;
     "$MY_COMMAND_NONE") my_msg_task_not_implemented ;;
-    *)
-      my_env_export
-      my_run_command
-      ;;
+    *) my_run_command ;;
   esac
 }
 
 function my_env_export() {
   bl64_dbg_app_show_function
   bl64_dbg_app_show_info 'DevBin64 settings'
+  DEV_VERBOSE='TIME'
   DEV_PROFILE="$MY_PROFILE"
+  source ./bin/dev-set || return $?
 
   bl64_dbg_app_show_info 'IAC64 settings'
+  DEV_ENV_IAC64_PROFILE="$MY_PROFILE"
   DEV_ENV_IAC64_MODULE_ID="$MY_MODULE"
   DEV_ENV_IAC64_MODULE_VERSION="$MY_VERSION"
   DEV_ENV_IAC64_MODULE_SHARED="$MY_SHARED"
@@ -127,7 +156,7 @@ function my_env_export() {
   DEV_ENV_IAC64_PATH_VAR_MODULE="${DEV_PATH_PROF_VAR}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
 
   bl64_dbg_app_show_info 'OpenTofu settings'
-  TF_VAR_IAC64__PROFILE_NAME="$MY_PROFILE"
+  TF_VAR_iac64__profile_name="$MY_PROFILE"
 }
 
 function my_initialize() {
@@ -185,7 +214,7 @@ function my_initialize() {
       'MY_DRIVER_NAME'
 }
 
-bl64_lib_script_version_set '2.0.0'
+bl64_lib_script_version_set '2.1.0'
 bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-D Debug] [-h]'
 bl64_msg_help_about_set 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
 bl64_msg_help_parameters_set \
