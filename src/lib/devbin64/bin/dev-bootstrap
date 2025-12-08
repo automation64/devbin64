@@ -106,7 +106,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBin64 / Current version
-declare DEV_BIN64_VERSION='11.1.1'
+declare DEV_BIN64_VERSION='11.2.0'
 
 # DevBootstrap / Current version
 declare DEV_BOOTSTRAP_VERSION='7.0.2'

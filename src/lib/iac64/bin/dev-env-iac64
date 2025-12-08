@@ -54,7 +54,7 @@
 # shellcheck disable=SC2154
 {
   # Env / IaC64 / Module environment definition version
-  export DEV_ENV_IAC64_VERSION='3.1.0'
+  export DEV_ENV_IAC64_VERSION='3.2.0'
 
   # Env / IaC64 / Driver Name
   export DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE='ansible'
@@ -64,6 +64,7 @@
   export DEV_ENV_IAC64_DRIVER_NAME_OPENTOFU='opentofu'
 
   # Env / IaC64 / Resource Tags
+  export DEV_ENV_IAC64_DRIVER_TAG_GLOBAL='global'
   export DEV_ENV_IAC64_DRIVER_TAG_ANSIBLE='ans'
   export DEV_ENV_IAC64_DRIVER_TAG_BASH='bsh'
   export DEV_ENV_IAC64_DRIVER_TAG_HELM='hlm'
@@ -83,6 +84,7 @@
   export DEV_LIB_IAC64_HELPER_REMOVE_HELM="${DEV_PATH_BIN}/dev-remove-helm"
   export DEV_LIB_IAC64_HELPER_REMOVE_KUSTOMIZE="${DEV_PATH_BIN}/dev-remove-kustomize"
   export DEV_LIB_IAC64_HELPER_REMOVE_OPENTOFU="${DEV_PATH_BIN}/dev-remove-opentofu"
+  export DEV_LIB_IAC64_HELPER_TEST_ANSIBLE="${DEV_PATH_BIN}/dev-test-ansible"
   export DEV_LIB_IAC64_HELPER_TEST_KUSTOMIZE="${DEV_PATH_BIN}/dev-test-kustomize"
   export DEV_LIB_IAC64_HELPER_TEST_OPENTOFU="${DEV_PATH_BIN}/dev-test-opentofu"
 
@@ -107,6 +109,7 @@
   export DEV_ENV_IAC64_FILE_DOTENV='.iac64.env'
 
   # Env / IaC64 / Propagated module variables. Automatically set by dev-iac64
+  export DEV_ENV_IAC64_PATH_ETC_GLOBAL="${DEV_ENV_IAC64_PATH_ETC_GLOBAL:-}"
   export DEV_ENV_IAC64_PATH_ETC_MODULE="${DEV_ENV_IAC64_PATH_ETC_MODULE:-}"
   export DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED:-}"
   export DEV_ENV_IAC64_PATH_LOGS_MODULE="${DEV_ENV_IAC64_PATH_LOGS_MODULE:-}"

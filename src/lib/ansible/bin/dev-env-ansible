@@ -21,7 +21,7 @@
 
 # shellcheck disable=SC2154
 {
-  # Env / Bash / Registry for lab and testing containers
+  # Env / Ansible / Registry for lab and testing containers
   export DEV_ENV_ANSIBLE_REGISTRY="${DEV_ENV_ANSIBLE_REGISTRY:-ghcr.io/automation64}"
   # Pack / Ansible / Base path for collections
   export DEV_PACK_ANSIBLE_BASE_COLLECTIONS="${DEV_PACK_ANSIBLE_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
@@ -34,6 +34,31 @@
 }
 
 #
+# Locals
+#
+# * Use .local.env file or CICD variables to override values
+#
+
+# shellcheck disable=SC2154
+{
+  # Lib / Ansible / Skip installation?
+  export DEV_LIB_ANSIBLE_SKIP='YES'
+  # Lib / Ansible / Target
+  export DEV_LIB_ANSIBLE_TARGET="${DEV_PATH_LIB}/ans}"
+  # Lib / Ansible / Command
+  export DEV_LIB_ANSIBLE_BIN="${DEV_LIB_ANSIBLE_BIN:-}"
+  if [[ -z "$DEV_LIB_ANSIBLE_BIN" ]]; then
+    DEV_LIB_ANSIBLE_BIN="$(bl64_bsh_command_locate_user 'ansible')"
+    if [[ -z "$DEV_LIB_ANSIBLE_BIN" ]]; then
+      DEV_LIB_ANSIBLE_BIN="${DEV_LIB_ANSIBLE_TARGET}/ansible"
+      if [[ ! -x "${DEV_LIB_ANSIBLE_BIN}" ]]; then
+        DEV_LIB_ANSIBLE_SKIP='NO'
+      fi
+    fi
+  fi
+}
+
+#
 # Internal variables
 #
 # * Shared internal variables for module tasks
@@ -42,12 +67,17 @@
 # shellcheck disable=SC2154
 {
   # Env / Ansible / Module environment definition version
-  export DEV_ENV_ANSIBLE_VERSION='2.1.1'
-  # Env / Bash / Container path for project mounts
+  export DEV_ENV_ANSIBLE_VERSION='3.0.0'
+  # Env / Ansible / Container path for project mounts
   export DEV_ENV_ANSIBLE_CONTAINER_PATH_SRC='/source'
   export DEV_ENV_ANSIBLE_CONTAINER_PATH_ROOT='/project'
+  export DEV_ENV_ANSIBLE_CONTAINER_PATH_TEST='/test'
+  # Env / Ansible / Flag for marking container environment
+  export DEV_ENV_ANSIBLE_CONTAINER_ENVIRONMENT="${DEV_ENV_ANSIBLE_CONTAINER_ENVIRONMENT:-OFF}"
+
   # Pack / Ansible / Configuration
   export DEV_PACK_ANSIBLE_CFG="${DEV_PACK_ANSIBLE_CFG:-${DEV_PATH_ROOT}/.ansible.cfg}"
+
   # Lib / Ansible / Installer
   export DEV_LIB_ANSIBLE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansible"
   # Lib / Ansible / Target

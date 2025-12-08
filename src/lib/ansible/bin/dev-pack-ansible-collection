@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 1.8.0
+# template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -15,15 +15,17 @@
 
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source=lib/bl64/bashlib64-core.bash
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ans.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # shellcheck source=bin/dev-env-ansible
 source ./bin/dev-env-ansible || exit 1
-# shellcheck source=lib/bl64/bashlib64-core.bash
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ans.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 
 declare MY_TARGET="${*:-${DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS}}"
 
@@ -56,7 +58,7 @@ function my_initialize() {
       'MY_TARGET'
 }
 
-bl64_lib_script_version_set '2.0.3'
+bl64_lib_script_version_set '2.0.4'
 bl64_msg_help_about_set 'Deploy Ansible objects from staging area'
 bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 

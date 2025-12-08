@@ -1,0 +1,18 @@
+# X_PARAMETERS_PLACEHOLDER_X
+{
+  # Env / X_MODULE_TITLE_X / Registry for lab and testing containers
+  export DEV_ENV_X_MODULE_CAPS_X_REGISTRY="${DEV_ENV_X_MODULE_CAPS_X_REGISTRY:-ghcr.io/automation64}"
+
+  # Lab / X_MODULE_TITLE_X / Default image
+  export DEV_LAB_X_MODULE_CAPS_X_CONTAINER="${DEV_LAB_X_MODULE_CAPS_X_CONTAINER:-bash-test/alpine-3-bash-test}"
+}
+
+# X_INTERNAL_PLACEHOLDER_X
+{
+  # Env / X_MODULE_TITLE_X / Container path for project mounts
+  export DEV_ENV_X_MODULE_CAPS_X_CONTAINER_PATH_SRC='/source'
+  export DEV_ENV_X_MODULE_CAPS_X_CONTAINER_PATH_ROOT='/project'
+  export DEV_ENV_X_MODULE_CAPS_X_CONTAINER_PATH_TEST='/test'
+  # Env / X_MODULE_TITLE_X / Flag for marking container environment
+  export DEV_ENV_X_MODULE_CAPS_X_CONTAINER_ENVIRONMENT="${DEV_ENV_X_MODULE_CAPS_X_CONTAINER_ENVIRONMENT:-OFF}"
+}
