@@ -23,38 +23,30 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # shellcheck source-path=bin
-source ./bin/dev-env-bash || exit 1
+source ./bin/dev-env-iac64 || exit 1
 
-declare MY_DEPLOYER="${1:-}"
-declare MY_LOGS="${2:-${DEV_ENV_BASH_PATH_LOGS}}"
-
-function my_deploy() {
+function my_test() {
   bl64_dbg_app_show_function
-
-  bl64_msg_show_task 'Prepare log store'
-  bl64_fs_path_remove "$MY_LOGS"
-  bl64_fs_dir_create \
-    "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$MY_LOGS" ||
-    return $?
-
-  bl64_msg_show_phase 'Deploy application'
-  "$MY_DEPLOYER" | "$BL64_OS_CMD_TEE" "${MY_LOGS}/${DEV_DEPLOY_BASH_LOG}" 2>&1
+  "$DEV_LIB_IAC64_HELPER_TEST_ANSIBLE" \
+    "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml" \
+    "${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  bl64_check_parameter 'MY_DEPLOYER' &&
-    bl64_check_command "$MY_DEPLOYER" &&
+  db64_profile_check_set &&
+    bl64_check_command "$DEV_LIB_IAC64_HELPER_TEST_ANSIBLE" &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
-      'MY_DEPLOYER' \
-      'MY_LOGS'
+      'DEV_PROFILE' \
+      'DEV_ENV_IAC64_PATH_SRC_MODULE' \
+      'DEV_ENV_IAC64_PATH_ETC_MODULE'
 }
 
-bl64_lib_script_version_set '1.0.1'
-bl64_msg_help_about_set 'Deploy application'
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Test Ansible playbook using dry-run'
 bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_deploy
+my_test
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

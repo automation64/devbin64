@@ -28,7 +28,7 @@ source ./bin/dev-env-iac64 || exit 1
 function my_deploy() {
   bl64_dbg_app_show_function
   "$DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE" \
-    "${DEV_ENV_IAC64_PATH_SRC_MODULE}/deploy.yaml" \
+    "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml" \
     "${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini"
 }
 
@@ -44,7 +44,7 @@ function my_initialize() {
       'DEV_ENV_IAC64_PATH_ETC_MODULE'
 }
 
-bl64_lib_script_version_set '3.0.0'
+bl64_lib_script_version_set '3.0.1'
 bl64_msg_help_about_set 'Deploy application using Ansible'
 bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 

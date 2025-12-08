@@ -25,16 +25,19 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
 # shellcheck source-path=bin
 source ./bin/dev-env-iac64 || exit 1
 
-declare MY_COMMAND="${1:-$BL64_VAR_NULL}"
+declare MY_COMMAND="${1:-}"
 declare MY_OPTION=''
 declare MY_PROFILE=''
 declare MY_MODULE=''
 declare MY_VERSION=''
 declare MY_SHARED='0.1.0'
+declare MY_GLOBAL='0.1.0'
 declare MY_DRIVER_NAME=''
 declare MY_DRIVER_TAG=''
 declare MY_CONFIRMATION='NONE'
+declare MY_VERBOSE='TIME2'
 
+declare MY_BL64_VERSION='22.9.0'
 declare MY_COMMAND_BLT='blt'
 declare MY_COMMAND_BUILD='build'
 declare MY_COMMAND_CONSOLE='console'
@@ -57,10 +60,10 @@ function my_env_import() {
   bl64_dbg_app_show_function
   local dotenv=''
 
-  if [[ -d "$DEV_ENV_IAC64_PATH_ETC_MODULE" ]]; then
-    cd "$DEV_ENV_IAC64_PATH_ETC_MODULE" || return $?
+  if [[ -d "$DEV_ENV_IAC64_PATH_ETC_GLOBAL" ]]; then
+    cd "$DEV_ENV_IAC64_PATH_ETC_GLOBAL" || return $?
     for dotenv in $(bl64_bsh_pattern_match_file *${DEV_ENV_IAC64_FILE_DOTENV}); do
-      bl64_msg_show_task "importing shell environment file (${dotenv})"
+      bl64_msg_show_task "import global shell environment file (${DEV_ENV_IAC64_PATH_ETC_GLOBAL}/${dotenv})"
       source "$dotenv" || return $?
     done
   fi
@@ -68,10 +71,19 @@ function my_env_import() {
   if [[ -d "$DEV_ENV_IAC64_PATH_ETC_SHARED" ]]; then
     cd "$DEV_ENV_IAC64_PATH_ETC_SHARED" || return $?
     for dotenv in $(bl64_bsh_pattern_match_file *${DEV_ENV_IAC64_FILE_DOTENV}); do
-      bl64_msg_show_task "importing shell environment file (${dotenv})"
+      bl64_msg_show_task "import shared module shell environment file (${DEV_ENV_IAC64_PATH_ETC_SHARED}/${dotenv})"
       source "$dotenv" || return $?
     done
   fi
+
+  if [[ -d "$DEV_ENV_IAC64_PATH_ETC_MODULE" ]]; then
+    cd "$DEV_ENV_IAC64_PATH_ETC_MODULE" || return $?
+    for dotenv in $(bl64_bsh_pattern_match_file *${DEV_ENV_IAC64_FILE_DOTENV}); do
+      bl64_msg_show_task "import module shell environment file (${DEV_ENV_IAC64_PATH_ETC_MODULE}/${dotenv})"
+      source "$dotenv" || return $?
+    done
+  fi
+
   # shellcheck disable=SC2164
   cd "$DEV_PATH_ROOT"
 }
@@ -137,7 +149,7 @@ function my_run() {
 function my_env_export() {
   bl64_dbg_app_show_function
   bl64_dbg_app_show_info 'DevBin64 settings'
-  DEV_VERBOSE='TIME'
+  DEV_VERBOSE="$MY_VERBOSE"
   DEV_PROFILE="$MY_PROFILE"
   source ./bin/dev-set || return $?
 
@@ -147,6 +159,7 @@ function my_env_export() {
   DEV_ENV_IAC64_MODULE_VERSION="$MY_VERSION"
   DEV_ENV_IAC64_MODULE_SHARED="$MY_SHARED"
 
+  DEV_ENV_IAC64_PATH_ETC_GLOBAL="${DEV_PATH_PROF_ETC}/${DEV_BUILD_IAC64_SHARED}/${DEV_ENV_IAC64_DRIVER_TAG_GLOBAL}/${MY_GLOBAL}"
   DEV_ENV_IAC64_PATH_ETC_MODULE="${DEV_PATH_PROF_ETC}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
   DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_PATH_PROF_ETC}/${DEV_BUILD_IAC64_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
   DEV_ENV_IAC64_PATH_LOGS_MODULE="${DEV_PATH_PROF_LOGS}/${MY_DRIVER_TAG}/${MY_MODULE}/${MY_VERSION}"
@@ -157,12 +170,23 @@ function my_env_export() {
 
   bl64_dbg_app_show_info 'OpenTofu settings'
   TF_VAR_iac64__profile_name="$MY_PROFILE"
+
+  bl64_msg_show_setup 'Runtime environment paths' \
+    'DEV_ENV_IAC64_PATH_ETC_GLOBAL' \
+    'DEV_ENV_IAC64_PATH_ETC_MODULE' \
+    'DEV_ENV_IAC64_PATH_ETC_SHARED' \
+    'DEV_ENV_IAC64_PATH_LOGS_MODULE' \
+    'DEV_ENV_IAC64_PATH_SRC_MODULE' \
+    'DEV_ENV_IAC64_PATH_SRC_SHARED' \
+    'DEV_ENV_IAC64_PATH_TMP_MODULE' \
+    'DEV_ENV_IAC64_PATH_VAR_MODULE'
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
 
+  [[ -n "$MY_OPTION" && -n "$MY_COMMAND" ]] || { bl64_msg_help_show && return 1; }
   case "$MY_COMMAND" in
     "$MY_COMMAND_INIT")
       [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
@@ -185,7 +209,7 @@ function my_initialize() {
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
     "$MY_COMMAND_TEST")
-      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
     "$MY_COMMAND_REMOVE")
@@ -195,27 +219,28 @@ function my_initialize() {
     "$MY_COMMAND_DEPLOY") ;;
     "$MY_COMMAND_CONSOLE") ;;
     *)
-      bl64_msg_show_error 'there is no such command'
+      bl64_msg_show_error "invalid command name (${MY_COMMAND})"
       return 1
       ;;
   esac
 
   MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER_NAME}"
-  bl64_lib_script_minver_check '22.5.0' &&
+  bl64_lib_script_minver_check "$MY_BL64_VERSION" &&
     bl64_check_parameter 'MY_PROFILE' &&
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
     bl64_check_parameter 'MY_DRIVER_NAME' &&
     bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
       'MY_PROFILE' \
+      'MY_DRIVER_NAME' \
       'MY_MODULE' \
       'MY_VERSION' \
       'MY_SHARED' \
-      'MY_DRIVER_NAME'
+      'MY_GLOBAL'
 }
 
-bl64_lib_script_version_set '2.1.0'
-bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-D Debug] [-h]'
+bl64_lib_script_version_set '2.2.0'
+bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-D Debug] [-h]'
 bl64_msg_help_about_set 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
 bl64_msg_help_parameters_set \
   "Commands:
@@ -232,35 +257,37 @@ ${MY_COMMAND_HELP}       : Show this help message.
 
 Target
 -p profile : configuration profile name
--m module  : module name.
--v version : module version.
+-m module  : module name
+-v version : module version
 -s shared  : (optional) shared module version
+-g global  : (optional) global configuration version
 
 Driver
--A  : Ansible driver
--B  : Bash driver
--H  : Helm driver
--K  : Kustomize driver
--O  : OpenTofu driver
+-A         : Ansible driver
+-B         : Bash driver
+-H         : Helm driver
+-K         : Kustomize driver
+-O         : OpenTofu driver
 
 Guardrail
 -Z confirm : confirm destructive actions (deploy/remove). Valid values: ${MY_FLAG_CONFIRM_DEPLOY}, ${MY_FLAG_CONFIRM_REMOVE}
 
 Options
--V format  : verbose message format. Format: FULL|PLAIN|CALLER|TIME|HOST
--D Debug   : Enable debugging mode. Format: ALL|LIB|APP"
+-V format  : verbose message format. Format: BL64_MSG_FORMAT_*
+-D Debug   : Enable debugging mode. Format: BL64_DBG_TARGET_*"
 
 [[ "$MY_COMMAND" == "$MY_COMMAND_HELP" ]] && bl64_msg_help_show && exit 0
 shift
 # shellcheck disable=SC2249
-while getopts ':p:m:v:s:Z:V:D:ABHKO' MY_OPTION; do
+while getopts ':p:m:v:s:g:Z:V:D:ABHKO' MY_OPTION; do
   case "${MY_OPTION:-}" in
     p) MY_PROFILE="$OPTARG" ;;
     m) MY_MODULE="$OPTARG" ;;
     v) MY_VERSION="$OPTARG" ;;
     s) MY_SHARED="$OPTARG" ;;
+    g) MY_GLOBAL="$OPTARG" ;;
     Z) MY_CONFIRMATION="$OPTARG" ;;
-    V) DEV_VERBOSE="$OPTARG" ;;
+    V) MY_VERBOSE="$OPTARG" ;;
     D) DEV_CICD_DEBUG="$OPTARG" ;;
     A)
       MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE"
@@ -284,7 +311,7 @@ while getopts ':p:m:v:s:Z:V:D:ABHKO' MY_OPTION; do
       ;;
   esac
 done
-bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
+bl64_dbg_set_level "${DEV_CICD_DEBUG:-NONE}" && bl64_msg_set_format "$MY_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
 
 bl64_msg_show_batch_start "${BL64_SCRIPT_ID}:$MY_COMMAND"
 my_run
