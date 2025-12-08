@@ -20,7 +20,7 @@ source ./bin/dev-set &&
   exit 1
 
 for module in $DEV_BOOTSTRAP_MODULES; do
-  [[ "$module" =~ (devbin64|installer64|bashlib64) ]] && continue
+  [[ "$module" =~ (devbin64|installer64|bashlib64|project) ]] && continue
   source "./bin/dev-env-${module}" ||
     exit $?
 done
