@@ -1,6 +1,6 @@
 ---
-# template-gh-lint: 1.1.0
-name: "Lint / X_TARGET_TITLE_X"
+# template-gh-lint: 1.2.0
+name: "Lint/X_TARGET_TITLE_X"
 
 env:
   DEV_CICD_DEBUG: "NONE"
@@ -24,13 +24,12 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
-      - name: "Prepare environment"
-        run: "./bin/dev-lib-base"
-
       - name: "Download tools"
-        run : "X_TOOLS_PLACEHOLDER_X"
+        run: |
+          ./bin/dev-lib-base &&
+          # X_TOOLS_PLACEHOLDER_X
 
-      # - name: "Prepare for testing"
+      # - name: "Prepare for linting"
       #   run : "X_BUILD_PLACEHOLDER_X"
 
       - name: "Run Linter"

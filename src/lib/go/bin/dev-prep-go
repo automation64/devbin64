@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# template-prep: 1.1.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=/opt/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+# shellcheck source-path=bin
+source ./bin/dev-env-go || exit 1
+
+function my_prepare() {
+  bl64_dbg_app_show_function
+  # shellcheck disable=SC2164
+  cd "${DEV_BUILD_GO_PATH_SOURCE}"
+  if [[ ! -f "./go.mod" ]]; then
+    bl64_msg_show_task 'Initialize Go Main Module'
+    "$DEV_LIB_GO_BIN" mod init "$DEV_ENV_GO_MODULE_ROOT" ||
+      return $?
+  fi
+
+  bl64_msg_show_task 'Sync Go Main Module'
+  "$DEV_LIB_GO_BIN" mod tidy &&
+    bl64_msg_show_task 'Download Go dependencies' &&
+    "$DEV_LIB_GO_BIN" mod download &&
+    cd "${DEV_PATH_ROOT}" ||
+    return $?
+
+  if [[ ! -f './go.work' ]]; then
+    bl64_msg_show_task 'Initialize Go Workspace'
+    "$DEV_LIB_GO_BIN" work init "./${DEV_BUILD_GO_PATH_SOURCE}"
+  else
+    bl64_msg_show_task 'Sync Go Workspace'
+    "$DEV_LIB_GO_BIN" work sync &&
+      "$DEV_LIB_GO_BIN" work vendor
+  fi
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_about
+  bl64_check_command "$DEV_LIB_GO_BIN" 'go' &&
+    bl64_check_parameter 'DEV_ENV_GO_MODULE_ROOT' &&
+    dev_bin64_tmp_setup \
+      "$DEV_BUILD_GO_PATH_CACHE" \
+      "$DEV_BUILD_GO_PATH_MODCACHE" \
+      "$DEV_BUILD_GO_PATH_TMP" &&
+    dev_bin64_task_show_setup \
+      'DEV_ENV_GO_MODULE_ROOT' \
+      'DEV_BUILD_GO_PATH_SOURCE' \
+      'DEV_BUILD_GO_PATH_CACHE' \
+      'DEV_BUILD_GO_PATH_MODCACHE' \
+      'DEV_BUILD_GO_PATH_TMP'
+}
+
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Prepare repository for module specific requirements'
+dev_bin64_initialize && my_initialize || exit $?
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+my_prepare
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

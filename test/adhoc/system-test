@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-declare src='/project/src'
+test/lib/check.bash || exit 1
 
-source test/lib/runtime.bash
+declare src='/project/src'
 
 ./test/adhoc/system-sync
 ./test/adhoc/user-reset

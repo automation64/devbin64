@@ -1,9 +1,20 @@
-# X_LOCALS_PLACEHOLDER_X
+# X_MODULE_PLACEHOLDER_X
 {
+  # Lib / X_MODULE_TITLE_X / Installer
+  export DEV_LIB_X_MODULE_CAPS_X_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-X_INSTALLER_X"
   # Lib / X_MODULE_TITLE_X / Skip installation?
   export DEV_LIB_X_MODULE_CAPS_X_SKIP='YES'
   # Lib / X_MODULE_TITLE_X / Target
-  export DEV_LIB_X_MODULE_CAPS_X_TARGET="${DEV_PATH_LIB}/X_DESTINATION_X}"
+  export DEV_LIB_X_MODULE_CAPS_X_TARGET="${DEV_PATH_LIB}/${DEV_ENV_X_MODULE_CAPS_X_ID}}"
+}
+# X_PARAMETERS_PLACEHOLDER_X
+{
+  # optional # # Lib / X_MODULE_TITLE_X / Version
+  # optional # export DEV_LIB_X_MODULE_CAPS_X_VERSION="${DEV_LIB_X_MODULE_CAPS_X_VERSION:-latest}"
+}
+
+# X_LOCALS_PLACEHOLDER_X
+{
   # Lib / X_MODULE_TITLE_X / Command
   export DEV_LIB_X_MODULE_CAPS_X_BIN="${DEV_LIB_X_MODULE_CAPS_X_BIN:-}"
   if [[ -z "$DEV_LIB_X_MODULE_CAPS_X_BIN" ]]; then
@@ -13,12 +24,8 @@
       if [[ ! -x "${DEV_LIB_X_MODULE_CAPS_X_BIN}" ]]; then
         DEV_LIB_X_MODULE_CAPS_X_SKIP='NO'
       fi
-    fi
+     else
+      DEV_LIB_X_MODULE_CAPS_X_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_X_MODULE_CAPS_X_BIN")"
+   fi
   fi
-}
-
-# X_INTERNALS_PLACEHOLDER_X
-{
-  # Lib / X_MODULE_TITLE_X / Installer
-  export DEV_LIB_X_MODULE_CAPS_X_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-X_INSTALLER_X"
 }

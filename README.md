@@ -3,6 +3,7 @@
 ![License](https://img.shields.io/github/license/automation64/devbin64)
 ![GitHub stars](https://img.shields.io/github/stars/automation64/devbin64?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/automation64/devbin64?style=social)
+![Release Downloads](https://img.shields.io/github/downloads/automation64/devbin64/total)
 
 🚀 **DevOps Scripts for Repository Management and CI/CD Automation**
 
@@ -103,16 +104,16 @@ source ./bin/dev-set
 The repository is organized as follows:
 
 - `bin/`: **DevBin64** scripts.
-- `build/`: Build artifacts and temporary files.
+- `build/`: Build artifacts and temporary files. Excluded from version control.
 - `docs/`: Documentation and skeleton files for the project.
 - `etc/`: Project-specific configuration files.
-- `lib/`: Shared libraries and modules.
-- `logs/`: Logs generated during development and CI/CD processes.
+- `lib/`: Shared libraries and modules. Excluded from version control.
+- `logs/`: Logs generated during development and CI/CD processes. Excluded from version control.
 - `src/`: Source code for the project.
 - `test/`: Test cases and related files.
-- `tmp/`: Temporary files.
+- `tmp/`: Temporary files. Excluded from version control.
 - `var/`: Variable data files.
-- `vault/`: Local vault for secrets (excluded from version control).
+- `vault/`: Local vault for secrets. Excluded from version control.
 
 ### Configuration Files
 
@@ -131,11 +132,12 @@ Modules can implement one or more of the following CI-CD tasks:
 - `build`: build application from source code
 - `cli`: run dev-time CLI tool
 - `deploy`: deploy application package to environment
-- `env`: load dev-time shell environment variables
+- `env`: module shell environment definitions
 - `lab`: run dev-time lab environment
 - `lib`: download dev-time tools
 - `lint`: lint source code
 - `pack`: prepare application for distribution
+- `prep`: run dev-time source code maintenance tasks (update dependency maps, etc.)
 - `release`: release application source code
 - `remove`: remove deployed application from environment
 - `sast`: run SAST on application source code

@@ -14,6 +14,26 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Kubescape / Module environment definition version
+  export DEV_ENV_KUBESCAPE_ID='kubescape'
+  export DEV_ENV_KUBESCAPE_VERSION='2.0.0'
+
+  # Lib / Kubescape / Installer
+  export DEV_LIB_KUBESCAPE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubescape"
+  # Lib / Kubescape / Skip installation?
+  export DEV_LIB_KUBESCAPE_SKIP='YES'
+  # Lib / Kubescape / Target
+  export DEV_LIB_KUBESCAPE_TARGET="${DEV_PATH_LIB}/${DEV_ENV_KUBESCAPE_ID}"
+}
+
+#
 # Module parameters
 #
 # * Use .dev.env file to override values
@@ -25,12 +45,12 @@
   export DEV_ENV_KUBESCAPE_REGISTRY="${DEV_ENV_KUBESCAPE_REGISTRY:-ghcr.io/automation64}"
   # Env / Kubescape / Container path for project mounts
   export DEV_ENV_KUBESCAPE_CONTAINER_PATH_ROOT='/project'
-  # Lint / Kubescape / Target
-  export DEV_LINT_KUBESCAPE_TARGET="${DEV_LINT_KUBESCAPE_TARGET:-etc}"
-  # Lint / Kubescape / Container with linting tool
-  export DEV_LINT_KUBESCAPE_CONTAINER="${DEV_LINT_KUBESCAPE_CONTAINER:-k8s-lint/alpine-3-k8s-lint}"
-  # Lint / Kubescape / Container entrypoint
-  export DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT="${DEV_LINT_KUBESCAPE_CONTAINER_ENTRYPOINT:-/usr/local/bin/kubescape}"
+  # SAST / Kubescape / Target
+  export DEV_SAST_KUBESCAPE_TARGET="${DEV_SAST_KUBESCAPE_TARGET:-src}"
+  # SAST / Kubescape / Container with linting tool
+  export DEV_SAST_KUBESCAPE_CONTAINER="${DEV_SAST_KUBESCAPE_CONTAINER:-k8s-lint/alpine-3-k8s-lint}"
+  # SAST / Kubescape / Container entrypoint
+  export DEV_SAST_KUBESCAPE_CONTAINER_ENTRYPOINT="${DEV_SAST_KUBESCAPE_CONTAINER_ENTRYPOINT:-/usr/local/bin/kubescape}"
 }
 
 #
@@ -41,10 +61,6 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / Kubescape / Skip installation?
-  export DEV_LIB_KUBESCAPE_SKIP='YES'
-  # Lib / Kubescape / Target
-  export DEV_LIB_KUBESCAPE_TARGET="${DEV_PATH_LIB}/kscp"
   # Lib / Kubescape / Command
   export DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_BIN:-}"
   if [[ -z "$DEV_LIB_KUBESCAPE_BIN" ]]; then
@@ -54,20 +70,8 @@
       if [[ ! -x "${DEV_LIB_KUBESCAPE_BIN}" ]]; then
         DEV_LIB_KUBESCAPE_SKIP='NO'
       fi
+    else
+      DEV_LIB_KUBESCAPE_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_KUBESCAPE_BIN")"
     fi
   fi
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / Kubescape / Module environment definition version
-  export DEV_ENV_KUBESCAPE_VERSION='1.1.0'
-  # Lib / Kubescape / Installer
-  export DEV_LIB_KUBESCAPE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubescape"
 }

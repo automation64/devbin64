@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.0.0]
+
+### Added
+
+- Modules
+  - GoLangCI
+  - GoSec
+- GitLeaks
+  - Reusable GitHub Actions workflow
+  - Save report to sarif file
+- DevBin64
+  - dev-env: dev-time area management functions
+- Go
+  - dev-prep-go: initialize go mod
+  - dev-build-go: build go app
+  - dev-pack-go: prepare go app for release
+- Act
+  - Local cache
+
+### Changed
+
+- All
+  - **breaking-change**: requires BashLib64 version 22.10.0.
+- DevBin64
+  - dev-set: promoted based env vars to dev-env
+- KubeScape
+  - Renamed lint to sast
+- Bash
+  - **breaking-change**: build default destination is now  namespaced
+
 ## [11.2.0]
 
 ### Added

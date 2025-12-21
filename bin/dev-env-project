@@ -14,6 +14,23 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Project / Module environment definition version
+  export DEV_ENV_PROJECT_VERSION='1.2.0'
+  export DEV_ENV_PROJECT_ID='project'
+
+  # Pack / Project / Paths
+  export DEV_PACK_PROJECT_PATH_STAGING="${DEV_PATH_BUILD_STAGING}/${DEV_ENV_PROJECT_ID}"
+  export DEV_PACK_PROJECT_PATH_TARGET="${DEV_PATH_BUILD_PACK}/${DEV_ENV_PROJECT_ID}"
+}
+
+#
 # Module parameters
 #
 # * Use .env file to override values
@@ -31,16 +48,4 @@
   export DEV_PACK_PROJECT_ASSETS="${DEV_PACK_PROJECT_ASSETS:-}"
   # Pack / Project / List of generated distributable files
   export DEV_PACK_PROJECT_DISTRIBUTABLE="${DEV_PACK_PROJECT_DISTRIBUTABLE:-${DEV_PATH_BUILD_PACK}/${DEV_PACK_PROJECT_BUNDLE}}"
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / Project / Module environment definition version
-  export DEV_ENV_PROJECT_VERSION='1.1.1'
 }

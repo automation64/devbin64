@@ -1,2 +1,5 @@
 # GO Lang
-/vendor
+vendor/
+*.test
+*.out
+.glide/

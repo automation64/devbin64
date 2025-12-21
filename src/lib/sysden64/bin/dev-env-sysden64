@@ -17,6 +17,45 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / SysDen64 / Module environment definition version
+  export DEV_ENV_SYSDEN64_ID='sysden64'
+  export DEV_ENV_SYSDEN64_VERSION='6.4.0'
+
+  # Lab / SysDen64 / Profile names
+  export DEV_LAB_SYSDEN64_PROFILE_DEFAULT='default'
+  export DEV_LAB_SYSDEN64_PROFILE_NONE='none'
+  # Lab / SysDen64 / Current profile marker
+  export DEV_LAB_SYSDEN64_PATH_PROFILE='.sysden64-profile'
+  # Lab / SysDen64 / Local paths
+  export DEV_LAB_SYSDEN64_PATH_SD64_BASE='lib/sd64'
+  export DEV_LAB_SYSDEN64_PATH_SD64_LOCAL="${DEV_PATH_ROOT}/${DEV_LAB_SYSDEN64_PATH_SD64_BASE}"
+  export DEV_LAB_SYSDEN64_PATH_DEN="${DEV_PATH_PROF_VAR}/home"
+  # Lab / SysDen64 / Container paths
+  export DEV_LAB_SYSDEN64_PATH_HOME_CONTAINER='/home'
+  export DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER='/sysden64'
+  export DEV_LAB_SYSDEN64_PATH_SD64_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/${DEV_LAB_SYSDEN64_PATH_SD64_BASE}"
+  export DEV_LAB_SYSDEN64_PATH_BL64_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/lib/bl64"
+  # Lab / SysDen64 / Helper scripts
+  export DEV_LAB_SYSDEN64_SCRIPT_HOME="${DEV_LAB_SYSDEN64_PATH_SD64_LOCAL}/bin/sysden64"
+  export DEV_LAB_SYSDEN64_SCRIPT_ENTRYPOINT="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/bin/dev-lab-sysden64-entrypoint"
+
+  # Lib / SysDen64 / Installer
+  export DEV_LIB_SYSDEN64_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-sysden64"
+  # Lib / SysDen64 / Skip installation?
+  export DEV_LIB_SYSDEN64_SKIP='YES'
+  # Lib / SysDen64 / Target
+  export DEV_LIB_SYSDEN64_TARGET="${DEV_LIB_SYSDEN64_TARGET:-${DEV_PATH_LIB}/sd64}"
+
+}
+
+#
 # Module parameters
 #
 # * Use .dev.env file to override values
@@ -37,37 +76,6 @@
   export DEV_LAB_SYSDEN64_CONTAINER_USER_NAME="${DEV_LAB_SYSDEN64_CONTAINER_USER_NAME:-}"
   export DEV_LAB_SYSDEN64_CONTAINER_USER_UID="${DEV_LAB_SYSDEN64_CONTAINER_USER_UID:-}"
   export DEV_LAB_SYSDEN64_CONTAINER_USER_HOME="${DEV_LAB_SYSDEN64_CONTAINER_USER_HOME:-/home/${DEV_LAB_SYSDEN64_CONTAINER_USER_NAME}}"
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / SysDen64 / Module environment definition version
-  export DEV_ENV_SYSDEN64_VERSION='6.4.0'
-  # Lab / SysDen64 / Profile names
-  export DEV_LAB_SYSDEN64_PROFILE_DEFAULT='default'
-  export DEV_LAB_SYSDEN64_PROFILE_NONE='none'
-  # Lab / SysDen64 / Current profile marker
-  export DEV_LAB_SYSDEN64_PATH_PROFILE='.sysden64-profile'
-  # Lab / SysDen64 / Local paths
-  export DEV_LAB_SYSDEN64_PATH_SD64_BASE='lib/sd64'
-  export DEV_LAB_SYSDEN64_PATH_SD64_LOCAL="${DEV_PATH_ROOT}/${DEV_LAB_SYSDEN64_PATH_SD64_BASE}"
-  export DEV_LAB_SYSDEN64_PATH_DEN="${DEV_PATH_PROF_VAR}/home"
-  # Lab / SysDen64 / Container paths
-  export DEV_LAB_SYSDEN64_PATH_HOME_CONTAINER='/home'
-  export DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER='/sysden64'
-  export DEV_LAB_SYSDEN64_PATH_SD64_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/${DEV_LAB_SYSDEN64_PATH_SD64_BASE}"
-  export DEV_LAB_SYSDEN64_PATH_BL64_CONTAINER="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/lib/bl64"
-  # Lab / SysDen64 / Helper scripts
-  export DEV_LAB_SYSDEN64_SCRIPT_HOME="${DEV_LAB_SYSDEN64_PATH_SD64_LOCAL}/bin/sysden64"
-  export DEV_LAB_SYSDEN64_SCRIPT_ENTRYPOINT="${DEV_LAB_SYSDEN64_PATH_ROOT_CONTAINER}/bin/dev-lab-sysden64-entrypoint"
-  # Lib / SysDen64 / Installer
-  export DEV_LIB_SYSDEN64_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-sysden64"
   # Lab / SysDen64 / Container user
   export DEV_LAB_SYSDEN64_CONTAINER_PROFILE="${DEV_LAB_SYSDEN64_CONTAINER_USER_HOME}/.sysden64-lab"
 }
@@ -80,10 +88,6 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / SysDen64 / Skip installation?
-  export DEV_LIB_SYSDEN64_SKIP='YES'
-  # Lib / SysDen64 / Target
-  export DEV_LIB_SYSDEN64_TARGET="${DEV_LIB_SYSDEN64_TARGET:-${DEV_PATH_LIB}/sd64}"
   # Lib / SysDen64 / Command
   export DEV_LIB_SYSDEN64_BIN="${DEV_LIB_SYSDEN64_BIN:-}"
   if [[ -z "$DEV_LIB_SYSDEN64_BIN" ]]; then
@@ -93,6 +97,8 @@
       if [[ ! -x "${DEV_LIB_SYSDEN64_BIN}" ]]; then
         DEV_LIB_SYSDEN64_SKIP='NO'
       fi
+    else
+      DEV_LIB_SYSDEN64_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_SYSDEN64_BIN")"
     fi
   fi
 }

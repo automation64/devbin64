@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# template-sast: 1.1.0
+# template-task: 1.9.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=/opt/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+# shellcheck source-path=bin
+source ./bin/dev-env-go &&
+  source ./bin/dev-env-gosec || exit 1
+
+declare MY_TARGET="${1:-${DEV_SAST_GOSEC_TARGET}}"
+
+function my_sast() {
+  bl64_dbg_app_show_function
+  PATH="${PATH}:${DEV_LIB_GO_TARGET}"
+  "$DEV_LIB_GOSEC_BIN" \
+    -sort \
+    -stdout \
+    -verbose 'text' \
+    -fmt "$DEV_SAST_GOSEC_FORMAT" \
+    -out "$DEV_SAST_GOSEC_PATH_REPORT" \
+    "${MY_TARGET}/..."
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_about
+  bl64_check_command "$DEV_LIB_GO_BIN" &&
+    bl64_check_command "$DEV_LIB_GOSEC_BIN" &&
+    dev_bin64_log_setup "$DEV_ENV_GOSEC_PATH_LOGS" &&
+    dev_bin64_task_show_setup \
+      'MY_TARGET' \
+      'DEV_SAST_GOSEC_FORMAT' \
+      'DEV_SAST_GOSEC_PATH_REPORT'
+}
+
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Static test source code security'
+dev_bin64_initialize && my_initialize || exit $?
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+my_sast
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

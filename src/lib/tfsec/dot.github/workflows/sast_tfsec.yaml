@@ -1,7 +1,6 @@
 ---
-# template: 1.1.1
-# template-gh-sast: 1.3.0
-name: "SAST / TFSec"
+# template: 1.2.0
+name: "SAST/TFSec"
 
 env:
   DEV_CICD_DEBUG: "NONE"
@@ -34,12 +33,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-lib-cache
 
-      - name: "Prepare environment"
-        run: "./bin/dev-lib-base"
-
       - name: "Download tools"
         run: |
-          ./bin/dev-lib-opentofu
+          ./bin/dev-lib-base &&
+          ./bin/dev-lib-opentofu &&
           ./bin/dev-lib-tfsec
 
       - name: "Prepare for testing"

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Install DevBin64 in test environment
+
 mkdir -p \
   "$TEST_INSTALL_TARGET" \
   "${TEST_INSTALL_TARGET}/bin" \

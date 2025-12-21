@@ -1,6 +1,6 @@
 ---
-# template: 3.6.0
-name: "Test / TestManSH"
+# template: 3.7.0
+name: "Test/TestManSH"
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -37,11 +37,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-lib-cache
 
-      - name: "Prepare environment"
-        run: "./bin/dev-lib-base"
-
       - name: "Download tools"
-        run: "./bin/dev-lib-testmansh"
+        run: |
+          ./bin/dev-lib-base &&
+          ./bin/dev-lib-testmansh
 
       # X_BUILD_PLACEHOLDER
 

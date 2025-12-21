@@ -1,0 +1,45 @@
+---
+# template: 1.0.0
+name: "Lint/GoLangCI"
+
+env:
+  DEV_CICD_DEBUG: "NONE"
+  BL64_LIB_CICD: "YES"
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+
+jobs:
+  lint-golangci:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Cache local tools"
+        uses: "actions/cache@v4"
+        with:
+          path: ./lib
+          key: ${{ runner.os }}-lib-cache
+          restore-keys: |
+            ${{ runner.os }}-lib-cache
+
+      - name: "Download tools"
+        run: |
+          ./bin/dev-lib-base &&
+          ./bin/dev-lib-go &&
+          ./bin/dev-lib-golangci
+
+      - name: "Prepare for linting"
+        run: "./bin/dev-prep-go"
+
+      - name: "Run Linter"
+        run: "./bin/dev-lint-golangci"
+...

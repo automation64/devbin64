@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
-#######################################
-# Dev / Test / Go / Simple test runner
-#
-# * Run tests in test/go using containers
-# * Version: 1.0.1
-#
+# template-test: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -18,34 +13,28 @@
 # limitations under the License.
 #######################################
 
-#
-# Imports
-#
-
 # shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 # shellcheck source-path=/opt/bl64
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 # shellcheck source-path=bin
 source ./bin/dev-env-go || exit 1
 
-#
-# Functions
-#
+declare MY_TARGET="${*:-$DEV_TEST_GO_CASES}"
 
 function dev_test_run() {
   bl64_dbg_app_show_function "$@"
-  local container_path="$1"
-  local test_file="$2"
+  local image="$1"
+  local target="$2"
   local entrypoint='/usr/local/bin/go'
 
-  bl64_msg_show_phase "run test target: ${test_file}"
+  bl64_msg_show_phase "run test target: ${target}"
   # shellcheck disable=SC2086
   bl64_cnt_run \
     $BL64_CNT_SET_RM \
@@ -56,60 +45,38 @@ function dev_test_run() {
     --mount "type=bind,source=${DEV_PATH_ROOT},target=${DEV_ENV_GO_CONTAINER_PATH_ROOT},readonly" \
     --mount "type=bind,source=${DEV_PATH_TEST},target=${DEV_ENV_GO_CONTAINER_PATH_TEST},readonly" \
     --entrypoint="$entrypoint" \
-    "${DEV_ENV_GO_REGISTRY}/${container_path}" \
+    "${DEV_ENV_GO_REGISTRY}/${image}" \
     -- \
     test \
-    "$test_file" ||
+    -v \
+    "./${target}/..." ||
     return $?
 }
 
-function dev_test_go() {
-  bl64_dbg_app_show_function "$@"
-  local container="$1"
-  shift
-  local target="$*"
+function my_test() {
+  bl64_dbg_app_show_function
   local current=''
-  local tests=''
 
-  bl64_dbg_app_show_comments 'define target tests'
-  if [[ -z "$target" ]]; then
-    target="$DEV_TEST_GO_CASES"
-  fi
-  if [[ -d "$target" ]]; then
-    bl64_dbg_app_show_comments "look for tests (${target})"
-    tests="$(bl64_fs_file_search "$target" '*_test.go')" ||
-      return $?
-  else
-    tests="$target"
-  fi
-  bl64_msg_show_info "test container: ${container}"
-  for current in $tests; do
-    dev_test_run "${container}" "$current" ||
+  for current in ${MY_TARGET[*]}; do
+    dev_test_run "${DEV_LAB_GO_CONTAINER}" "$current" ||
       return $?
   done
 }
 
-function dev_test_initialize() {
+function my_initialize() {
   bl64_dbg_app_show_function
+  bl64_msg_show_about
   bl64_cnt_setup &&
     bl64_check_command "$DEV_LIB_GO_BIN" &&
-    bl64_fs_set_umask "$BL64_FS_UMASK_RW_USER_RO_ALL" &&
-    "$DEV_LIB_GO_BIN" mod tidy &&
-    "$DEV_LIB_GO_BIN" mod vendor
+    dev_bin64_tmp_setup "$DEV_BUILD_GO_PATH_CACHE" "$DEV_BUILD_GO_PATH_MODCACHE" "$DEV_BUILD_GO_PATH_TMP" &&
+    dev_bin64_task_show_setup \
+      'MY_TARGET'
 }
 
-#
-# Main
-#
-
-declare dev_test_container="${1:-${DEV_TEST_GO_CONTAINER}}"
-shift
-declare dev_test_target="${*:-}"
-
-bl64_lib_script_version_set '1.0.3'
-bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose
+bl64_lib_script_version_set '2.0.0'
+bl64_msg_help_about_set 'Test source code'
+dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-dev_test_initialize &&
-  dev_test_go "$dev_test_container" "$dev_test_target"
+my_test
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

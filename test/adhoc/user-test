@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-source test/lib/runtime.bash
+test/adhoc/user-reset || exit 1
 
 export DEV_BOOTSTRAP_PATH_ROOT='/project/src'
 cd src/lib
 modules="$(ls -1 | grep -v devbin64)"
 
-./test/adhoc/user_reset.sh
 
 cd "$HOME"
 mkdir test-repo

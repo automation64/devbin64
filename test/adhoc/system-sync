@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source test/lib/runtime.bash
+test/lib/check.bash || exit 1
 
 sudo rm -rf /opt/devbin64
 sudo mkdir /opt/devbin64 /opt/devbin64/bin &&

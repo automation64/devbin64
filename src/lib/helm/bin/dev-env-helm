@@ -14,6 +14,26 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Helm / Module environment definition version
+  export DEV_ENV_HELM_ID='helm'
+  export DEV_ENV_HELM_VERSION='1.1.0'
+
+  # Lib / Helm / Installer
+  export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
+  # Lib / Helm / Skip installation?
+  export DEV_LIB_HELM_SKIP='YES'
+  # Lib / Helm / Target
+  export DEV_LIB_HELM_TARGET="${DEV_PATH_LIB}/${DEV_ENV_HELM_ID}"
+}
+
+#
 # Locals
 #
 # * Use .local.env file or CICD variables to override values
@@ -21,10 +41,6 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / Helm / Skip installation?
-  export DEV_LIB_HELM_SKIP='YES'
-  # Lib / Helm / Target
-  export DEV_LIB_HELM_TARGET="${DEV_PATH_LIB}/hlm"
   # Lib / Helm / Command
   export DEV_LIB_HELM_BIN="${DEV_LIB_HELM_BIN:-}"
   if [[ -z "$DEV_LIB_HELM_BIN" ]]; then
@@ -34,20 +50,8 @@
       if [[ ! -x "${DEV_LIB_HELM_BIN}" ]]; then
         DEV_LIB_HELM_SKIP='NO'
       fi
+    else
+      DEV_LIB_HELM_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_HELM_BIN")"
     fi
   fi
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / Helm / Module environment definition version
-  export DEV_ENV_HELM_VERSION='1.1.0'
-  # Lib / Helm / Installer
-  export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
 }
