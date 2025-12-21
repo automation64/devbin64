@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source test/lib/runtime.bash
+test/lib/check.bash || exit 1
 
 cd "$HOME"
 rm -Rf test-repo

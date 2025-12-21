@@ -14,6 +14,43 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / OpenTofu / Module environment definition version
+  export DEV_ENV_OPENTOFU_ID='opentofu'
+  export DEV_ENV_OPENTOFU_VERSION='1.5.0'
+  # Env / OpenTofu / Work paths
+  export DEV_ENV_OPENTOFU_PATH_OUTPUT="${DEV_PATH_PROF_TMP}/opentofu"
+  export DEV_ENV_OPENTOFU_PATH_LOGS="${DEV_PATH_PROF_LOGS}/opentofu"
+
+  # Lib / OpenTofu / Installer
+  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
+  # Lib / OpenTofu / Skip installation?
+  export DEV_LIB_OPENTOFU_SKIP='YES'
+  # Lib / OpenTofu / Target path
+  export DEV_LIB_OPENTOFU_TARGET="${DEV_PATH_LIB}/${DEV_ENV_OPENTOFU_ID}"
+
+  # Test / OpenTofu / Cases path
+  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
+  export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
+  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/test"
+
+  # Test / OpenTofu / Artifacts
+  export DEV_TEST_OPENTOFU_PLAN='test.plan'
+  export DEV_TEST_OPENTOFU_LOG='test.log'
+
+  # Deploy / OpenTofu / Log file
+  export DEV_DEPLOY_OPENTOFU_LOG='deploy.log'
+  # Remove / OpenTofu / Log file
+  export DEV_REMOVE_OPENTOFU_LOG='remove.log'
+}
+
+#
 # Globals
 #
 # * Use .dev.env file to override values
@@ -53,10 +90,6 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / OpenTofu / Skip installation?
-  export DEV_LIB_OPENTOFU_SKIP='YES'
-  # Lib / OpenTofu / Target path
-  export DEV_LIB_OPENTOFU_TARGET="${DEV_PATH_LIB}/otf"
   # Lib / OpenTofu / Command
   export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-}"
   if [[ -z "$DEV_LIB_OPENTOFU_BIN" ]]; then
@@ -66,6 +99,8 @@
       if [[ ! -x "${DEV_LIB_OPENTOFU_BIN}" ]]; then
         DEV_LIB_OPENTOFU_SKIP='NO'
       fi
+    else
+      DEV_LIB_OPENTOFU_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_OPENTOFU_BIN")"
     fi
   fi
 }
@@ -105,35 +140,4 @@
   export TF_VAR_DEV_PATH_PROF_TMP="$DEV_PATH_PROF_TMP"
   export TF_VAR_DEV_PATH_PROF_VAR="$DEV_PATH_PROF_VAR"
   export TF_VAR_DEV_PATH_PROF_VAULT="$DEV_PATH_PROF_VAULT"
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / OpenTofu / Module environment definition version
-  export DEV_ENV_OPENTOFU_VERSION='1.5.0'
-  # Env / OpenTofu / Work paths
-  export DEV_ENV_OPENTOFU_PATH_OUTPUT="${DEV_PATH_PROF_TMP}/opentofu"
-  export DEV_ENV_OPENTOFU_PATH_LOGS="${DEV_PATH_PROF_LOGS}/opentofu"
-
-  # Lib / OpenTofu / Installer
-  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
-  # Test / OpenTofu / Cases path
-  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
-  export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
-  export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/test"
-
-  # Test / OpenTofu / Artifacts
-  export DEV_TEST_OPENTOFU_PLAN='test.plan'
-  export DEV_TEST_OPENTOFU_LOG='test.log'
-
-  # Deploy / OpenTofu / Log file
-  export DEV_DEPLOY_OPENTOFU_LOG='deploy.log'
-  # Remove / OpenTofu / Log file
-  export DEV_REMOVE_OPENTOFU_LOG='remove.log'
 }

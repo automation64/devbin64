@@ -14,6 +14,28 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / TFSec / Module environment definition version
+  export DEV_ENV_TFSEC_ID='tfsec'
+  export DEV_ENV_TFSEC_VERSION='1.2.0'
+
+  # Lib / TFSec / Installer
+  export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
+  # Lib / TFSec / Skip installation?
+  export DEV_LIB_TFSEC_SKIP='YES'
+  # Lib / TFSec / Target
+  export DEV_LIB_TFSEC_TARGET="${DEV_PATH_LIB}/${DEV_ENV_TFSEC_ID}"
+  # SAST /TFSec / Configuration
+  export DEV_SAST_TFSEC_CONFIG="${DEV_PATH_ROOT}/.tfsec.yml"
+}
+
+#
 # Module parameters
 #
 # * Use .dev.env file to override values
@@ -35,10 +57,6 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / TFSec / Skip installation?
-  export DEV_LIB_TFSEC_SKIP='YES'
-  # Lib / TFSec / Target
-  export DEV_LIB_TFSEC_TARGET="${DEV_PATH_LIB}/tfs"
   # Lib / TFSec / Command
   export DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_BIN:-}"
   if [[ -z "$DEV_LIB_TFSEC_BIN" ]]; then
@@ -48,22 +66,8 @@
       if [[ ! -x "${DEV_LIB_TFSEC_BIN}" ]]; then
         DEV_LIB_TFSEC_SKIP='NO'
       fi
+    else
+      DEV_LIB_TFSEC_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_TFSEC_BIN")"
     fi
   fi
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / TFSec / Module environment definition version
-  export DEV_ENV_TFSEC_VERSION='1.2.0'
-  # Lib / TFSec / Installer
-  export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
-  # SAST /TFSec / Configuration
-  export DEV_SAST_TFSEC_CONFIG="${DEV_PATH_ROOT}/.tfsec.yml"
 }

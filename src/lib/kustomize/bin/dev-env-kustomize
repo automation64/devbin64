@@ -14,7 +14,7 @@
 #######################################
 
 #
-# Internal variables
+# Module variables
 #
 # * Shared internal variables for module tasks
 #
@@ -22,5 +22,6 @@
 # shellcheck disable=SC2154
 {
   # Env / Kustomize / Module environment definition version
+  export DEV_ENV_KUSTOMIZE_ID='kustomize'
   export DEV_ENV_KUSTOMIZE_VERSION='1.0.0'
 }

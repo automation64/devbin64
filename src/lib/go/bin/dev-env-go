@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 1.0.1
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,25 +14,72 @@
 #######################################
 
 #
-# Globals
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Go / Module environment definition version
+  export DEV_ENV_GO_ID='go'
+  export DEV_ENV_GO_VERSION='1.1.0'
+
+  # Env / Go / Container path for project mounts
+  export DEV_ENV_GO_CONTAINER_PATH_SRC='/source'
+  export DEV_ENV_GO_CONTAINER_PATH_ROOT='/project'
+  export DEV_ENV_GO_CONTAINER_PATH_TEST='/test'
+  # Env / Go / Flag for marking container environment
+  export DEV_ENV_GO_CONTAINER_ENVIRONMENT="${DEV_ENV_GO_CONTAINER_ENVIRONMENT:-OFF}"
+
+  # Lib / Go / Installer
+  export DEV_LIB_GO_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-go"
+  # Lib / Go / Skip installation?
+  export DEV_LIB_GO_SKIP='YES'
+  # Lib / Go / Target
+  export DEV_LIB_GO_TARGET="${DEV_PATH_LIB}/${DEV_ENV_GO_ID}"
+
+  # Build / Go / Work paths
+  export DEV_BUILD_GO_PATH_CACHE="${DEV_PATH_TMP}/${DEV_ENV_GO_ID}/build"
+  export DEV_BUILD_GO_PATH_MODCACHE="${DEV_PATH_TMP}/${DEV_ENV_GO_ID}/mod"
+  export DEV_BUILD_GO_PATH_TMP="${DEV_PATH_TMP}/${DEV_ENV_GO_ID}/tmp"
+  # Build / Go / Target
+  export DEV_BUILD_GO_PATH_TARGET="${DEV_PATH_BUILD_PREPARE}/${DEV_ENV_GO_ID}"
+
+  # Test / Go / Path to test cases. Relative to DEV_PATH_ROOT
+  export DEV_TEST_GO_CASES="${DEV_BASE_SRC}"
+}
+
+#
+# Module parameters
 #
 # * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
+  # Env / Go / Module root path
+  export DEV_ENV_GO_MODULE_ROOT="${DEV_ENV_GO_MODULE_ROOT:-}"
   # Env / Go / Registry for lab and testing containers
   export DEV_ENV_GO_REGISTRY="${DEV_ENV_GO_REGISTRY:-ghcr.io/automation64}"
-  # Env / Go / Container path for project mounts
-  export DEV_ENV_GO_CONTAINER_PATH_SRC='/source'
-  export DEV_ENV_GO_CONTAINER_PATH_ROOT='/project'
-  export DEV_ENV_GO_CONTAINER_PATH_TEST='/test'
+
+  # Lib / Go / Version
+  export DEV_LIB_GO_VERSION="${DEV_LIB_GO_VERSION:-latest}"
+
   # Lab / Go / Default image
   export DEV_LAB_GO_CONTAINER="${DEV_LAB_GO_CONTAINER:-go-test/alpine-3-go-test}"
-  # Test / Go / Container where the test will run
-  export DEV_TEST_GO_CONTAINER="${DEV_TEST_GO_CONTAINER:-go-test/alpine-3-go-test}"
-  # Test / Go / Path to test cases. Relative to DEV_PATH_ROOT
-  export DEV_TEST_GO_CASES="${DEV_TEST_GO_CASES:-${DEV_BASE_TEST}/go}"
+
+  # Build / Go / Source
+  export DEV_BUILD_GO_PATH_SOURCE="${DEV_BUILD_GO_PATH_SOURCE:-$DEV_BASE_SRC}"
+  export DEV_BUILD_GO_PATH_SOURCE_MAIN="${DEV_BUILD_GO_PATH_SOURCE_MAIN:-cmd}"
+  # Build / Go / App name
+  export DEV_BUILD_GO_APP_NAME="${DEV_BUILD_GO_APP_NAME:-myapp}"
+  # Build / Go / Output
+  export DEV_BUILD_GO_PATH_OUTPUT="${DEV_BUILD_GO_PATH_TARGET}/${DEV_BUILD_GO_APP_NAME}"
+
+  # Pack / Go / Target
+  export DEV_PACK_GO_PATH_TARGET="${DEV_PATH_BUILD_PACK}/${DEV_ENV_GO_ID}"
+  export DEV_PACK_GO_PATH_CHECKSUM="${DEV_PACK_GO_PATH_TARGET}/${DEV_BUILD_GO_APP_NAME}${DEV_SUFFIX_CHECKSUM}"
 }
 
 #
@@ -44,5 +91,30 @@
 # shellcheck disable=SC2154
 {
   # Lib / Go / Command
-  export DEV_LIB_GO_BIN="${DEV_LIB_GO_BIN:-/usr/local/bin/go}"
+  export DEV_LIB_GO_BIN="${DEV_LIB_GO_BIN:-}"
+  if [[ -z "$DEV_LIB_GO_BIN" ]]; then
+    DEV_LIB_GO_BIN="$(bl64_bsh_command_locate_user 'go' "${DEV_LIB_GO_TARGET}/bin")"
+    if [[ -z "$DEV_LIB_GO_BIN" ]]; then
+      DEV_LIB_GO_BIN="${DEV_LIB_GO_TARGET}/bin/go"
+      if [[ ! -x "${DEV_LIB_GO_BIN}" ]]; then
+        DEV_LIB_GO_SKIP='NO'
+      fi
+    else
+      DEV_LIB_GO_TARGET="$(bl64_fmt_path_get_dirname "$DEV_LIB_GO_BIN")"
+    fi
+  fi
+}
+
+#
+# External
+#
+# * External tools only. Use to declare configuration env-vars
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Go / Cache
+  export GOCACHE="$DEV_BUILD_GO_PATH_CACHE"
+  export GOMODCACHE="$DEV_BUILD_GO_PATH_MODCACHE"
+  export GOTMPDIR="$DEV_BUILD_GO_PATH_TMP"
 }

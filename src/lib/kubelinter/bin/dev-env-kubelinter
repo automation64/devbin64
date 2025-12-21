@@ -14,6 +14,28 @@
 #######################################
 
 #
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Kubelinter / Module environment definition version
+  export DEV_ENV_KUBELINTER_ID='kubelinter'
+  export DEV_ENV_KUBELINTER_VERSION='1.1.0'
+  # Env / Kubelinter / Container path for project mounts
+  export DEV_ENV_KUBELINTER_CONTAINER_PATH_ROOT='/project'
+
+  # Lib / Kubelinter / Installer
+  export DEV_LIB_KUBELINTER_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubelinter"
+  # Lib / Kubelinter / Skip installation?
+  export DEV_LIB_KUBELINTER_SKIP='YES'
+  # Lib / Kubelinter / Target
+  export DEV_LIB_KUBELINTER_TARGET="${DEV_PATH_LIB}/${DEV_ENV_KUBELINTER_ID}"
+}
+
+#
 # Module parameters
 #
 # * Use .dev.env file to override values
@@ -39,10 +61,6 @@
 
 # shellcheck disable=SC2154
 {
-  # Lib / Kubelinter / Skip installation?
-  export DEV_LIB_KUBELINTER_SKIP='YES'
-  # Lib / Kubelinter / Target
-  export DEV_LIB_KUBELINTER_TARGET="${DEV_PATH_LIB}/klnt"
   # Lib / Kubelinter / Command
   export DEV_LIB_KUBELINTER_BIN="${DEV_LIB_KUBELINTER_BIN:-}"
   if [[ -z "$DEV_LIB_KUBELINTER_BIN" ]]; then
@@ -52,22 +70,8 @@
       if [[ ! -x "${DEV_LIB_KUBELINTER_BIN}" ]]; then
         DEV_LIB_KUBELINTER_SKIP='NO'
       fi
+    else
+      DEV_LIB_KUBELINTER_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_KUBELINTER_BIN")"
     fi
   fi
-}
-
-#
-# Internal variables
-#
-# * Shared internal variables for module tasks
-#
-
-# shellcheck disable=SC2154
-{
-  # Env / Kubelinter / Module environment definition version
-  export DEV_ENV_KUBELINTER_VERSION='1.1.0'
-  # Env / Kubelinter / Container path for project mounts
-  export DEV_ENV_KUBELINTER_CONTAINER_PATH_ROOT='/project'
-  # Lib / Kubelinter / Installer
-  export DEV_LIB_KUBELINTER_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubelinter"
 }

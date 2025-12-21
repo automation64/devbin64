@@ -230,7 +230,7 @@ function my_initialize() {
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
     bl64_check_parameter 'MY_DRIVER_NAME' &&
-    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+    dev_bin64_task_show_setup \
       'MY_PROFILE' \
       'MY_DRIVER_NAME' \
       'MY_MODULE' \

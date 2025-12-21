@@ -34,16 +34,16 @@ function my_sast() {
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_msg_show_about
-  db64_profile_check_set &&
+  dev_bin64_profile_check_set &&
     bl64_check_command "$DEV_LIB_IAC64_TOOL_SAST_TFSEC" &&
-    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
+    dev_bin64_task_show_setup \
       'DEV_PROFILE' \
       'DEV_ENV_IAC64_PATH_VAR_MODULE'
 }
 
 bl64_lib_script_version_set '3.0.0'
 bl64_msg_help_about_set 'SAST OpenTofu source code with TFSec'
-bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose && bl64_dbg_set_level "$DEV_CICD_DEBUG" && my_initialize || exit $?
+dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_sast

@@ -14,39 +14,7 @@
 #######################################
 
 #
-# Module parameters
-#
-# * Use .dev.env file to override values
-#
-
-# shellcheck disable=SC2154
-{
-
-  # Build / IaC64 / Source module
-  export DEV_BUILD_IAC64_MODULE="${DEV_BUILD_IAC64_MODULE:-main}"
-  export DEV_BUILD_IAC64_VERSION="${DEV_BUILD_IAC64_VERSION:-0.1.0}"
-
-  # Deploy / IaC64 / Enable guardrail to prevent unintended deployment
-  export DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED="${DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED:-YES}"
-
-  # Remove / IaC64 / Enable guardrail to prevent unintended removal
-  export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED="${DEV_REMOVE_IAC64_GUARDRAIL_ENABLED:-YES}"
-}
-
-#
-# External
-#
-# * External tools only. Use to declare configuration env-vars
-#
-
-# shellcheck disable=SC2154
-{
-  # External / OpenTofu / IAC64 runtime
-  export TF_VAR_iac64__profile_name
-}
-
-#
-# Internal variables
+# Module variables
 #
 # * Shared internal variables for module tasks
 #
@@ -54,6 +22,7 @@
 # shellcheck disable=SC2154
 {
   # Env / IaC64 / Module environment definition version
+  export DEV_ENV_IAC64_ID='iac64'
   export DEV_ENV_IAC64_VERSION='3.2.0'
 
   # Env / IaC64 / Driver Name
@@ -124,7 +93,39 @@
 }
 
 #
-# Internal functions
+# Module parameters
+#
+# * Use .dev.env file to override values
+#
+
+# shellcheck disable=SC2154
+{
+
+  # Build / IaC64 / Source module
+  export DEV_BUILD_IAC64_MODULE="${DEV_BUILD_IAC64_MODULE:-main}"
+  export DEV_BUILD_IAC64_VERSION="${DEV_BUILD_IAC64_VERSION:-0.1.0}"
+
+  # Deploy / IaC64 / Enable guardrail to prevent unintended deployment
+  export DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED="${DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED:-YES}"
+
+  # Remove / IaC64 / Enable guardrail to prevent unintended removal
+  export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED="${DEV_REMOVE_IAC64_GUARDRAIL_ENABLED:-YES}"
+}
+
+#
+# External
+#
+# * External tools only. Use to declare configuration env-vars
+#
+
+# shellcheck disable=SC2154
+{
+  # External / OpenTofu / IAC64 runtime
+  export TF_VAR_iac64__profile_name
+}
+
+#
+# Module functions
 #
 # * Shared internal functions for module tasks
 #

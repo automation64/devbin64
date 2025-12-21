@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# template-pack: 1.0.0
+# template-task: 1.9.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+# shellcheck source=bin/dev-set
+source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+# shellcheck source-path=/opt/bl64
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-arc.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+# shellcheck source-path=bin
+source ./bin/dev-env-go || exit 1
+
+function my_pack_create() {
+  bl64_dbg_app_show_function "$@"
+  local source="$1"
+  cd "$DEV_BUILD_GO_PATH_TARGET" &&
+    sha256sum --binary "./${source}" >>"$DEV_PACK_GO_PATH_CHECKSUM" &&
+    zip -9 "${DEV_PACK_GO_PATH_TARGET}/$source" "$source"
+}
+
+function my_pack() {
+  bl64_dbg_app_show_function
+  local app=''
+  cd "$DEV_BUILD_GO_PATH_TARGET" &&
+    for app in "${DEV_BUILD_GO_APP_NAME}"-*-*; do
+      my_pack_create "$app" ||
+        return $?
+    done
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  bl64_msg_show_about
+  bl64_arc_setup &&
+    dev_bin64_build_setup "$DEV_PACK_GO_PATH_TARGET" &&
+    dev_bin64_task_show_setup \
+      'DEV_BUILD_GO_PATH_OUTPUT' \
+      'DEV_PACK_GO_PATH_TARGET' \
+      'DEV_PACK_GO_PATH_CHECKSUM'
+}
+
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Pack application for release'
+dev_bin64_initialize && my_initialize || exit $?
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+my_pack
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

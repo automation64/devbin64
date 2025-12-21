@@ -3,6 +3,7 @@
 export DEV_BOOTSTRAP_MODULES=''
 
 DEV_BOOTSTRAP_MODULES="$(ls -1 "src/lib")" &&
+  ./test/lib/check.bash &&
   source test/lib/runtime.bash &&
   ./test/lib/install.bash &&
   cd "$TEST_TARGET" ||
