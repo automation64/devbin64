@@ -23,14 +23,14 @@
 {
   # Env / TestmanSH / Module environment definition version
   export DEV_ENV_TESTMANSH_ID='testmansh'
-  export DEV_ENV_TESTMANSH_VERSION='1.3.0'
+  export DEV_ENV_TESTMANSH_VERSION='1.3.1'
 
   # Lib / TestmanSH / Installer
   export DEV_LIB_TESTMANSH_INSTALLER='https://raw.githubusercontent.com/automation64/testmansh/main/testmansh'
   # Lib / TestmanSH / Skip installation?
   export DEV_LIB_TESTMANSH_SKIP='YES'
   # Lib / TestmanSH / Target
-  export DEV_LIB_TESTMANSH_TARGET="${DEV_PATH_LIB}/tms}"
+  export DEV_LIB_TESTMANSH_TARGET="${DEV_PATH_LIB}/${DEV_ENV_TESTMANSH_ID}"
 }
 
 #
