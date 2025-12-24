@@ -74,7 +74,7 @@ function my_lint_local() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_about
+  dev_bin64_task_initialize &&
   if [[ -z "$DEV_LINT_HADOLINT_SOURCE" ]]; then
     bl64_check_export 'DEV_LINT_HADOLINT_SOURCE' &&
       bl64_check_directory "$DEV_LINT_HADOLINT_SOURCE" ||

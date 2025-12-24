@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # template-sast: 1.1.0
-# template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -43,17 +42,16 @@ function my_sast() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_GO_BIN" &&
+  dev_bin64_task_initialize &&
+  dev_bin64_log_setup "$DEV_ENV_GOSEC_PATH_LOGS" &&
+    bl64_check_command "$DEV_LIB_GO_BIN" &&
     bl64_check_command "$DEV_LIB_GOSEC_BIN" &&
-    dev_bin64_log_setup "$DEV_ENV_GOSEC_PATH_LOGS" &&
     dev_bin64_task_show_setup \
       'MY_TARGET' \
-      'DEV_SAST_GOSEC_FORMAT' \
       'DEV_SAST_GOSEC_PATH_REPORT'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_help_about_set 'Static test source code security'
 dev_bin64_initialize && my_initialize || exit $?
 

@@ -28,8 +28,8 @@ source ./bin/dev-env-X_MODULE_X || exit 1
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_check_command "$DEV_LIB_X_MODULE_CAPS_X_BIN" &&
-    bl64_msg_show_about
+  dev_bin64_task_initialize &&
+    bl64_check_command "$DEV_LIB_X_MODULE_CAPS_X_BIN"
 }
 
 bl64_lib_script_version_set '1.0.0'

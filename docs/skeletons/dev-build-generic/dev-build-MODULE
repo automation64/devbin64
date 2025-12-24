@@ -34,8 +34,8 @@ function my_build() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_about
-  dev_bin64_build_setup "$DEV_BUILD_X_MODULE_CAPS_X_PATH_TARGET" &&
+  dev_bin64_task_initialize &&
+    dev_bin64_build_setup "$DEV_BUILD_X_MODULE_CAPS_X_PATH_TARGET" &&
     dev_bin64_task_show_setup \
       'DEV_BUILD_X_MODULE_CAPS_X_PATH_SOURCE' \
       'DEV_BUILD_X_MODULE_CAPS_X_PATH_TARGET'

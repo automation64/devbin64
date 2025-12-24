@@ -28,7 +28,7 @@ source ./bin/dev-env-opentofu || exit 1
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_about
+  dev_bin64_task_initialize &&
   bl64_lib_script_minver_check '22.5.0' &&
     bl64_tf_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_OPENTOFU_BIN")" &&
     bl64_check_directory "$DEV_BUILD_OPENTOFU_STAGING" &&

@@ -24,6 +24,8 @@
   # Env / X_MODULE_TITLE_X / Module environment definition version
   export DEV_ENV_X_MODULE_CAPS_X_ID='x_module_caps_x'
   export DEV_ENV_X_MODULE_CAPS_X_VERSION='1.0.0'
+  # optional ## Env / X_MODULE_TITLE_X / Log path
+  # optional #export DEV_ENV_X_MODULE_CAPS_X_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_X_MODULE_CAPS_X_ID}"
   # X_MODULE_PLACEHOLDER_X
 }
 

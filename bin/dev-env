@@ -43,7 +43,7 @@
   export DEV_MODULE_LOAD=''
 
   # Env / DevBin64 / Current version
-  export DEV_BIN64_VERSION='12.0.2'
+  export DEV_BIN64_VERSION='12.1.0'
 
   # Env / DevBin64 / Project root
   export DEV_PATH_ROOT=''
@@ -265,8 +265,14 @@ function dev_bin64_initialize() {
   bl64_dbg_set_level "$DEV_CICD_DEBUG" &&
     bl64_msg_set_format "$DEV_VERBOSE" &&
     bl64_msg_set_output "$DEV_VERBOSE_TYPE" &&
-    bl64_msg_all_enable_verbose &&
-    bl64_fs_set_umask 'u=rwx,g=rx,o=rx'
+    bl64_msg_all_enable_verbose
+}
+
+function dev_bin64_task_initialize () {
+  bl64_dbg_app_show_function
+  bl64_msg_show_about
+  bl64_msg_show_task 'initialize task'
+  bl64_fs_set_umask 'u=rwx,g=rx,o=rx'
 }
 
 function dev_bin64_task_show_setup() {

@@ -29,7 +29,7 @@ source ./bin/dev-env-hadolint || exit 1
 function my_initialize() {
   bl64_dbg_app_show_function
   bl64_check_command "$DEV_LIB_HADOLINT_BIN" &&
-    bl64_msg_show_about
+    dev_bin64_task_initialize
 }
 
 bl64_lib_script_version_set '2.0.0'

@@ -38,20 +38,23 @@ function my_sast() {
     --no-code \
     --no-module-downloads \
     --format="$DEV_SAST_TFSEC_FORMAT" \
-    ${DEV_SAST_TFSEC_CONFIG:+--config-file "$DEV_SAST_TFSEC_CONFIG"} \
+    --config-file "$DEV_SAST_TFSEC_CONFIG" \
+    --out "${DEV_SAST_TFSEC_PATH_REPORT}" \
     ${tfvars:+--tfvars-file "${tfvars}"} "${MY_TARGET}"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_about
-  bl64_check_command "$DEV_LIB_TFSEC_BIN" &&
+  dev_bin64_task_initialize &&
+    dev_bin64_log_setup "$DEV_ENV_TFSEC_PATH_LOGS" &&
+    bl64_check_command "$DEV_LIB_TFSEC_BIN" &&
     dev_bin64_task_show_setup \
+      'DEV_SAST_TFSEC_PATH_REPORT' \
       'DEV_SAST_TFSEC_CONFIG' \
       'MY_TARGET'
 }
 
-bl64_lib_script_version_set '1.2.1'
+bl64_lib_script_version_set '1.3.0'
 bl64_msg_help_about_set 'Static test source code security'
 dev_bin64_initialize && my_initialize || exit $?
 
