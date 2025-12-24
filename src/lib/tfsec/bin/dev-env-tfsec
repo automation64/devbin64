@@ -23,7 +23,9 @@
 {
   # Env / TFSec / Module environment definition version
   export DEV_ENV_TFSEC_ID='tfsec'
-  export DEV_ENV_TFSEC_VERSION='1.2.0'
+  export DEV_ENV_TFSEC_VERSION='1.3.0'
+  # Env / TFSec / Log path
+  export DEV_ENV_TFSEC_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_TFSEC_ID}"
 
   # Lib / TFSec / Installer
   export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
@@ -31,6 +33,7 @@
   export DEV_LIB_TFSEC_SKIP='YES'
   # Lib / TFSec / Target
   export DEV_LIB_TFSEC_TARGET="${DEV_PATH_LIB}/${DEV_ENV_TFSEC_ID}"
+
   # SAST /TFSec / Configuration
   export DEV_SAST_TFSEC_CONFIG="${DEV_PATH_ROOT}/.tfsec.yml"
 }
@@ -43,10 +46,12 @@
 
 # shellcheck disable=SC2154
 {
-  # SAST /TFSec / Target
+  # SAST / TFSec / Target
   export DEV_SAST_TFSEC_TARGET="${DEV_SAST_TFSEC_TARGET:-${DEV_PATH_SRC}}"
-  # SAST /TFSec / Output format
-  export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-lovely}"
+  # SAST / TFSec / Output format
+  export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-sarif}"
+  # SAST / TFSec / Report
+  export DEV_SAST_TFSEC_PATH_REPORT="${DEV_ENV_TFSEC_PATH_LOGS}/${DEV_ENV_TFSEC_ID}.${DEV_SAST_TFSEC_FORMAT}"
 }
 
 #

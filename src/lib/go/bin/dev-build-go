@@ -49,7 +49,7 @@ function my_build() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_about
+  dev_bin64_task_initialize &&
   dev_bin64_tmp_setup "$DEV_BUILD_GO_PATH_CACHE" "$DEV_BUILD_GO_PATH_MODCACHE" "$DEV_BUILD_GO_PATH_TMP" &&
     dev_bin64_build_setup "$DEV_BUILD_GO_PATH_TARGET" &&
     dev_bin64_task_show_setup \

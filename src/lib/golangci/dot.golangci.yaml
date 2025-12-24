@@ -4,18 +4,18 @@ version: "2"
 linters:
   default: standard
   disable:
-    - cyclop          # Reports overly complex function bodies.
-    - exhaustruct     # Checks if all fields of a struct are initialized.
-    - godox           # Finds TODO/FIXME/BUG comments.
-    - gosec           # Inspects source code for security problems.
-    - lll             # Reports long lines.
+    - cyclop            # Reports overly complex function bodies.
+    - exhaustruct       # Checks if all fields of a struct are initialized.
+    - godox             # Finds TODO/FIXME/BUG comments.
+    - gosec             # Inspects source code for security problems.
+    - lll               # Reports long lines.
+    - depguard          # Checks for usage of forbidden packages.
+    - errcheck          # Checks for unhandled errors.
   enable:
     - asciicheck        # Checks for non-ASCII characters in identifiers.
     - bidichk           # Checks for potential bidirectional text vulnerabilities.
     - bodyclose         # Checks whether HTTP response bodies are closed.
-    - depguard          # Checks for usage of forbidden packages.
     - dupl              # Reports duplicated code fragments.
-    - errcheck          # Checks for unhandled errors.
     - forcetypeassert   # Finds forced type assertions (`v, ok := x.(T)` where `ok` is ignored).
     - gocritic          # The most opinionated code analysis tool.
     - goprintffuncname  # Checks for proper naming of printf-like functions.

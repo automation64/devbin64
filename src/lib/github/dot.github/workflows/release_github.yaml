@@ -1,5 +1,5 @@
 ---
-# template: 1.4.0
+# template: 1.4.1
 name: "Release/GitHub"
 
 concurrency:
@@ -25,12 +25,12 @@ jobs:
         uses: "actions/checkout@main"
 
       - name: "Cache local tools"
-        uses: "actions/cache@v4"
+        uses: "actions/cache@v5"
         with:
-          path: ./lib
-          key: ${{ runner.os }}-lib-cache
-          restore-keys: |
-            ${{ runner.os }}-lib-cache
+          path: \
+            ./lib/bl64
+            ./lib/inst64
+          key: "lib-base"
 
       - name: "Download tools"
         run: |
@@ -38,8 +38,8 @@ jobs:
           ./bin/dev-lib-github &&
           # X_TOOLS_PLACEHOLDER_X
 
-      # - name: "Prepare application for release"
-      # X_PREPARE_APP_PLACEHOLDER_X
+      # optional # - name: "Prepare application for release"
+      # optional #   run: "X_PREPARE_APP_PLACEHOLDER_X"
 
       - name: "Create release"
         run: "./bin/dev-release-github ${GITHUB_REF_NAME}"
