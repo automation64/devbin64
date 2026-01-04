@@ -53,12 +53,10 @@ function dev_repo_update() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-    bl64_check_export 'DEV_GIT_REMOTE_UPSTREAM_URL' &&
     dev_bin64_task_show_setup \
       'DEV_GIT_BRANCH_MAIN' \
       'DEV_GIT_REMOTE_ORIGIN' \
       'DEV_GIT_REMOTE_UPSTREAM' \
-      'DEV_GIT_REMOTE_UPSTREAM_URL' \
       'DEV_GIT_REMOTE_UPSTREAM_ENABLED'
 }
 
