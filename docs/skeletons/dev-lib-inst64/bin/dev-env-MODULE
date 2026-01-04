@@ -24,8 +24,8 @@
       if [[ ! -x "${DEV_LIB_X_MODULE_CAPS_X_BIN}" ]]; then
         DEV_LIB_X_MODULE_CAPS_X_SKIP='NO'
       fi
-     else
+    else
       DEV_LIB_X_MODULE_CAPS_X_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_X_MODULE_CAPS_X_BIN")"
-   fi
+    fi
   fi
 }

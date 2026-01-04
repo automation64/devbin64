@@ -7,7 +7,9 @@ env:
   BL64_LIB_CICD: "YES"
   DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
 
+# yamllint disable-line rule:truthy
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - "main"

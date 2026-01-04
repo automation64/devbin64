@@ -23,10 +23,10 @@
 {
   # Env / OpenTofu / Module environment definition version
   export DEV_ENV_OPENTOFU_ID='opentofu'
-  export DEV_ENV_OPENTOFU_VERSION='1.5.0'
+  export DEV_ENV_OPENTOFU_VERSION='1.5.1'
   # Env / OpenTofu / Work paths
-  export DEV_ENV_OPENTOFU_PATH_OUTPUT="${DEV_PATH_PROF_TMP}/opentofu"
-  export DEV_ENV_OPENTOFU_PATH_LOGS="${DEV_PATH_PROF_LOGS}/opentofu"
+  export DEV_ENV_OPENTOFU_PATH_OUTPUT="${DEV_PATH_PROF_TMP}/${DEV_ENV_OPENTOFU_ID}"
+  export DEV_ENV_OPENTOFU_PATH_LOGS="${DEV_PATH_PROF_LOGS}/${DEV_ENV_OPENTOFU_ID}"
 
   # Lib / OpenTofu / Installer
   export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
@@ -36,7 +36,7 @@
   export DEV_LIB_OPENTOFU_TARGET="${DEV_PATH_LIB}/${DEV_ENV_OPENTOFU_ID}"
 
   # Test / OpenTofu / Cases path
-  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/opentofu"
+  export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/${DEV_ENV_OPENTOFU_ID}"
   export DEV_TEST_OPENTOFU_CASES_PLAN="${DEV_TEST_OPENTOFU_CASES}/plan"
   export DEV_TEST_OPENTOFU_CASES_TEST="${DEV_TEST_OPENTOFU_CASES}/test"
 
@@ -66,7 +66,7 @@
   export DEV_LIB_OPENTOFU_AUTO_APPLY="${DEV_LIB_OPENTOFU_AUTO_APPLY:-NO}"
 
   # Build / OpenTofu / Staging path
-  export DEV_BUILD_OPENTOFU_STAGING="${DEV_BUILD_OPENTOFU_STAGING:-${DEV_PATH_PROF_VAR}/opentofu}"
+  export DEV_BUILD_OPENTOFU_STAGING="${DEV_BUILD_OPENTOFU_STAGING:-${DEV_PATH_PROF_VAR}/${DEV_ENV_OPENTOFU_ID}}"
   # Build / OpenTofu / Reset staging path before build?
   export DEV_BUILD_OPENTOFU_RESET="${DEV_BUILD_OPENTOFU_RESET:-NO}"
   # Build / OpenTofu / Cleanup staging path before build?

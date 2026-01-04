@@ -2,7 +2,7 @@
 # template: 1.0.0
 version: "2"
 linters:
-  default: standard
+  default: "standard"
   disable:
     - cyclop            # Reports overly complex function bodies.
     - exhaustruct       # Checks if all fields of a struct are initialized.
@@ -28,10 +28,10 @@ linters:
     - tagliatelle       # Checks struct tag format consistency.
     - unconvert         # Removes unnecessary type conversions.
     - unparam           # Finds unused function parameters.
-    - unused            # Finds unused constants, variables, functions, and types.  
+    - unused            # Finds unused constants, variables, functions, and types.
 output:
   path-mode: "abs"
 run:
   tests: true
-  timeout: 5m
+  timeout: "5m"
 ...

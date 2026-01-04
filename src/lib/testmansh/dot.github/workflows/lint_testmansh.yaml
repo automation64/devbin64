@@ -1,5 +1,5 @@
 ---
-# template: 4.8.1
+# template: 4.9.0
 name: "Lint/TestManSH"
 
 concurrency:
@@ -10,7 +10,9 @@ env:
   DEV_CICD_DEBUG: "NONE"
   BL64_LIB_CICD: "YES"
 
+# yamllint disable-line rule:truthy
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - "main"
@@ -31,18 +33,19 @@ jobs:
       - name: "Cache local tools"
         uses: "actions/cache@v5"
         with:
-          path: \
+          path: |
             ./lib/bl64
             ./lib/inst64
-          key: "lib-base"
+            ./lib/testmansh
+          key: "dev-tools"
 
       - name: "Download tools"
         run: |
           ./bin/dev-lib-base &&
           ./bin/dev-lib-testmansh
 
-      - name: "Prepare for linting"
-        run: "./bin/dev-build-bash"
+      # - name: "Prepare for linting"
+      #   run : "X_BUILD_PLACEHOLDER_X"
 
       - name: "Lint app"
         shell: 'script -q -e -c "bash {0}"' # Required to avoid no TTY error

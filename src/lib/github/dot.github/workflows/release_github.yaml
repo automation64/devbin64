@@ -1,5 +1,5 @@
 ---
-# template: 1.4.1
+# template: 1.5.0
 name: "Release/GitHub"
 
 concurrency:
@@ -10,6 +10,7 @@ env:
   DEV_CICD_DEBUG: "NONE"
   BL64_LIB_CICD: "YES"
 
+# yamllint disable-line rule:truthy
 on:
   push:
     tags:
@@ -27,16 +28,16 @@ jobs:
       - name: "Cache local tools"
         uses: "actions/cache@v5"
         with:
-          path: \
+          path: |
             ./lib/bl64
             ./lib/inst64
-          key: "lib-base"
+            ./lib/github
+          key: "dev-tools"
 
       - name: "Download tools"
         run: |
           ./bin/dev-lib-base &&
-          ./bin/dev-lib-github &&
-          # X_TOOLS_PLACEHOLDER_X
+          ./bin/dev-lib-github
 
       # optional # - name: "Prepare application for release"
       # optional #   run: "X_PREPARE_APP_PLACEHOLDER_X"

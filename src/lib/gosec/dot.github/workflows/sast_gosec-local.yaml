@@ -1,5 +1,5 @@
 ---
-# template: 1.0.1
+# template: 1.1.0
 name: "SAST/GoSec"
 
 env:
@@ -7,7 +7,9 @@ env:
   BL64_LIB_CICD: "YES"
   DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
 
+# yamllint disable-line rule:truthy
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - "main"
@@ -26,10 +28,11 @@ jobs:
       - name: "Cache local tools"
         uses: "actions/cache@v5"
         with:
-          path: \
+          path: |
             ./lib/bl64
             ./lib/inst64
-          key: "lib-base"
+            ./lib/gosec
+          key: "dev-tools"
 
       - name: "Download tools"
         run: |
