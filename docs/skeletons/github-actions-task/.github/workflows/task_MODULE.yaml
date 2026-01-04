@@ -15,6 +15,7 @@ on:
   push:
     branches:
       - "feature/**"
+      - "release/**"
     # X_PATHS_PLACEHOLDER_X
 
 jobs:

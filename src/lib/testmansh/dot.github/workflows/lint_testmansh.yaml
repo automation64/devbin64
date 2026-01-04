@@ -19,6 +19,7 @@ on:
   push:
     branches:
       - "feature/**"
+      - "release/**"
     paths:
       - "src/**"
 

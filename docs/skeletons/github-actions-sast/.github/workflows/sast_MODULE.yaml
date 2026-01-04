@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - "feature/**"
+      - "release/**"
 
 jobs:
   sast-X_TARGET_X:
