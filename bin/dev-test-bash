@@ -107,7 +107,7 @@ function my_initialize() {
   dev_bin64_task_initialize ||
     return $?
 
-  if [[ "$container_path" != "$DEV_TEST_BASH_CONTAINER_DISABLED" ]]; then
+  if [[ "$MY_CONTAINER" != "$DEV_TEST_BASH_CONTAINER_DISABLED" ]]; then
     bl64_lib_var_is_default "$MY_CONTAINER" &&
       MY_CONTAINER="$DEV_TEST_BASH_CONTAINER"
     bl64_cnt_setup ||
