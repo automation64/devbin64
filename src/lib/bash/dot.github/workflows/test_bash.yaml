@@ -113,11 +113,11 @@ jobs:
         run: |
           source ./bin/dev-set &&
           source ./bin/dev-env-bash &&
-          ./bin/dev-test-bash ${DEV_TEST_BASH_CASES}/MCOS
+          ./bin/dev-test-bash CONTAINER_MODE_DISABLED ${DEV_TEST_BASH_CASES}/MCOS
 
       - name: "Run Unix generic tests"
         run: |
           source ./bin/dev-set &&
           source ./bin/dev-env-bash &&
-          ./bin/dev-test-bash ${DEV_TEST_BASH_CASES}/UNX
+          ./bin/dev-test-bash CONTAINER_MODE_DISABLED ${DEV_TEST_BASH_CASES}/UNX
 ...
