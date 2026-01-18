@@ -73,7 +73,7 @@ function my_lint() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-    dev_bin64_log_setup "$DEV_ENV_YAMLLINT_PATH_LOGS" ||
+    dev_bin64_log_setup "$BL64_VAR_ON" "$DEV_ENV_YAMLLINT_PATH_LOGS" ||
     return $?
 
   if [[ ! -x "$DEV_LIB_YAMLLINT_BIN" ]]; then
@@ -90,7 +90,7 @@ function my_initialize() {
     'MY_TARGET'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.1.0'
 bl64_msg_help_about_set 'Lint source code'
 dev_bin64_initialize && my_initialize || exit $?
 

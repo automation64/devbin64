@@ -46,7 +46,7 @@ function my_sast() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-    dev_bin64_log_setup "$DEV_ENV_TFSEC_PATH_LOGS" &&
+    dev_bin64_log_setup "$BL64_VAR_ON" "$DEV_ENV_TFSEC_PATH_LOGS" &&
     bl64_check_command "$DEV_LIB_TFSEC_BIN" &&
     dev_bin64_task_show_setup \
       'DEV_SAST_TFSEC_PATH_REPORT' \
@@ -54,7 +54,7 @@ function my_initialize() {
       'MY_TARGET'
 }
 
-bl64_lib_script_version_set '1.3.0'
+bl64_lib_script_version_set '1.4.0'
 bl64_msg_help_about_set 'Static test source code security'
 dev_bin64_initialize && my_initialize || exit $?
 

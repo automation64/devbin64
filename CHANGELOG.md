@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.3.0]
+
+### Added
+
+- DevBin64
+  - Set verbosity level: DEV_VERBOSE_LEVEL
+
+### Changed
+
+- GitHub
+  - dev-release-github: check artifact if provided
+- DevBin64
+  - dev-lib-base: upgraded installer64 dependency
+  - dev_bin64_log_setup: option for resetting module logs
+- Installer64
+  - dev-env-installer64: Installer64 upgraded to 8.0.0
+- BashLib64
+  - dev-env-bashlib64: BashLib64 upgraded to 22.12.0
+
+### Changed
+
+- Bash
+  - test_bash.yaml: script name
+
 ## [12.2.0]
 
 ### Added
