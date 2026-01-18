@@ -483,6 +483,8 @@ function my_msg_show_task() {
 
 function my_initialize() {
 
+  my_msg_show_task "initialize target ($(pwd))"
+
   if [[ -z "$(command -v "$DEV_CMD_DIFF" 2>/dev/null)" ]]; then
     my_msg_show_error "required command not found. Please install it and re-run the bootstrap process (${DEV_CMD_DIFF})"
     return 1
