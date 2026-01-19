@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[[ -n "$DEV_CICD_DEBUG_BASH" ]] && set -x
+
 if [[ "$(uname -s)" == 'Linux' ]]; then
   if [[ "$DEV_TEST_BASH_CONTAINER_ENVIRONMENT" != 'ON' ]]; then
     echo 'error: Test must be executed inside a container'
@@ -11,3 +13,6 @@ else
     exit 1
   fi
 fi
+
+[[ -n "$DEV_CICD_DEBUG_BASH" ]] && set +x
+:

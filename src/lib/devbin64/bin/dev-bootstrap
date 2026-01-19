@@ -218,15 +218,13 @@ function my_bin_detect_optional() {
       for module in $DEV_BOOTSTRAP_MODULES; do
         echo "$module" >>"$DEV_BOOTSTRAP_MODULES_OPTIONAL" || return $?
       done
-    else
-      return 0
     fi
+  else
+    [[ ! -f "$DEV_BOOTSTRAP_MODULES_OPTIONAL" ]] && return 0
+    for module in $(<$DEV_BOOTSTRAP_MODULES_OPTIONAL); do
+      DEV_BOOTSTRAP_MODULES+=" $module"
+    done
   fi
-
-  [[ ! -f "$DEV_BOOTSTRAP_MODULES_OPTIONAL" ]] && return 0
-  for module in $(<$DEV_BOOTSTRAP_MODULES_OPTIONAL); do
-    DEV_BOOTSTRAP_MODULES+=" $module"
-  done
 }
 
 function my_bin_populate_optional() {
@@ -236,8 +234,8 @@ function my_bin_populate_optional() {
   my_bin_detect_optional
   [[ -z "$DEV_BOOTSTRAP_MODULES" ]] && return 0
 
-  my_msg_show_task "add optional modules (${DEV_BOOTSTRAP_MODULES})"
   for module_name in $DEV_BOOTSTRAP_MODULES; do
+    my_msg_show_task "add optional module (${module_name})"
     module_path="${DEV_BOOTSTRAP_PATH_LIB}/${module_name}/bin"
     if [[ -d "$module_path" ]]; then
       "$DEV_CMD_CP" "${module_path}/"* "$DEV_PATH_BIN"
