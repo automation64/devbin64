@@ -1,11 +1,12 @@
 ---
-# template: 1.3.0
+# template: 1.4.0
 name: "SAST/TFSec"
 
 env:
-  DEV_CICD_DEBUG: "NONE"
-  BL64_LIB_CICD: "YES"
-  DEV_TEST_BASH_RUNNER_ENVIRONMENT: "ON"
+  DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}
+  DEV_CICD_DEBUG_BASH: ${{ vars.DEV_CICD_DEBUG_BASH || '' }}
+  BL64_LIB_CICD: ${{ vars.BL64_LIB_CICD || 'YES' }}
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: ${{ vars.DEV_TEST_BASH_RUNNER_ENVIRONMENT || 'ON' }}
 
 # yamllint disable-line rule:truthy
 on:
