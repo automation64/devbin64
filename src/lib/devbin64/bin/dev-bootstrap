@@ -205,7 +205,7 @@ function my_bin_populate_base() {
       return $?
   fi
   for file in $DEV_BOOTSTRAP_FILES; do
-    "$DEV_CMD_CP" "$file" "$DEV_PATH_BIN" ||
+    "$DEV_CMD_CP" -f "$file" "$DEV_PATH_BIN" ||
       return $?
   done
 }
@@ -238,7 +238,7 @@ function my_bin_populate_optional() {
     my_msg_show_task "add optional module (${module_name})"
     module_path="${DEV_BOOTSTRAP_PATH_LIB}/${module_name}/bin"
     if [[ -d "$module_path" ]]; then
-      "$DEV_CMD_CP" "${module_path}/"* "$DEV_PATH_BIN"
+      "$DEV_CMD_CP" -f "${module_path}/"* "$DEV_PATH_BIN" || return $?
     else
       my_msg_show_warning "optional module content not found (${module_path})"
     fi
@@ -321,7 +321,7 @@ function my_dot_env_create() {
     file_target="$file_old"
   fi
 
-  "$DEV_CMD_CP" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_ENV}" "$file_target" &&
+  "$DEV_CMD_CP" -f "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_ENV}" "$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
     my_duplicate_remove "$file_old" "$file_new"
 }
@@ -355,7 +355,7 @@ function my_dot_local_create() {
     file_target="$file_old"
   fi
 
-  "$DEV_CMD_CP" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_LOCAL}" "$file_target" &&
+  "$DEV_CMD_CP" -f "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_LOCAL}" "$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
     my_duplicate_remove "$file_old" "$file_new"
 }
@@ -371,7 +371,7 @@ function my_dot_secrets_create() {
   else
     file_target="$file_old"
   fi
-  "$DEV_CMD_CP" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${file_old}" "$file_target" &&
+  "$DEV_CMD_CP" -f "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${file_old}" "$file_target" &&
     "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
     my_duplicate_remove "$file_old" "$file_new"
 }
