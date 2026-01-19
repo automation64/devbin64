@@ -15,3 +15,10 @@ enable=add-default-case
 enable=avoid-nullary-conditions
 enable=check-unassigned-uppercase
 enable=deprecate-which
+
+#
+# Project settings
+#
+
+source-path=lib/bl64
+source-path=src/lib
