@@ -20,7 +20,6 @@ source ./bin/dev-set &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" ||
   exit 1
 
-ls ${TEST_TARGET}/bin
 for module in $DEV_BOOTSTRAP_MODULES; do
   [[ "$module" =~ (devbin64|installer64|bashlib64|project) ]] && continue
   source "${TEST_TARGET}/bin/dev-env-${module}" ||
