@@ -22,5 +22,4 @@ mkdir -p \
 [[ -n "$DEV_CICD_DEBUG_BASH" ]] && set +x
 
 cd "$TEST_TARGET" &&
-  "${TEST_INSTALL_TARGET}/bin/dev-bootstrap" &&
-  ls bin
+  "${TEST_INSTALL_TARGET}/bin/dev-bootstrap"
