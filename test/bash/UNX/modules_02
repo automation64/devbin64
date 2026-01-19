@@ -6,6 +6,7 @@ declare module=''
 DEV_BOOTSTRAP_MODULES="$(ls -1 "src/lib")" &&
   ./test/lib/check.bash &&
   source test/lib/runtime.bash &&
+  source test/lib/reset-env.bash &&
   ./test/lib/install.bash &&
   cd "$TEST_TARGET" ||
   exit $?
@@ -19,8 +20,9 @@ source ./bin/dev-set &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" ||
   exit 1
 
+ls ${TEST_TARGET}/bin
 for module in $DEV_BOOTSTRAP_MODULES; do
   [[ "$module" =~ (devbin64|installer64|bashlib64|project) ]] && continue
-  source "./bin/dev-env-${module}" ||
+  source "${TEST_TARGET}/bin/dev-env-${module}" ||
     exit $?
 done
