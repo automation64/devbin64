@@ -39,8 +39,10 @@ function my_initialize() {
     dev_bin64_build_setup "$DEV_PACK_X_MODULE_CAPS_X_PATH_TARGET" "$DEV_PACK_X_MODULE_CAPS_X_PATH_STAGING" &&
     dev_bin64_task_show_setup \
       'DEV_BUILD_X_MODULE_CAPS_X_PATH_OUTPUT' \
-      'DEV_PACK_X_MODULE_CAPS_X_PATH_TARGET' \
-      'DEV_PACK_X_MODULE_CAPS_X_PATH_CHECKSUM'
+      'DEV_PACK_X_MODULE_CAPS_X_PATH_TARGET'
+      # optional # 'DEV_PACK_X_MODULE_CAPS_X_PATH_CHECKSUM'
+      # optional # 'DEV_PACK_X_MODULE_CAPS_X_BUNDLE'
+      # optional # 'DEV_PACK_X_MODULE_CAPS_X_DISTRIBUTABLE'
 }
 
 bl64_lib_script_version_set '1.0.0'
