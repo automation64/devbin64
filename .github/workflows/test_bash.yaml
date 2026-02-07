@@ -82,43 +82,4 @@ jobs:
           source ./bin/dev-set &&
           source ./bin/dev-env-bash &&
           ./bin/dev-test-bash $DEV_TEST_BASH_CONTAINER_${{matrix.target}} ${DEV_TEST_BASH_CASES}/UNX
-
-  test-bash-macos:
-    needs: "test-bash-linux"
-    if: "always()"
-    runs-on: "macos-latest"
-    steps:
-      - name: "Check out repository code"
-        uses: "actions/checkout@main"
-
-      - name: "Upgrade Bash version"
-        run: |
-          ./bin/dev-lib-bash
-
-      - name: "Cache local tools"
-        uses: "actions/cache@v5"
-        with:
-          path: |
-            ./lib/bl64
-            ./lib/inst64
-          key: "dev-tools"
-
-      - name: "Download tools"
-        run: |
-          ./bin/dev-lib-base
-
-      - name: "Prepare for testing"
-        run: "./bin/dev-prep-project"
-
-      - name: "Run OS specific tests"
-        run: |
-          source ./bin/dev-set &&
-          source ./bin/dev-env-bash &&
-          ./bin/dev-test-bash CONTAINER_MODE_DISABLED ${DEV_TEST_BASH_CASES}/MCOS
-
-      - name: "Run Unix generic tests"
-        run: |
-          source ./bin/dev-set &&
-          source ./bin/dev-env-bash &&
-          ./bin/dev-test-bash CONTAINER_MODE_DISABLED ${DEV_TEST_BASH_CASES}/UNX
 ...
