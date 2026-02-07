@@ -64,14 +64,14 @@
   # Lib / Kubescape / Command
   export DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_BIN:-}"
   if [[ -z "$DEV_LIB_KUBESCAPE_BIN" ]]; then
-    DEV_LIB_KUBESCAPE_BIN="$(bl64_bsh_command_locate_user 'kubescape')"
+    DEV_LIB_KUBESCAPE_BIN="$(dev_bin64_lib_locate 'kubescape')"
     if [[ -z "$DEV_LIB_KUBESCAPE_BIN" ]]; then
       DEV_LIB_KUBESCAPE_BIN="${DEV_LIB_KUBESCAPE_TARGET}/kubescape"
       if [[ ! -x "${DEV_LIB_KUBESCAPE_BIN}" ]]; then
         DEV_LIB_KUBESCAPE_SKIP='NO'
       fi
     else
-      DEV_LIB_KUBESCAPE_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_KUBESCAPE_BIN")"
+      DEV_LIB_KUBESCAPE_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_KUBESCAPE_BIN")"
     fi
   fi
 }

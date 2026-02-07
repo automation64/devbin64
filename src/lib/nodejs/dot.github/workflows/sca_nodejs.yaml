@@ -1,0 +1,72 @@
+---
+# template: 1.0.0
+name: "SCA/NodeJS"
+
+env:
+  DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}
+  DEV_CICD_DEBUG_BASH: ${{ vars.DEV_CICD_DEBUG_BASH || '' }}
+  BL64_LIB_CICD: ${{ vars.BL64_LIB_CICD || 'YES' }}
+  DEV_TEST_BASH_RUNNER_ENVIRONMENT: ${{ vars.DEV_TEST_BASH_RUNNER_ENVIRONMENT || 'ON' }}
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+      - "release/**"
+    paths:
+      - "src/**"
+
+jobs:
+  sca-nodejs:
+    runs-on: "ubuntu-latest"
+    steps:
+
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Cache base tools"
+        uses: "actions/cache@v5"
+        with:
+          path: |
+            ./lib/bl64
+            ./lib/inst64
+          key: "dev-tools"
+
+      - name: "Cache module tools"
+        uses: "actions/cache@v5"
+        with:
+          path: |
+            ./lib/nodejs
+          key: "dev-nodejs"
+
+      - name: "Cache dependencies"
+        uses: "actions/cache@v5"
+        with:
+          path: |
+            ./tmp/npm-cache
+          key: "dev-deps"
+
+      - name: "Download tools"
+        run: |
+          ./bin/dev-lib-base &&
+          ./bin/dev-lib-nodejs
+
+      - name: "Prepare for audit"
+        run: "./bin/dev-build-nodejs"
+
+      - name: "Run SCA"
+        run: "./bin/dev-sca-nodejs"
+
+      - name: "Save report as repository artifact"
+        uses: actions/upload-artifact@v6
+        continue-on-error: true
+        if: always()
+        with:
+          name: "nodejs-sca.json"
+          path: "./logs/nodejs/nodejs-sca.json"
+...

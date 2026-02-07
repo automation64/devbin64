@@ -45,14 +45,14 @@
   # Lib / PklLang / Command
   export DEV_LIB_PKLLANG_BIN="${DEV_LIB_PKLLANG_BIN:-}"
   if [[ -z "$DEV_LIB_PKLLANG_BIN" ]]; then
-    DEV_LIB_PKLLANG_BIN="$(bl64_bsh_command_locate_user 'pkl')"
+    DEV_LIB_PKLLANG_BIN="$(dev_bin64_lib_locate 'pkl')"
     if [[ -z "$DEV_LIB_PKLLANG_BIN" ]]; then
       DEV_LIB_PKLLANG_BIN="${DEV_LIB_PKLLANG_TARGET}/pkl"
       if [[ ! -x "${DEV_LIB_PKLLANG_BIN}" ]]; then
         DEV_LIB_PKLLANG_SKIP='NO'
       fi
     else
-      DEV_LIB_PKLLANG_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_PKLLANG_BIN")"
+      DEV_LIB_PKLLANG_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_PKLLANG_BIN")"
     fi
   fi
 }

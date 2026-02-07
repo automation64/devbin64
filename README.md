@@ -22,7 +22,7 @@
     - [Repository Directory Structure](#repository-directory-structure)
     - [Configuration Files](#configuration-files)
     - [Standard module tasks](#standard-module-tasks)
-    - [Module boilerplates](#module-boilerplates)
+    - [Optional module content](#optional-module-content)
   - [🛠 Contributing](#-contributing)
   - [⚠️ Disclaimer](#️-disclaimer)
   - [📜 License](#-license)
@@ -131,26 +131,30 @@ Modules can implement one or more of the following CI-CD tasks:
 
 - `build`: build application from source code
 - `cli`: run dev-time CLI tool
+- `deliver`: deliver application package
 - `deploy`: deploy application package to environment
-- `env`: module shell environment definitions
-- `lab`: run dev-time lab environment
+- `env`: define module shell environment variables and functions
+- `lab`: run dev-time container
 - `lib`: download dev-time tools
 - `lint`: lint source code
 - `pack`: prepare application for distribution
 - `prep`: run dev-time source code maintenance tasks (update dependency maps, etc.)
 - `release`: release application source code
 - `remove`: remove deployed application from environment
+- `run`: run dev-time application
 - `sast`: run SAST on application source code
+- `sbom`: create application SBOM
+- `sca`: run SCA on application source code
 - `test`: test application
 
-### Module boilerplates
+### Optional module content
 
-Additional module boilerplates are available in the **DevBin64** for adding to your repository:
+Optional module content is available for you to manually copy to your repository:
 
-- `/opt/devbin64/lib/<MODULE>/.github`: GitHub Actions
+- `/opt/devbin64/lib/<MODULE>/dot.github`: GitHub Actions
 - `/opt/devbin64/lib/<MODULE>/test`: Code testing
-- `/opt/devbin64/lib/<MODULE>/.devcontainer`: DevContainers
-- `/opt/devbin64/lib/<MODULE>/<CONFIGURATION>`: module specific configuration file
+- `/opt/devbin64/lib/<MODULE>/dot.devcontainer`: DevContainers
+- `/opt/devbin64/lib/<MODULE>/dot.<CONFIGURATION>`: module specific configuration file
 
 ---
 

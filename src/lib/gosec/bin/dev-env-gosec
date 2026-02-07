@@ -23,7 +23,7 @@
 {
   # Env / GoSEc / Module environment definition version
   export DEV_ENV_GOSEC_ID='gosec'
-  export DEV_ENV_GOSEC_VERSION='1.0.1'
+  export DEV_ENV_GOSEC_VERSION='2.0.0'
   # Env / GoSEc / Log path
   export DEV_ENV_GOSEC_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_GOSEC_ID}"
 
@@ -33,6 +33,11 @@
   export DEV_LIB_GOSEC_SKIP='YES'
   # Lib / GoSEc / Target
   export DEV_LIB_GOSEC_TARGET="${DEV_PATH_LIB}/${DEV_ENV_GOSEC_ID}"
+
+  # SAST / GoSEc / Format
+  export DEV_SAST_GOSEC_FORMAT='sarif'
+  # SAST / GoSEc / Report
+  export DEV_SAST_GOSEC_PATH_REPORT="${DEV_ENV_GOSEC_PATH_LOGS}/${DEV_ENV_GOSEC_ID}-sast.${DEV_SAST_GOSEC_FORMAT}"
 }
 
 #
@@ -45,10 +50,6 @@
 {
   # SAST / GoSEc / Target
   export DEV_SAST_GOSEC_TARGET="${DEV_SAST_GOSEC_TARGET:-${DEV_PATH_SRC}}"
-  # SAST / GoSEc / Format
-  export DEV_SAST_GOSEC_FORMAT="${DEV_SAST_GOSEC_FORMAT:-sarif}"
-  # SAST / GoSEc / Report
-  export DEV_SAST_GOSEC_PATH_REPORT="${DEV_ENV_GOSEC_PATH_LOGS}/${DEV_ENV_GOSEC_ID}.${DEV_SAST_GOSEC_FORMAT}"
 }
 
 #
@@ -62,14 +63,14 @@
   # Lib / GoSEc / Command
   export DEV_LIB_GOSEC_BIN="${DEV_LIB_GOSEC_BIN:-}"
   if [[ -z "$DEV_LIB_GOSEC_BIN" ]]; then
-    DEV_LIB_GOSEC_BIN="$(bl64_bsh_command_locate_user 'gosec')"
+    DEV_LIB_GOSEC_BIN="$(dev_bin64_lib_locate 'gosec')"
     if [[ -z "$DEV_LIB_GOSEC_BIN" ]]; then
       DEV_LIB_GOSEC_BIN="${DEV_LIB_GOSEC_TARGET}/gosec"
       if [[ ! -x "${DEV_LIB_GOSEC_BIN}" ]]; then
         DEV_LIB_GOSEC_SKIP='NO'
       fi
     else
-      DEV_LIB_GOSEC_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_GOSEC_BIN")"
+      DEV_LIB_GOSEC_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_GOSEC_BIN")"
     fi
   fi
 }

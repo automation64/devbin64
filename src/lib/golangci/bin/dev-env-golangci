@@ -23,7 +23,7 @@
 {
   # Env / GoLangCI / Module environment definition version
   export DEV_ENV_GOLANGCI_ID='golangci'
-  export DEV_ENV_GOLANGCI_VERSION='1.0.0'
+  export DEV_ENV_GOLANGCI_VERSION='1.0.2'
   # Env / GoLangCI / Log path
   export DEV_ENV_GOLANGCI_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_GOLANGCI_ID}"
 
@@ -36,8 +36,10 @@
   # Lib / GoLangCI / Config
   export DEV_LIB_GOLANGCI_CONFIG="${DEV_PATH_ROOT}/.golangci.yaml"
 
+  # Lint / GoLangCI / Format
+  export DEV_LINT_GOLANGCI_FORMAT='sarif'
   # Lint / GoLangCI / Report
-  export DEV_LINT_GOLANGCI_PATH_REPORT="${DEV_ENV_GOLANGCI_PATH_LOGS}/${DEV_ENV_GOLANGCI_ID}.sarif"
+  export DEV_LINT_GOLANGCI_PATH_REPORT="${DEV_ENV_GOLANGCI_PATH_LOGS}/${DEV_ENV_GOLANGCI_ID}-lint.${DEV_LINT_GOLANGCI_FORMAT}"
 }
 
 #
@@ -63,14 +65,14 @@
   # Lib / GoLangCI / Command
   export DEV_LIB_GOLANGCI_BIN="${DEV_LIB_GOLANGCI_BIN:-}"
   if [[ -z "$DEV_LIB_GOLANGCI_BIN" ]]; then
-    DEV_LIB_GOLANGCI_BIN="$(bl64_bsh_command_locate_user 'golangci-lint')"
+    DEV_LIB_GOLANGCI_BIN="$(dev_bin64_lib_locate 'golangci-lint')"
     if [[ -z "$DEV_LIB_GOLANGCI_BIN" ]]; then
       DEV_LIB_GOLANGCI_BIN="${DEV_LIB_GOLANGCI_TARGET}/golangci-lint"
       if [[ ! -x "${DEV_LIB_GOLANGCI_BIN}" ]]; then
         DEV_LIB_GOLANGCI_SKIP='NO'
       fi
     else
-      DEV_LIB_GOLANGCI_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_GOLANGCI_BIN")"
+      DEV_LIB_GOLANGCI_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_GOLANGCI_BIN")"
     fi
   fi
 }

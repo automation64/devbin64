@@ -93,14 +93,14 @@
   # Lib / OpenTofu / Command
   export DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_BIN:-}"
   if [[ -z "$DEV_LIB_OPENTOFU_BIN" ]]; then
-    DEV_LIB_OPENTOFU_BIN="$(bl64_bsh_command_locate_user 'tofu' "$DEV_LIB_OPENTOFU_TARGET")"
+    DEV_LIB_OPENTOFU_BIN="$(dev_bin64_lib_locate 'tofu' "$DEV_LIB_OPENTOFU_TARGET")"
     if [[ -z "$DEV_LIB_OPENTOFU_BIN" ]]; then
       DEV_LIB_OPENTOFU_BIN="${DEV_LIB_OPENTOFU_TARGET}/tofu"
       if [[ ! -x "${DEV_LIB_OPENTOFU_BIN}" ]]; then
         DEV_LIB_OPENTOFU_SKIP='NO'
       fi
     else
-      DEV_LIB_OPENTOFU_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_OPENTOFU_BIN")"
+      DEV_LIB_OPENTOFU_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_OPENTOFU_BIN")"
     fi
   fi
 }

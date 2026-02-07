@@ -21,4 +21,4 @@ enable=deprecate-which
 #
 
 source-path=lib/bl64
-source-path=src/lib
+source-path=src/lib/devbin64/bin

@@ -23,7 +23,7 @@
 {
   # Env / TFSec / Module environment definition version
   export DEV_ENV_TFSEC_ID='tfsec'
-  export DEV_ENV_TFSEC_VERSION='1.3.0'
+  export DEV_ENV_TFSEC_VERSION='2.0.0'
   # Env / TFSec / Log path
   export DEV_ENV_TFSEC_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_TFSEC_ID}"
 
@@ -36,6 +36,10 @@
 
   # SAST /TFSec / Configuration
   export DEV_SAST_TFSEC_CONFIG="${DEV_PATH_ROOT}/.tfsec.yml"
+  # SAST / TFSec / Output format
+  export DEV_SAST_TFSEC_FORMAT='sarif'
+  # SAST / TFSec / Report
+  export DEV_SAST_TFSEC_PATH_REPORT="${DEV_ENV_TFSEC_PATH_LOGS}/${DEV_ENV_TFSEC_ID}-sast.${DEV_SAST_TFSEC_FORMAT}"
 }
 
 #
@@ -48,10 +52,6 @@
 {
   # SAST / TFSec / Target
   export DEV_SAST_TFSEC_TARGET="${DEV_SAST_TFSEC_TARGET:-${DEV_PATH_SRC}}"
-  # SAST / TFSec / Output format
-  export DEV_SAST_TFSEC_FORMAT="${DEV_SAST_TFSEC_FORMAT:-sarif}"
-  # SAST / TFSec / Report
-  export DEV_SAST_TFSEC_PATH_REPORT="${DEV_ENV_TFSEC_PATH_LOGS}/${DEV_ENV_TFSEC_ID}.${DEV_SAST_TFSEC_FORMAT}"
 }
 
 #
@@ -65,14 +65,14 @@
   # Lib / TFSec / Command
   export DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_BIN:-}"
   if [[ -z "$DEV_LIB_TFSEC_BIN" ]]; then
-    DEV_LIB_TFSEC_BIN="$(bl64_bsh_command_locate_user 'tfsec')"
+    DEV_LIB_TFSEC_BIN="$(dev_bin64_lib_locate 'tfsec')"
     if [[ -z "$DEV_LIB_TFSEC_BIN" ]]; then
       DEV_LIB_TFSEC_BIN="${DEV_LIB_TFSEC_TARGET}/tfsec"
       if [[ ! -x "${DEV_LIB_TFSEC_BIN}" ]]; then
         DEV_LIB_TFSEC_SKIP='NO'
       fi
     else
-      DEV_LIB_TFSEC_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_TFSEC_BIN")"
+      DEV_LIB_TFSEC_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_TFSEC_BIN")"
     fi
   fi
 }

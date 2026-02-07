@@ -44,14 +44,14 @@
   # Lib / Helm / Command
   export DEV_LIB_HELM_BIN="${DEV_LIB_HELM_BIN:-}"
   if [[ -z "$DEV_LIB_HELM_BIN" ]]; then
-    DEV_LIB_HELM_BIN="$(bl64_bsh_command_locate_user 'helm')"
+    DEV_LIB_HELM_BIN="$(dev_bin64_lib_locate 'helm')"
     if [[ -z "$DEV_LIB_HELM_BIN" ]]; then
       DEV_LIB_HELM_BIN="${DEV_LIB_HELM_TARGET}/helm"
       if [[ ! -x "${DEV_LIB_HELM_BIN}" ]]; then
         DEV_LIB_HELM_SKIP='NO'
       fi
     else
-      DEV_LIB_HELM_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_HELM_BIN")"
+      DEV_LIB_HELM_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_HELM_BIN")"
     fi
   fi
 }

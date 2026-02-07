@@ -1,0 +1,38 @@
+---
+#
+# Nuclei / Configuration
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
+
+# scan all the ip's associated with dns record
+scan-all-ips: false
+
+# automatic web scan using wappalyzer technology detection to tags mapping
+automatic-scan: true
+
+# templates to run based on severity. possible values: info, low, medium, high, critical, unknown
+severity:
+  - high
+  - critical
+
+# custom directory to install / update nuclei-templates
+update-template-dir: tmp/nuclei-template
+
+#
+# Project settings
+#
+
+type:
+  - code
+  - http
+  - javascript
+  - tcp
+  - websocket
+#  - dns
+#  - file
+#  - headless
+#  - ssl
+#  - whois
+#  - workflow

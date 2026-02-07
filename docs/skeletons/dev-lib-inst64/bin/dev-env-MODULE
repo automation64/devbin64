@@ -5,7 +5,7 @@
   # Lib / X_MODULE_TITLE_X / Skip installation?
   export DEV_LIB_X_MODULE_CAPS_X_SKIP='YES'
   # Lib / X_MODULE_TITLE_X / Target
-  export DEV_LIB_X_MODULE_CAPS_X_TARGET="${DEV_PATH_LIB}/${DEV_ENV_X_MODULE_CAPS_X_ID}}"
+  export DEV_LIB_X_MODULE_CAPS_X_TARGET="${DEV_PATH_LIB}/${DEV_ENV_X_MODULE_CAPS_X_ID}"
 }
 # X_PARAMETERS_PLACEHOLDER_X
 {
@@ -18,14 +18,14 @@
   # Lib / X_MODULE_TITLE_X / Command
   export DEV_LIB_X_MODULE_CAPS_X_BIN="${DEV_LIB_X_MODULE_CAPS_X_BIN:-}"
   if [[ -z "$DEV_LIB_X_MODULE_CAPS_X_BIN" ]]; then
-    DEV_LIB_X_MODULE_CAPS_X_BIN="$(bl64_bsh_command_locate_user 'X_COMMAND_X')"
+    DEV_LIB_X_MODULE_CAPS_X_BIN="$(dev_bin64_lib_locate 'X_COMMAND_X')"
     if [[ -z "$DEV_LIB_X_MODULE_CAPS_X_BIN" ]]; then
       DEV_LIB_X_MODULE_CAPS_X_BIN="${DEV_LIB_X_MODULE_CAPS_X_TARGET}/X_COMMAND_X"
       if [[ ! -x "${DEV_LIB_X_MODULE_CAPS_X_BIN}" ]]; then
         DEV_LIB_X_MODULE_CAPS_X_SKIP='NO'
       fi
     else
-      DEV_LIB_X_MODULE_CAPS_X_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_X_MODULE_CAPS_X_BIN")"
+      DEV_LIB_X_MODULE_CAPS_X_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_X_MODULE_CAPS_X_BIN")"
     fi
   fi
 }

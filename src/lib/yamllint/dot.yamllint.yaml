@@ -1,5 +1,10 @@
 ---
-# template: 1.0.0
+#
+# YAMLLint / Configuration
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
 
 yaml-files:
   - "*.yaml"
@@ -38,4 +43,7 @@ rules:
   trailing-spaces: enable
   truthy:
     level: "warning"
-...
+
+#
+# Project settings
+#

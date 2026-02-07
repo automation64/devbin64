@@ -1,5 +1,5 @@
 ---
-# template: 1.4.0
+# template: 1.6.0
 name: "SAST/TFSec"
 
 env:
@@ -29,14 +29,20 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
-      - name: "Cache local tools"
+      - name: "Cache base tools"
         uses: "actions/cache@v5"
         with:
           path: |
             ./lib/bl64
             ./lib/inst64
-            ./lib/tfsec
           key: "dev-tools"
+
+      - name: "Cache module tools"
+        uses: "actions/cache@v5"
+        with:
+          path: |
+            ./lib/tfsec
+          key: "dev-tfsec"
 
       - name: "Download tools"
         run: |
@@ -49,4 +55,12 @@ jobs:
 
       - name: "Run Lint"
         run: "./bin/dev-sast-tfsec"
+
+      - name: "Save report as repository artifact"
+        uses: actions/upload-artifact@v6
+        continue-on-error: true
+        if: always()
+        with:
+          name: "tfsec-sast.sarif"
+          path: "./logs/tfsec/tfsec-sast.sarif"
 ...

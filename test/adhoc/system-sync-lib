@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+test/lib/check.bash || exit 1
+
+sudo rm -rf /opt/bl64 /opt/inst64
+sudo cp -r /project/lib/inst64 /opt &&
+sudo cp -r /project/lib/bl64 /opt

@@ -23,7 +23,7 @@
 {
   # Env / IaC64 / Module environment definition version
   export DEV_ENV_IAC64_ID='iac64'
-  export DEV_ENV_IAC64_VERSION='3.2.0'
+  export DEV_ENV_IAC64_VERSION='3.2.1'
 
   # Env / IaC64 / Driver Name
   export DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE='ansible'
@@ -135,7 +135,7 @@ function dev_iac64_check_guardrail_deploy() {
   bl64_dbg_app_show_vars 'DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED'
   if bl64_lib_flag_is_enabled "$DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED"; then
     bl64_msg_show_fatal 'Guardrail is enabled. Deployment request cancelled.'
-    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+    return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
   fi
 }
 
@@ -144,6 +144,6 @@ function dev_iac64_check_guardrail_remove() {
   bl64_dbg_app_show_vars 'DEV_REMOVE_IAC64_GUARDRAIL_ENABLED'
   if bl64_lib_flag_is_enabled "$DEV_REMOVE_IAC64_GUARDRAIL_ENABLED"; then
     bl64_msg_show_fatal 'Guardrail is enabled. Removal request cancelled.'
-    return $BL64_LIB_ERROR_TASK_REQUIREMENTS
+    return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
   fi
 }

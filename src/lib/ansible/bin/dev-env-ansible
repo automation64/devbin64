@@ -23,7 +23,7 @@
 {
   # Env / Ansible / Module environment definition version
   export DEV_ENV_ANSIBLE_ID='ansible'
-  export DEV_ENV_ANSIBLE_VERSION='3.0.0'
+  export DEV_ENV_ANSIBLE_VERSION='3.0.1'
   # Env / Ansible / Container path for project mounts
   export DEV_ENV_ANSIBLE_CONTAINER_PATH_SRC='/source'
   export DEV_ENV_ANSIBLE_CONTAINER_PATH_ROOT='/project'
@@ -36,7 +36,7 @@
   # Lib / Ansible / Skip installation?
   export DEV_LIB_ANSIBLE_SKIP='YES'
   # Lib / Ansible / Target
-  export DEV_LIB_ANSIBLE_TARGET="${DEV_PATH_LIB}/${DEV_ENV_ANSIBLE_ID}}"
+  export DEV_LIB_ANSIBLE_TARGET="${DEV_PATH_LIB}/${DEV_ENV_ANSIBLE_ID}"
 
   # Pack / Ansible / Paths
   export DEV_PACK_ANSIBLE_PATH_TARGET="${DEV_PATH_BUILD_PACK}/${DEV_ENV_ANSIBLE_ID}"
@@ -77,14 +77,14 @@
   # Lib / Ansible / Command
   export DEV_LIB_ANSIBLE_BIN="${DEV_LIB_ANSIBLE_BIN:-}"
   if [[ -z "$DEV_LIB_ANSIBLE_BIN" ]]; then
-    DEV_LIB_ANSIBLE_BIN="$(bl64_bsh_command_locate_user 'ansible')"
+    DEV_LIB_ANSIBLE_BIN="$(dev_bin64_lib_locate 'ansible')"
     if [[ -z "$DEV_LIB_ANSIBLE_BIN" ]]; then
       DEV_LIB_ANSIBLE_BIN="${DEV_LIB_ANSIBLE_TARGET}/ansible"
       if [[ ! -x "${DEV_LIB_ANSIBLE_BIN}" ]]; then
         DEV_LIB_ANSIBLE_SKIP='NO'
       fi
     else
-      DEV_LIB_ANSIBLE_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_ANSIBLE_BIN")"
+      DEV_LIB_ANSIBLE_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_ANSIBLE_BIN")"
     fi
   fi
 }

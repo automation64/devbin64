@@ -13,9 +13,7 @@
 # limitations under the License.
 #######################################
 
-# shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=/opt/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -23,7 +21,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-# shellcheck source-path=bin
 source ./bin/dev-env-X_MODULE_X || exit 1
 
 declare MY_CONTAINER="${1:-${DEV_LAB_X_MODULE_CAPS_X_CONTAINER}}"
@@ -46,7 +43,9 @@ function my_lab() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  bl64_cnt_setup
+    bl64_cnt_setup &&
+    dev_bin64_task_show_setup \
+      'MY_CONTAINER'
 }
 
 bl64_lib_script_version_set '1.0.0'

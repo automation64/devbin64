@@ -13,9 +13,7 @@
 # limitations under the License.
 #######################################
 
-# shellcheck source=bin/dev-set
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-# shellcheck source-path=/opt/bl64
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -23,7 +21,6 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-# shellcheck source-path=bin
 source ./bin/dev-env-yamllint || exit 1
 
 declare MY_TARGET="${*:-${DEV_LINT_YAMLLINT_TARGET}}"
@@ -60,6 +57,7 @@ function my_lint() {
   bl64_dbg_app_show_function
   local current=''
 
+  echo '' >"$DEV_LINT_YAMLLINT_PATH_REPORT"
   for current in $MY_TARGET; do
     bl64_msg_show_phase "lint YAML target (${current})"
     if [[ -n "$MY_CONTAINER_ENABLED" ]]; then
@@ -90,7 +88,7 @@ function my_initialize() {
     'MY_TARGET'
 }
 
-bl64_lib_script_version_set '1.1.0'
+bl64_lib_script_version_set '1.1.1'
 bl64_msg_help_about_set 'Lint source code'
 dev_bin64_initialize && my_initialize || exit $?
 

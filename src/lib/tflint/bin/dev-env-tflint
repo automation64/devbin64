@@ -59,14 +59,14 @@
   # Lib / TFLint / Command
   export DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_BIN:-}"
   if [[ -z "$DEV_LIB_TFLINT_BIN" ]]; then
-    DEV_LIB_TFLINT_BIN="$(bl64_bsh_command_locate_user 'tflint')"
+    DEV_LIB_TFLINT_BIN="$(dev_bin64_lib_locate 'tflint')"
     if [[ -z "$DEV_LIB_TFLINT_BIN" ]]; then
       DEV_LIB_TFLINT_BIN="${DEV_LIB_TFLINT_TARGET}/tflint"
       if [[ ! -x "${DEV_LIB_TFLINT_BIN}" ]]; then
         DEV_LIB_TFLINT_SKIP='NO'
       fi
     else
-      DEV_LIB_TFLINT_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_TFLINT_BIN")"
+      DEV_LIB_TFLINT_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_TFLINT_BIN")"
     fi
   fi
 }

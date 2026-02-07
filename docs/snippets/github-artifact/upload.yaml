@@ -1,0 +1,8 @@
+# X_ARTIFACT_PLACEHOLDER_X
+      - name: "Save report as repository artifact"
+        uses: actions/upload-artifact@v6
+        continue-on-error: true
+        if: always()
+        with:
+          name: "X_MODULE_X-X_ACTION_X.X_EXTENSION_X"
+          path: "./logs/X_MODULE_X/X_MODULE_X-X_ACTION_X.X_EXTENSION_X"

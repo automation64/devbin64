@@ -44,14 +44,14 @@
   # Lib / KubeCtl / Command
   export DEV_LIB_KUBECTL_BIN="${DEV_LIB_KUBECTL_BIN:-}"
   if [[ -z "$DEV_LIB_KUBECTL_BIN" ]]; then
-    DEV_LIB_KUBECTL_BIN="$(bl64_bsh_command_locate_user 'kubectl')"
+    DEV_LIB_KUBECTL_BIN="$(dev_bin64_lib_locate 'kubectl')"
     if [[ -z "$DEV_LIB_KUBECTL_BIN" ]]; then
       DEV_LIB_KUBECTL_BIN="${DEV_LIB_KUBECTL_TARGET}/kubectl"
       if [[ ! -x "${DEV_LIB_KUBECTL_BIN}" ]]; then
         DEV_LIB_KUBECTL_SKIP='NO'
       fi
     else
-      DEV_LIB_KUBECTL_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_KUBECTL_BIN")"
+      DEV_LIB_KUBECTL_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_KUBECTL_BIN")"
     fi
   fi
 }

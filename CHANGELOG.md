@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.0.0]
+
+### Added
+
+- Modules
+  - NodeJS
+  - Semgrep
+  - Nuclei
+- Act
+  - Artifact support
+
+### Fixed
+
+- Ansible, YAMLLint: target typo
+
+### Changed
+
+- All
+  - Removed bashlib64 dependency from dev-env-*
+- DevBin64
+  - **breaking-change** Renamed `dev-init` -> `dev-profile-set`
+
+### Deprecated
+
+- DevBin64
+  - **breaking-change** Removed `DEV_MODULE_LOAD` support
+- TaskFile
+  - **breaking-change** module removed
+- SysOp64
+  - **breaking-change** module removed
+
 ## [12.3.1]
 
 ### Added

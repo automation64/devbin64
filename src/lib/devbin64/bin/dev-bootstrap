@@ -88,6 +88,8 @@ builtin unset MAILPATH
 # Parameters
 #
 
+# shellcheck source=SCRIPTDIR/dev-env
+
 # Automation64 / Root path
 declare DEV_AT64_HOME='/opt'
 [[ ! -d "$DEV_AT64_HOME/bl64" && -d "${HOME}/at64/bl64" ]] && DEV_AT64_HOME="${HOME}/at64"
@@ -106,7 +108,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBootstrap / Current version
-declare DEV_BOOTSTRAP_VERSION='8.0.0'
+declare DEV_BOOTSTRAP_VERSION='8.1.1'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -129,7 +131,7 @@ declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
 declare DEV_BOOTSTRAP_FILES=''
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-env-bashlib64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-lib-bashlib64"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-init"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-set"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-env"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-lib-base"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-create"
@@ -221,7 +223,7 @@ function my_bin_detect_optional() {
     fi
   else
     [[ ! -f "$DEV_BOOTSTRAP_MODULES_OPTIONAL" ]] && return 0
-    for module in $(<$DEV_BOOTSTRAP_MODULES_OPTIONAL); do
+    for module in $(<"$DEV_BOOTSTRAP_MODULES_OPTIONAL"); do
       DEV_BOOTSTRAP_MODULES+=" $module"
     done
   fi
@@ -481,7 +483,8 @@ function my_msg_show_task() {
 
 function my_initialize() {
 
-  my_msg_show_task "initialize target ($(pwd))"
+  my_msg_show_task "initialize bootstrap (v${DEV_BOOTSTRAP_VERSION})"
+  my_msg_show_task "prepare target ($(pwd))"
 
   if [[ -z "$(command -v "$DEV_CMD_DIFF" 2>/dev/null)" ]]; then
     my_msg_show_error "required command not found. Please install it and re-run the bootstrap process (${DEV_CMD_DIFF})"

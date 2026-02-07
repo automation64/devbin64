@@ -1,5 +1,11 @@
 ---
-# template: 1.0.0
+#
+# GOLangCI / Configuration
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
+
 version: "2"
 linters:
   default: "standard"
@@ -34,4 +40,7 @@ output:
 run:
   tests: true
   timeout: "5m"
-...
+
+#
+# Project settings
+#

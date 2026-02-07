@@ -1,5 +1,5 @@
 ---
-# template: 3.9.0
+# template: 3.10.0
 name: "Test/TestManSH"
 
 concurrency:
@@ -33,14 +33,20 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
-      - name: "Cache local tools"
+      - name: "Cache base tools"
         uses: "actions/cache@v5"
         with:
           path: |
             ./lib/bl64
             ./lib/inst64
-            ./lib/testmansh
           key: "dev-tools"
+
+      - name: "Cache module tools"
+        uses: "actions/cache@v5"
+        with:
+          path: |
+            ./lib/testmansh
+          key: "dev-testmansh"
 
       - name: "Download tools"
         run: |
@@ -48,7 +54,7 @@ jobs:
           ./bin/dev-lib-testmansh
 
       # - name: "Prepare for testing"
-      #   run : "X_BUILD_PLACEHOLDER_X"
+      #   run: "X_PREPARE_PLACEHOLDER_X"
 
       - name: "Run tests"
         shell: 'script -q -e -c "bash {0}"' # Required to avoid no TTY error

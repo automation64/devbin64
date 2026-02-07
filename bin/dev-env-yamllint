@@ -23,7 +23,7 @@
 {
   # Env / YAMLLint / Module environment definition version
   export DEV_ENV_YAMLLINT_ID='yamllint'
-  export DEV_ENV_YAMLLINT_VERSION='1.1.0'
+  export DEV_ENV_YAMLLINT_VERSION='2.0.0'
   # Env / YAMLLint / Log path
   export DEV_ENV_YAMLLINT_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_YAMLLINT_ID}"
   # Env / YAMLLint / Container path for project mounts
@@ -34,10 +34,14 @@
   # Lib / YAMLLint / Skip installation?
   export DEV_LIB_YAMLLINT_SKIP='YES'
   # Lib / YAMLLint / Target
-  export DEV_LIB_YAMLLINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_YAMLLINT_ID}}"
+  export DEV_LIB_YAMLLINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_YAMLLINT_ID}"
   # Lib / YAMLLint / Configuration
   export DEV_LIB_YAMLLINT_CFG='.yamllint.yaml'
 
+  # Lint / YAMLLint / Format
+  export DEV_LINT_YAMLLINT_FORMAT='parsable'
+  # Lint / YAMLLint / Report
+  export DEV_LINT_YAMLLINT_PATH_REPORT="${DEV_ENV_YAMLLINT_PATH_LOGS}/${DEV_ENV_YAMLLINT_ID}-lint.${DEV_LINT_YAMLLINT_FORMAT}"
 }
 
 #
@@ -53,10 +57,6 @@
 
   # Lint / YAMLLint / Target
   export DEV_LINT_YAMLLINT_TARGET="${DEV_LINT_YAMLLINT_TARGET:-${DEV_PATH_SRC}}"
-  # Lint / YAMLLint / Format
-  export DEV_LINT_YAMLLINT_FORMAT="${DEV_LINT_YAMLLINT_FORMAT:-parsable}"
-  # Lint / YAMLLint / Report
-  export DEV_LINT_YAMLLINT_PATH_REPORT="${DEV_ENV_YAMLLINT_PATH_LOGS}/${DEV_ENV_YAMLLINT_ID}.${DEV_LINT_YAMLLINT_FORMAT}"
   # Lint / YAMLLint / Container with linting tool
   export DEV_LINT_YAMLLINT_CONTAINER="${DEV_LINT_YAMLLINT_CONTAINER:-yaml-lint/alpine-3-yaml-lint}"
   # Lint / YAMLLint / Container entrypoint
@@ -74,14 +74,14 @@
   # Lib / YAMLLint / Command
   export DEV_LIB_YAMLLINT_BIN="${DEV_LIB_YAMLLINT_BIN:-}"
   if [[ -z "$DEV_LIB_YAMLLINT_BIN" ]]; then
-    DEV_LIB_YAMLLINT_BIN="$(bl64_bsh_command_locate_user 'yamllint')"
+    DEV_LIB_YAMLLINT_BIN="$(dev_bin64_lib_locate 'yamllint')"
     if [[ -z "$DEV_LIB_YAMLLINT_BIN" ]]; then
       DEV_LIB_YAMLLINT_BIN="${DEV_LIB_YAMLLINT_TARGET}/yamllint"
       if [[ ! -x "${DEV_LIB_YAMLLINT_BIN}" ]]; then
         DEV_LIB_YAMLLINT_SKIP='NO'
       fi
     else
-      DEV_LIB_YAMLLINT_TARGET="$(bl64_fmt_path_get_basename "$DEV_LIB_YAMLLINT_BIN")"
+      DEV_LIB_YAMLLINT_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_YAMLLINT_BIN")"
     fi
   fi
 }

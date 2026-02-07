@@ -93,7 +93,7 @@
   # Lib / Go / Command
   export DEV_LIB_GO_BIN="${DEV_LIB_GO_BIN:-}"
   if [[ -z "$DEV_LIB_GO_BIN" ]]; then
-    DEV_LIB_GO_BIN="$(bl64_bsh_command_locate_user 'go' "${DEV_LIB_GO_TARGET}/bin")"
+    DEV_LIB_GO_BIN="$(dev_bin64_lib_locate 'go' "${DEV_LIB_GO_TARGET}/bin")"
     if [[ -z "$DEV_LIB_GO_BIN" ]]; then
       DEV_LIB_GO_BIN="${DEV_LIB_GO_TARGET}/bin/go"
       if [[ ! -x "${DEV_LIB_GO_BIN}" ]]; then
