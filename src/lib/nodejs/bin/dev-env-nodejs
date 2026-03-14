@@ -23,7 +23,7 @@
 {
   # Env / NodeJS / Module environment definition version
   export DEV_ENV_NODEJS_ID='nodejs'
-  export DEV_ENV_NODEJS_VERSION='1.0.0'
+  export DEV_ENV_NODEJS_VERSION='1.1.0'
 
   # Env / NodeJS / Log path
   export DEV_ENV_NODEJS_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_NODEJS_ID}"
@@ -62,11 +62,17 @@
   # Lib / NodeJS / Version
   export DEV_LIB_NODEJS_VERSION="${DEV_LIB_NODEJS_VERSION:-latest}"
 
-  # Build / NodeJS / Target
+  # Build / NodeJS / Source
   export DEV_BUILD_NODEJS_PATH_SOURCE="${DEV_BUILD_NODEJS_PATH_SOURCE:-$DEV_PATH_SRC}"
+
+  # Build / NodeJS / NPM package and lock file location
+  export DEV_BUILD_NODEJS_PATH_PACKAGE="${DEV_BUILD_NODEJS_PATH_PACKAGE:-$DEV_PATH_ROOT}"
 
   # SAST / NodeJS / Severity
   export DEV_SCA_NODEJS_SEVERITY="${DEV_SCA_NODEJS_SEVERITY:-high}"
+
+  # Run / NodeJS / Entrypoint
+  export DEV_RUN_NODEJS_MAIN="${DEV_RUN_NODEJS_MAIN:-}"
 }
 
 #

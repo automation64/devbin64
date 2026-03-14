@@ -6,6 +6,8 @@
   export DEV_LIB_X_MODULE_CAPS_X_SKIP='YES'
   # Lib / X_MODULE_TITLE_X / Target
   export DEV_LIB_X_MODULE_CAPS_X_TARGET="${DEV_PATH_LIB}/${DEV_ENV_X_MODULE_CAPS_X_ID}"
+  # optional # # Lib / X_MODULE_TITLE_X / Configuration
+  # optional # export DEV_LIB_X_MODULE_CAPS_X_CFG="${DEV_PATH_ROOT}/X_CONFIG_FILE_X"
 }
 # X_PARAMETERS_PLACEHOLDER_X
 {

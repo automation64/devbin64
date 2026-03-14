@@ -1,0 +1,52 @@
+---
+# template: 1.0.0
+name: "Lint/Prettier"
+
+env:
+  DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}
+  DEV_CICD_DEBUG_BASH: ${{ vars.DEV_CICD_DEBUG_BASH || '' }}
+  BL64_LIB_CICD: ${{ vars.BL64_LIB_CICD || 'YES' }}
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "feature/**"
+      - "release/**"
+    paths:
+      - "src/**"
+
+jobs:
+  lint-prettier:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@main"
+
+      - name: "Cache base tools"
+        uses: "actions/cache@v5"
+        with:
+          path: |
+            ./lib/bl64
+            ./lib/inst64
+          key: "dev-tools"
+
+      - name: "Download tools"
+        run: |
+          ./bin/dev-lib-base &&
+          ./bin/dev-lib-prettier
+
+      - name: "Run Linter"
+        run: "./bin/dev-lint-prettier"
+
+      - name: "Save report as repository artifact"
+        uses: actions/upload-artifact@v6
+        continue-on-error: true
+        if: always()
+        with:
+          name: "prettier-lint.log"
+          path: "./logs/prettier/prettier-lint.log"

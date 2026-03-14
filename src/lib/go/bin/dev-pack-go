@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-pack: 1.0.0
+# template-pack: 2.0.0
 # template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
@@ -45,15 +45,15 @@ function my_pack() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  bl64_arc_setup &&
-    dev_bin64_build_setup "$DEV_PACK_GO_PATH_TARGET" &&
+    bl64_arc_setup &&
+    dev_bin64_pack_setup "$DEV_PACK_GO_PATH_TARGET" &&
     dev_bin64_task_show_setup \
       'DEV_BUILD_GO_PATH_OUTPUT' \
       'DEV_PACK_GO_PATH_TARGET' \
       'DEV_PACK_GO_PATH_CHECKSUM'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '2.0.0'
 bl64_msg_help_about_set 'Pack application for release'
 dev_bin64_initialize && my_initialize || exit $?
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-env: 1.0.2
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,15 +14,42 @@
 #######################################
 
 #
-# Globals
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / Docker / Module environment definition version
+  export DEV_ENV_DOCKER_ID='docker'
+  export DEV_ENV_DOCKER_VERSION='2.0.0'
+  # Env / Docker / Log path
+  export DEV_ENV_DOCKER_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_DOCKER_ID}"
+
+  # Pack / Docker / Paths
+  export DEV_PACK_DOCKER_PATH_STAGING="${DEV_PATH_BUILD_STAGING}/${DEV_ENV_DOCKER_ID}"
+}
+
+#
+# Module parameters
 #
 # * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
-  #  Build / Docker / Baker file path
-  export DEV_BUILD_DOCKER_PATH_BAKER="${DEV_BUILD_DOCKER_PATH_BAKER:-$DEV_PATH_SRC/docker-bake.hcl}"
+  # Auth / Docker / Registry
+  export DEV_AUTH_DOCKER_REGISTRY="${DEV_AUTH_DOCKER_REGISTRY:-}"
+  # Auth / Docker / Registry Type
+  export DEV_AUTH_DOCKER_TYPE="${DEV_AUTH_DOCKER_TYPE:-GITHUB}"
+
+  # Pack / Docker / Baker file name
+  export DEV_PACK_DOCKER_FILE_DOCKERBAKE="${DEV_PACK_DOCKER_FILE_DOCKERBAKE:-docker-bake.hcl}"
+  # Pack / Docker / Baker file path
+  export DEV_PACK_DOCKER_PATH_DOCKERBAKE="${DEV_PACK_DOCKER_PATH_DOCKERBAKE:-${DEV_PATH_ROOT}/${DEV_PACK_DOCKER_FILE_DOCKERBAKE}}"
+  # Pack / Docker / Content Source for Staging
+  export DEV_PACK_DOCKER_PAYLOAD_SOURCE="${DEV_PACK_DOCKER_PAYLOAD_SOURCE:-}"
 }
 
 #
@@ -35,4 +62,17 @@
 {
   # Lib / Docker / Command
   export DEV_LIB_DOCKER_BIN="${DEV_LIB_DOCKER_BIN:-/usr/bin/docker}"
+}
+
+#
+# Secrets
+#
+# * Declaration only. Use .secrets.env file or CICD secrets to set values
+#
+
+# shellcheck disable=SC2154
+{
+  # Auth / Docker / User
+  export DEV_AUTH_DOCKER_USER="${DEV_AUTH_DOCKER_USER:-}"
+  export DEV_AUTH_DOCKER_PASSWORD="${DEV_AUTH_DOCKER_PASSWORD:-}"
 }

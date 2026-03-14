@@ -52,8 +52,8 @@ function my_prepare() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  bl64_check_command "$DEV_LIB_GO_BIN" 'go' &&
-    bl64_check_parameter 'DEV_ENV_GO_MODULE_ROOT' &&
+    bl64_check_command "$DEV_LIB_GO_BIN" 'go' &&
+    bl64_check_export 'DEV_ENV_GO_MODULE_ROOT' &&
     dev_bin64_tmp_setup \
       "$DEV_BUILD_GO_PATH_CACHE" \
       "$DEV_BUILD_GO_PATH_MODCACHE" \
@@ -66,7 +66,7 @@ function my_initialize() {
       'DEV_BUILD_GO_PATH_TMP'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_help_about_set 'Prepare repository for module specific requirements'
 dev_bin64_initialize && my_initialize || exit $?
 

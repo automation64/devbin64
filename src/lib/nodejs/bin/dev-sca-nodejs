@@ -27,7 +27,7 @@ function my_sast() {
   cd "$DEV_BUILD_NODEJS_PATH_TARGET" &&
     "$DEV_LIB_NODEJS_BIN_NPM" \
       audit \
-      --only=prod \
+      --omit=dev \
       --package-lock-only \
       --audit-level "$DEV_SCA_NODEJS_SEVERITY" \
       --json >"$DEV_SCA_NODEJS_PATH_REPORT"
@@ -45,7 +45,7 @@ function my_initialize() {
       'DEV_SCA_NODEJS_SEVERITY'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_help_about_set 'Software Composition Analysis'
 dev_bin64_initialize && my_initialize || exit $?
 

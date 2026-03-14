@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-pack: 1.0.0
+# template-pack: 2.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -46,9 +46,9 @@ function my_pack() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  dev_bin64_build_setup "$DEV_PACK_ANSIBLE_PATH_TARGET" &&
+    dev_bin64_pack_setup "$DEV_PACK_ANSIBLE_PATH_TARGET" &&
     bl64_check_parameter 'MY_TARGET' &&
-    bl64_check_parameter 'DEV_PACK_ANSIBLE_GALAXY_NAMESPACE' &&
+    bl64_check_export 'DEV_PACK_ANSIBLE_GALAXY_NAMESPACE' &&
     bl64_check_directory "$DEV_PACK_ANSIBLE_BASE_COLLECTIONS" &&
     bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_PACK_ANSIBLE_CFG" &&
     dev_bin64_task_show_setup \
@@ -58,7 +58,7 @@ function my_initialize() {
       'DEV_PACK_ANSIBLE_BASE_COLLECTIONS'
 }
 
-bl64_lib_script_version_set '2.1.0'
+bl64_lib_script_version_set '3.0.0'
 bl64_msg_help_about_set 'Pack application for release'
 dev_bin64_initialize && my_initialize || exit $?
 

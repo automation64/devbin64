@@ -108,7 +108,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBootstrap / Current version
-declare DEV_BOOTSTRAP_VERSION='8.1.1'
+declare DEV_BOOTSTRAP_VERSION='9.0.0'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -311,28 +311,11 @@ function my_dir_create() {
     "${DEV_PATH_VAULT}/${DEV_BASE_GITKEEP}"
 }
 
-function my_dot_env_create() {
-  local file_target=''
-  local file_old="$DEV_BASE_DOT_ENV"
-  local file_new="${file_old}.new"
-
-  my_msg_show_task "create environment file (${file_old})"
-  if [[ -f "$file_old" ]]; then
-    file_target="$file_new"
-  else
-    file_target="$file_old"
-  fi
-
-  "$DEV_CMD_CP" -f "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_ENV}" "$file_target" &&
-    "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    my_duplicate_remove "$file_old" "$file_new"
-}
-
 function my_env_create() {
   if [[ ! -f "$DEV_BASE_ENV" ]]; then
     my_msg_show_task "create environment file (${DEV_BASE_ENV})"
-    "$DEV_CMD_CAT" "$DEV_BASE_DOT_ENV" >"$DEV_BASE_ENV"
-    "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_ENV"
+    "$DEV_CMD_CAT" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_ENV}" >"$DEV_BASE_ENV" &&
+      "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$DEV_BASE_ENV"
   fi
 }
 
@@ -340,94 +323,12 @@ function my_gitignore_create() {
   local file_target='.gitignore'
   if [[ ! -f "$file_target" ]]; then
     my_msg_show_task "create environment file (${file_target})"
-    "$DEV_CMD_CAT" "$DEV_BOOTSTRAP_DOT_GITIGNORE" >"$file_target"
-    "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target"
+    "$DEV_CMD_CAT" "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BOOTSTRAP_DOT_GITIGNORE}" >"$file_target" &&
+      "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target"
   fi
 }
 
-function my_dot_local_create() {
-  local file_target=''
-  local file_old="$DEV_BASE_DOT_LOCAL"
-  local file_new="${file_old}.new"
-
-  my_msg_show_task "create environment file (${file_old})"
-  if [[ -f "$file_old" ]]; then
-    file_target="$file_new"
-  else
-    file_target="$file_old"
-  fi
-
-  "$DEV_CMD_CP" -f "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${DEV_BASE_DOT_LOCAL}" "$file_target" &&
-    "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    my_duplicate_remove "$file_old" "$file_new"
-}
-
-function my_dot_secrets_create() {
-  local file_target=''
-  local file_old="$DEV_BASE_DOT_SECRETS"
-  local file_new="${file_old}.new"
-
-  my_msg_show_task "create environment file (${file_old})"
-  if [[ -f "$file_old" ]]; then
-    file_target="$file_new"
-  else
-    file_target="$file_old"
-  fi
-  "$DEV_CMD_CP" -f "${DEV_BOOTSTRAP_PATH_LIB}/devbin64/${file_old}" "$file_target" &&
-    "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    my_duplicate_remove "$file_old" "$file_new"
-}
-
-function my_dot_gitignore_create() {
-  local file_target=''
-  local file_old="$DEV_BOOTSTRAP_DOT_GITIGNORE"
-  local file_new="${file_old}.new"
-
-  my_msg_show_task "create ignore file (${file_old})"
-  if [[ -f "$file_old" ]]; then
-    file_target="$file_new"
-  else
-    file_target="$file_old"
-  fi
-
-  # shellcheck disable=SC2016
-  printf '#
-# GIT Ignore
-#
-# * Version: 1.0.0
-# * Template: 2.0.1
-#
-
-#
-# Main
-#
-
-/build/*
-/lib/*
-/logs/*
-/tmp/*
-/vault/*
-/%s
-/%s
-
-/.vscode
-
-#
-# Project specific exclusions
-#
-
-# Keep placeholder for empty directories
-!/**/%s
-' \
-    "$DEV_BASE_LOCAL" \
-    "$DEV_BASE_SECRETS" \
-    "$DEV_BASE_GITKEEP" \
-    >"$file_target" &&
-    "$DEV_CMD_CHMOD" "$DEV_BOOTSTRAP_FILE_MODE" "$file_target" &&
-    my_duplicate_remove "$file_old" "$file_new"
-}
-
-function my_dot_env_load() {
+function my_env_load() {
   my_msg_show_task "load project variables (bin/dev-set)"
   source "${DEV_PATH_BIN}/dev-set"
 }
@@ -453,17 +354,23 @@ function my_legacy() {
     fi
   fi
 
-  file="${DEV_PATH_ROOT}/dot.env"
-  if [[ -f "$file" ]]; then
-    my_msg_show_warning "legacy file detected. Removing it as it is no longer used (${file})"
-    "$DEV_CMD_RM" -f "$file"
-  fi
-
   file="${DEV_PATH_ROOT}/${DEV_BASE_SECRETS}"
   if [[ -f "$file" ]]; then
-    my_msg_show_warning "legacy file detected. Moving it to the new location (${file} -> ${DEV_PATH_VAULT})"
+    my_msg_show_warning "legacy file detected. Moving to the new location (${file} -> ${DEV_PATH_VAULT})"
     "$DEV_CMD_MV" -f "$file" "$DEV_PATH_VAULT"
   fi
+
+  for file in \
+    "${DEV_PATH_ROOT}/dot.env" \
+    "${DEV_PATH_ROOT}/dot.dev.env" \
+    "${DEV_PATH_ROOT}/dot.local.env" \
+    "${DEV_PATH_ROOT}/dot.secrets.env" \
+    "${DEV_PATH_ROOT}/dot.gitignore"; do
+    if [[ -f "$file" ]]; then
+      my_msg_show_warning "legacy file detected. Removing as it is no longer used (${file})"
+      "$DEV_CMD_RM" -f "$file"
+    fi
+  done
 }
 
 function my_msg_show_warning() {
@@ -517,13 +424,9 @@ function my_initialize() {
 
 echo "Process: [${MY_PROCESS}] started"
 my_initialize &&
-  my_dot_env_create &&
   my_env_create &&
-  my_dot_local_create &&
-  my_dot_secrets_create &&
   my_bin_populate_base &&
-  my_dot_env_load &&
-  my_dot_gitignore_create &&
+  my_env_load &&
   my_gitignore_create &&
   my_dir_create &&
   my_bin_populate_optional &&

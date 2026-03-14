@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-lint: 1.2.0
+# template-sbom: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -22,7 +22,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 source ./bin/dev-env-nodejs || exit 1
 
-function my_lint() {
+function my_sbom() {
   bl64_dbg_app_show_function
   "$DEV_LIB_NODEJS_BIN_NPM" \
     sbom \
@@ -44,10 +44,10 @@ function my_initialize() {
       'DEV_SBOM_NODEJS_PATH_REPORT'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_help_about_set 'Create a software bill of materials - SBOM'
 dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_lint
+my_sbom
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

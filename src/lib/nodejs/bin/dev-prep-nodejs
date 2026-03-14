@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 1.7.0
+# template-prep: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,27 +14,37 @@
 #######################################
 
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-docker || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+source ./bin/dev-env-nodejs || exit 1
 
-function dev_build() {
+function my_prepare() {
   bl64_dbg_app_show_function
-  "$DEV_LIB_DOCKER_BIN" \
-    buildx \
-    bake \
-    --debug \
-    --progress=plain \
-    --file="$DEV_BUILD_DOCKER_PATH_BAKER"
+
+  bl64_msg_show_task 'Update NPM packages'
+  "$DEV_LIB_NODEJS_BIN_NPM" \
+    update \
+    --global=false \
+    --audit=false \
+    --install-strategy=shallow \
+    --foreground-scripts \
+    --fund=false
 }
 
-function dev_initialize() {
+function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize
+  dev_bin64_task_initialize &&
+    bl64_check_command "$DEV_LIB_NODEJS_BIN_NPM"
 }
 
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Build container image from source'
-dev_bin64_initialize && dev_initialize || exit $?
+bl64_msg_help_about_set 'Prepare repository for module specific requirements'
+dev_bin64_initialize && my_initialize || exit $?
+
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-dev_build
+my_prepare
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

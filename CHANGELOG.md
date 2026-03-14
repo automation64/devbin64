@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.0.0]
+
+### Added
+
+- Modules
+  - Prettier
+  - ShFmt
+- Nodejs:
+  - dev runner, cli, prep
+- Docker
+  - Added docker auth (migrated from Container module)
+- DevBin64
+  - Added pack setup
+  - Added dot.gitignore template
+
+### Changed
+
+- Upgraded modules
+  - Docker
+  - Ansible
+  - Go
+- DevBin64
+  - **breaking-change** Moved pack setup out of build setup
+  - **breaking-change** Removed dot file template creation from bootstrap
+- SemGrp
+  - Added default target
+- SysDen64
+  - **breaking-change** Lab container now uses system-level configuration
+
+### Deprecated
+
+- Container
+  - **breaking-change** Migrated to Docker module
+
 ## [13.0.0]
 
 ### Added
@@ -23,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - All
-  - Removed bashlib64 dependency from dev-env-*
+  - Removed bashlib64 dependency from dev-env-\*
 - DevBin64
   - **breaking-change** Renamed `dev-init` -> `dev-profile-set`
 
@@ -132,7 +166,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - KubeScape
   - Renamed lint to sast
 - Bash
-  - **breaking-change**: build default destination is now  namespaced
+  - **breaking-change**: build default destination is now namespaced
 
 ## [11.2.0]
 
@@ -171,7 +205,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Multiple
-  - dev-lib-*: skip install if already installed
+  - dev-lib-\*: skip install if already installed
     - Target modules: ShellCheck, KubeLinter, KubeScape
 - DevBin64
   - dev-bootstrap: now preserves previous template if customized
@@ -205,7 +239,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Multiple
-  - dev-lib-*: skip install if already installed
+  - dev-lib-\*: skip install if already installed
     - Target modules: Installer64, BashLib64, DevBin64, OpenTofu, TFsec, TFlint, Act, GitLeaks
 - DevBin64
   - dev-set: DEV_VERBOSE: now sets the verbose format (bl64). The value propagates to all devbin64 scripts

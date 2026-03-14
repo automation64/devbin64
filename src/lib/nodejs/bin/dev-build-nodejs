@@ -28,14 +28,24 @@ function my_build() {
   bl64_msg_show_task 'Populate staging area with source code'
   bl64_fs_path_copy "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
     "$DEV_BUILD_NODEJS_PATH_TARGET" \
-    "${DEV_PATH_ROOT}/package.json" \
-    "${DEV_PATH_ROOT}/package-lock.json" \
-    "$DEV_BUILD_NODEJS_PATH_SOURCE"
+    "$DEV_BUILD_NODEJS_PATH_SOURCE" ||
+    return $?
+
+  bl64_msg_show_task 'Populate staging area with NPM package definitions'
+  bl64_fs_path_copy "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+    "$DEV_BUILD_NODEJS_PATH_TARGET" \
+    "${DEV_BUILD_NODEJS_PATH_PACKAGE}/package.json" \
+    "${DEV_BUILD_NODEJS_PATH_PACKAGE}/package-lock.json" ||
+    return $?
 
   bl64_msg_show_task 'Create project environment'
   cd "$DEV_BUILD_NODEJS_PATH_TARGET" &&
     "$DEV_LIB_NODEJS_BIN_NPM" \
-      --omit dev \
+      --omit=dev \
+      --global=false \
+      --audit=false \
+      --foreground-scripts \
+      --fund=false \
       ci
 }
 
@@ -48,7 +58,7 @@ function my_initialize() {
       'DEV_BUILD_NODEJS_PATH_TARGET'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.1.0'
 bl64_msg_help_about_set 'Build application in staging area'
 dev_bin64_initialize && my_initialize || exit $?
 

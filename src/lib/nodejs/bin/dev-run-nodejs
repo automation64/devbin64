@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -12,71 +13,43 @@
 # limitations under the License.
 #######################################
 
-#
-# Imports
-#
-
 source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-github &&
-  source ./bin/dev-env-container || exit 1
+source ./bin/dev-env-nodejs || exit 1
 
-#
-# Functions
-#
-
-function dev_auth_docker_ghtoken() {
+function my_run() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task 'Docker login with GitHub token'
-  "$DEV_LIB_GITHUB_BIN" auth token |
-    bl64_cnt_login_stdin \
-      "$DEV_AUTH_CONTAINER_USER" "$DEV_AUTH_CONTAINER_REGISTRY"
+  cd "$DEV_BUILD_NODEJS_PATH_TARGET" &&
+    "$DEV_LIB_NODEJS_BIN_NODE" \
+      --trace-warnings \
+      --enable-source-maps \
+      --inspect \
+      --watch \
+      "./${DEV_BASE_SRC}/${DEV_RUN_NODEJS_MAIN}"
 }
 
-function dev_auth_docker_password() {
+function my_initialize() {
   bl64_dbg_app_show_function
-  bl64_msg_show_task 'Docker login with user+password'
-  bl64_cnt_login \
-    "$DEV_AUTH_CONTAINER_USER" "$DEV_AUTH_CONTAINER_PASSWORD" "$DEV_AUTH_CONTAINER_REGISTRY"
+  dev_bin64_task_initialize &&
+    bl64_check_export 'DEV_RUN_NODEJS_MAIN' &&
+    bl64_check_command "$DEV_LIB_NODEJS_BIN_NODE" &&
+    bl64_check_directory "$DEV_BUILD_NODEJS_PATH_TARGET" &&
+    bl64_check_file "${DEV_BUILD_NODEJS_PATH_TARGET}/${DEV_BASE_SRC}/${DEV_RUN_NODEJS_MAIN}" &&
+    dev_bin64_task_show_setup \
+      'DEV_LIB_NODEJS_BIN_NODE' \
+      'DEV_RUN_NODEJS_MAIN' \
+      'DEV_BUILD_NODEJS_PATH_TARGET'
 }
 
-function dev_auth_docker() {
-  bl64_dbg_app_show_function
-  case "$DEV_AUTH_CONTAINER_TYPE" in
-  'GITHUB') dev_auth_docker_ghtoken ;;
-  *) dev_auth_docker_password ;;
-  esac
-}
-
-function dev_auth_initialize() {
-  bl64_check_export 'DEV_AUTH_CONTAINER_USER' &&
-    bl64_check_export 'DEV_AUTH_CONTAINER_REGISTRY' &&
-    bl64_cnt_setup || return $?
-
-  if [[ "$DEV_AUTH_CONTAINER_TYPE" == 'GITHUB' ]]; then
-    bl64_check_command_search_path "$DEV_LIB_GITHUB_BIN" ||
-      return $?
-  else
-    bl64_check_export 'DEV_AUTH_CONTAINER_PASSWORD' ||
-      return $?
-  fi
-  return 0
-}
-
-#
-# Main
-#
-
-bl64_lib_script_version_set '1.2.2'
-bl64_msg_set_format "$DEV_VERBOSE" && bl64_msg_all_enable_verbose
+bl64_lib_script_version_set '1.0.1'
+bl64_msg_help_about_set 'Run application in dev mode'
+dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-dev_auth_initialize &&
-  dev_auth_docker
+my_run
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
