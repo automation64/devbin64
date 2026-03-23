@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 1.9.0
+# template-build: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -23,7 +23,7 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-tf.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
 source ./bin/dev-env-opentofu || exit 1
 
-declare MY_SOURCE="${1:-${DEV_PATH_SRC}}"
+declare MY_SOURCE="${1:-${DEV_BUILD_OPENTOFU_PATH_SOURCE}}"
 declare MY_STAGING="${2:-${DEV_BUILD_OPENTOFU_STAGING}}"
 declare MY_CONFIG="${3:-$BL64_VAR_DEFAULT}"
 
@@ -32,62 +32,69 @@ function my_build() {
 
   if bl64_lib_flag_is_enabled "$DEV_BUILD_OPENTOFU_RESET"; then
     bl64_msg_show_task 'Reset staging environment'
-    bl64_fs_path_remove "$MY_STAGING"
+    bl64_fs_path_remove "$DEV_BUILD_OPENTOFU_STAGING"
   fi
 
   if bl64_lib_flag_is_enabled "$DEV_BUILD_OPENTOFU_CLEANUP"; then
     bl64_msg_show_task 'Cleanup staging environment'
     # shellcheck disable=SC2046
     bl64_fs_file_remove \
-      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tofu) \
-      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tf) \
-      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.auto.tfvars) \
-      $(bl64_bsh_pattern_match_file "$MY_STAGING"/*.tfvars)
+      $(
+        bl64_bsh_pattern_match_file \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.auto.tfvars \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.plan \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.tf \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.tofutest.hcl \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.tftest.hcl \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.tfvars \
+          "$DEV_BUILD_OPENTOFU_STAGING"/*.tofu
+      )
   fi
 
   bl64_msg_show_task 'Create staging environment'
   bl64_fs_dir_create \
     "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
-    "$MY_STAGING" ||
+    "$DEV_BUILD_OPENTOFU_STAGING" ||
     return $?
 
   bl64_msg_show_task 'Promote source code to staging'
 
   bl64_fs_path_merge \
-    "$MY_SOURCE" \
-    "$MY_STAGING" ||
+    "$DEV_BUILD_OPENTOFU_PATH_SOURCE" \
+    "$DEV_BUILD_OPENTOFU_STAGING" ||
     return $?
 
   if [[ -d "$MY_CONFIG" ]]; then
     bl64_msg_show_task 'Promote configuration files to staging'
     bl64_fs_path_merge \
       "$MY_CONFIG" \
-      "$MY_STAGING"
+      "$DEV_BUILD_OPENTOFU_STAGING"
   fi
 
   bl64_msg_show_task 'Run init phase'
-  cd "$MY_STAGING" &&
+  cd "$DEV_BUILD_OPENTOFU_STAGING" &&
     bl64_tf_run_tofu \
       init \
+      -upgrade \
       -input=false
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
+  DEV_BUILD_OPENTOFU_STAGING="$MY_STAGING"
+  DEV_BUILD_OPENTOFU_PATH_SOURCE="$MY_SOURCE"
   dev_bin64_task_initialize &&
-  bl64_lib_script_minver_check '22.5.0' &&
+    bl64_lib_script_minver_check "$DEV_ENV_OPENTOFU_VERSION_BL64" &&
+    bl64_check_directory "$DEV_BUILD_OPENTOFU_PATH_SOURCE" &&
     bl64_tf_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_OPENTOFU_BIN")" &&
-    bl64_check_parameter 'MY_SOURCE' &&
-    bl64_check_parameter 'MY_STAGING' &&
-    bl64_check_directory "$MY_SOURCE" &&
     dev_bin64_task_show_setup \
-      'DEV_BUILD_OPENTOFU_RESET' \
-      'MY_SOURCE' \
       'MY_CONFIG' \
-      'MY_STAGING'
+      'DEV_BUILD_OPENTOFU_RESET' \
+      'DEV_BUILD_OPENTOFU_PATH_SOURCE' \
+      'DEV_BUILD_OPENTOFU_STAGING'
 }
 
-bl64_lib_script_version_set '2.2.0'
+bl64_lib_script_version_set '3.0.0'
 bl64_msg_help_about_set 'Build runtime environment from the source module'
 dev_bin64_initialize && my_initialize || exit $?
 

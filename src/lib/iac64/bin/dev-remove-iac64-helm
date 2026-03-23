@@ -42,16 +42,15 @@ function my_remove() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  bl64_xsv_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_PKLLANG_BIN")" &&
+    bl64_xsv_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_PKLLANG_BIN")" &&
     dev_bin64_profile_check_set &&
     dev_iac64_check_guardrail_remove &&
     bl64_check_command "$DEV_LIB_IAC64_HELPER_REMOVE_HELM" &&
     dev_bin64_task_show_setup \
-      'DEV_PROFILE' \
       'DEV_ENV_IAC64_PATH_SRC_MODULE'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '1.0.1'
 bl64_msg_help_about_set 'Removed deployed application using Helm'
 dev_bin64_initialize && my_initialize || exit $?
 

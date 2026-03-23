@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # template-test: 1.1.0
-# template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -33,7 +32,7 @@ function my_test() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  bl64_check_command "$DEV_LIB_X_MODULE_CAPS_X_BIN" &&
+    bl64_check_command "$DEV_LIB_X_MODULE_CAPS_X_BIN" &&
     dev_bin64_task_show_setup \
       'MY_TARGET'
 }

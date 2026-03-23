@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.1.0]
+
+### Changed
+
+- OpenTofu **breaking-change**
+  - Moved plan file to staging directory
+  - Deploy and Remove now use separate plan files
+  - Normalized module parameter names
+- IAC64
+  - Upgraded OpenTofu provider
+
 ## [14.0.0]
 
 ### Added
@@ -26,18 +37,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Docker
   - Ansible
   - Go
-- DevBin64
-  - **breaking-change** Moved pack setup out of build setup
-  - **breaking-change** Removed dot file template creation from bootstrap
+- DevBin64 **breaking-change**
+  - Moved pack setup out of build setup
+  - Removed dot file template creation from bootstrap
 - SemGrp
   - Added default target
-- SysDen64
-  - **breaking-change** Lab container now uses system-level configuration
+- SysDen64 **breaking-change**
+  - Lab container now uses system-level configuration
 
 ### Deprecated
 
-- Container
-  - **breaking-change** Migrated to Docker module
+- Container **breaking-change**
+  - Migrated to Docker module
 
 ## [13.0.0]
 
