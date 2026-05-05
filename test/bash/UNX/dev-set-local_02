@@ -6,7 +6,7 @@
   cd "$TEST_TARGET" ||
   exit $?
 
-echo '_xxx_syntax_error export _LOCAL_ENV_TEST="TEST_VALUE"' >"$DEV_BASE_LOCAL"
+echo '_xxx_syntax_error export _LOCAL_ENV_TEST="TEST_VALUE"' >.local.env
 
 ! source ./bin/dev-set &&
   [[ -z "$_LOCAL_ENV_TEST" ]]

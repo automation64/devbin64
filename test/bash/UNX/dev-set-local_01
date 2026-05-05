@@ -6,7 +6,7 @@
   cd "$TEST_TARGET" ||
   exit $?
 
-echo 'export _LOCAL_ENV_TEST="TEST_VALUE"' >"$DEV_BASE_LOCAL"
+echo 'export _LOCAL_ENV_TEST="TEST_VALUE"' >.local.env
 
 source ./bin/dev-set &&
   [[ "$_LOCAL_ENV_TEST" == "TEST_VALUE" ]]
