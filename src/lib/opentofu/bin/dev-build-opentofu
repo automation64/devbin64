@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-tf.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -76,6 +76,7 @@ function my_build() {
     bl64_tf_run_tofu \
       init \
       -upgrade \
+      -migrate-state \
       -input=false
 }
 
@@ -84,7 +85,7 @@ function my_initialize() {
   DEV_BUILD_OPENTOFU_STAGING="$MY_STAGING"
   DEV_BUILD_OPENTOFU_PATH_SOURCE="$MY_SOURCE"
   dev_bin64_task_initialize &&
-    bl64_lib_script_minver_check "$DEV_ENV_OPENTOFU_VERSION_BL64" &&
+    bl64_lib_script_minver_check "$DEV_LIB_OPENTOFU_REQUIRED_BASHLIB64" &&
     bl64_check_directory "$DEV_BUILD_OPENTOFU_PATH_SOURCE" &&
     bl64_tf_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_OPENTOFU_BIN")" &&
     dev_bin64_task_show_setup \
@@ -94,7 +95,7 @@ function my_initialize() {
       'DEV_BUILD_OPENTOFU_STAGING'
 }
 
-bl64_lib_script_version_set '3.0.0'
+bl64_lib_script_version_set '3.0.1'
 bl64_msg_help_about_set 'Build runtime environment from the source module'
 dev_bin64_initialize && my_initialize || exit $?
 

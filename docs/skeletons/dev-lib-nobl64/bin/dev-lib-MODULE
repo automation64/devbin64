@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 # shellcheck source=bin/dev-env-X_MODULE_X
 source ./bin/dev-env-X_MODULE_X || exit 1
 
@@ -23,4 +23,3 @@ echo 'dev-lib-X_MODULE_X: Task: install X_APP_NAME_X'
 # X_INSTALLER_PLACEHOLDER_X
 [[ -n "$DEV_CICD_DEBUG_BASH" ]] && set +x
 :
-

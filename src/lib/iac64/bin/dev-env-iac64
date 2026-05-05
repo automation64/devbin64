@@ -23,7 +23,7 @@
 {
   # Env / IaC64 / Module environment definition version
   export DEV_ENV_IAC64_ID='iac64'
-  export DEV_ENV_IAC64_VERSION='3.2.2'
+  export DEV_ENV_IAC64_VERSION='3.2.3'
 
   # Env / IaC64 / Driver Name
   export DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE='ansible'
@@ -41,6 +41,9 @@
   export DEV_ENV_IAC64_DRIVER_TAG_OPENTOFU='otf'
   export DEV_ENV_IAC64_DRIVER_TAG_SHELL='sh'
   export DEV_ENV_IAC64_DRIVER_TAG_TERRAFORM='tf'
+
+  # Lib / IaC64 / Minimum BashLib64 Version
+  export DEV_LIB_IAC64_REQUIRED_BASHLIB64='23.1.0'
 
   # Lib / IaC64 / Drivers
   export DEV_LIB_IAC64_HELPER_BUILD_OPENTOFU="${DEV_PATH_BIN}/dev-build-opentofu"

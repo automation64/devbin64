@@ -1,6 +1,9 @@
 ---
-# template: 1.6.0
+# template: 1.7.0
 name: "SAST/TFSec"
+
+permissions:
+  contents: read
 
 env:
   DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}

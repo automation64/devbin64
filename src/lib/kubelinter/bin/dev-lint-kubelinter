@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 # shellcheck source=bin/dev-env-kubelinter
 source ./bin/dev-env-kubelinter || exit 1
 # shellcheck source=lib/bl64/bashlib64-core.bash
@@ -70,11 +70,11 @@ function my_lint() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  if ! bl64_bsh_command_is_executable "$DEV_LIB_KUBELINTER_BIN"; then
-    _DEV_LIB_RUN_IN_CONTAINER='YES'
-    bl64_cnt_setup ||
-      return $?
-  fi
+    if ! bl64_bsh_command_is_executable "$DEV_LIB_KUBELINTER_BIN"; then
+      _DEV_LIB_RUN_IN_CONTAINER='YES'
+      bl64_cnt_setup ||
+        return $?
+    fi
   dev_bin64_task_show_setup \
     'MY_TARGET'
 }

@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ans.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
@@ -40,7 +40,7 @@ function my_test() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-  bl64_ans_setup "$BL64_VAR_DEFAULT" &&
+    bl64_ans_setup "$BL64_VAR_DEFAULT" &&
     bl64_check_parameter 'MY_PLAYBOOK' &&
     bl64_check_parameter 'MY_INVENTORY' &&
     bl64_check_file "$MY_PLAYBOOK" &&

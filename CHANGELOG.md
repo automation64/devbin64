@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.3.0]
+
+### Added
+
+- GIT
+  - Close release and feature branches
+
+### Changed
+
+- BashLib64
+  - Upgraded BashLib64 to 23.1.0
+- IAC64, Kustomize, Helm **breaking-change**
+  - Upgraded BashLib64 dependency to 23.1.0
+- OpenTofu **breaking-change**
+  - Upgraded BashLib64 dependency to 23.0.2
+- GIT
+  - Ensure task is executed from root repo
+
+### Fixed
+
+- DevBin64
+  - dev-set: fail if unable to load env file
+  - dev-bootstrap: do not remove dot.local.env and dot.secrent.env if present
+- IAC64
+  - dev-build-iac64-opentofu: force cleanup of shared module
+
+## [14.2.0]
+
+### Added
+
+- All
+  - GitHub Actions: added permissions
+
 ## [14.1.0]
 
 ### Changed

@@ -1,6 +1,9 @@
 ---
-# template: 1.4.0
+# template: 1.5.0
 name: "Test/OpenTofu"
+
+permissions:
+  contents: read
 
 env:
   DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}

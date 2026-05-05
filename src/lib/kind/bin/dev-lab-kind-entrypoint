@@ -19,7 +19,7 @@
 # shellcheck disable=SC2164
 cd /project
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-rnd.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-iam.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-rbac.bash" &&
@@ -75,4 +75,4 @@ bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 dev_lab_initialize &&
   dev_lab_credentials_set &&
   dev_lab_shell_open &&
-bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"
+  bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

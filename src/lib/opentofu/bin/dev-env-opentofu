@@ -23,9 +23,7 @@
 {
   # Env / OpenTofu / Module environment definition version
   export DEV_ENV_OPENTOFU_ID='opentofu'
-  export DEV_ENV_OPENTOFU_VERSION='2.0.0'
-  # Env / OpenTofu / Minimum Bashlib64 version
-  export DEV_ENV_OPENTOFU_VERSION_BL64='22.5.0'
+  export DEV_ENV_OPENTOFU_VERSION='2.0.1'
 
   # Lib / OpenTofu / Installer
   export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
@@ -33,6 +31,8 @@
   export DEV_LIB_OPENTOFU_SKIP='YES'
   # Lib / OpenTofu / Target path
   export DEV_LIB_OPENTOFU_TARGET="${DEV_PATH_LIB}/${DEV_ENV_OPENTOFU_ID}"
+  # Lib / OpenTofu / Minimum BashLib64 Version
+  export DEV_LIB_OPENTOFU_REQUIRED_BASHLIB64='23.0.2'
 
   # Test / OpenTofu / Cases path
   export DEV_TEST_OPENTOFU_CASES="${DEV_PATH_TEST}/${DEV_ENV_OPENTOFU_ID}"

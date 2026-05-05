@@ -108,7 +108,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBootstrap / Current version
-declare DEV_BOOTSTRAP_VERSION='9.0.0'
+declare DEV_BOOTSTRAP_VERSION='9.0.1'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -363,8 +363,6 @@ function my_legacy() {
   for file in \
     "${DEV_PATH_ROOT}/dot.env" \
     "${DEV_PATH_ROOT}/dot.dev.env" \
-    "${DEV_PATH_ROOT}/dot.local.env" \
-    "${DEV_PATH_ROOT}/dot.secrets.env" \
     "${DEV_PATH_ROOT}/dot.gitignore"; do
     if [[ -f "$file" ]]; then
       my_msg_show_warning "legacy file detected. Removing as it is no longer used (${file})"

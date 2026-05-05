@@ -1,6 +1,9 @@
 ---
-# template: 1.11.0
+# template: 1.12.0
 name: "Lint/YAMLLint"
+
+permissions:
+  contents: read
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -53,7 +56,7 @@ jobs:
           ./bin/dev-lib-yamllint
 
       - name: "Run tests"
-        shell: 'script -q -e -c "bash {0}"'
+        shell: "script -q -e -c \"bash {0}\""
         run: "./bin/dev-lint-yamllint"
 
       - name: "Save report as repository artifact"

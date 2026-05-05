@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
@@ -25,7 +25,7 @@ source ./bin/dev-env-iac64 || exit 1
 function my_build() {
   bl64_dbg_app_show_function
   if [[ -d "$DEV_ENV_IAC64_PATH_SRC_SHARED" ]]; then
-    DEV_BUILD_OPENTOFU_CLEANUP='NO' "$DEV_LIB_IAC64_HELPER_BUILD_OPENTOFU" \
+    DEV_BUILD_OPENTOFU_CLEANUP='YES' "$DEV_LIB_IAC64_HELPER_BUILD_OPENTOFU" \
       "$DEV_ENV_IAC64_PATH_SRC_SHARED" \
       "$DEV_ENV_IAC64_PATH_VAR_MODULE" \
       "$DEV_ENV_IAC64_PATH_ETC_SHARED"
@@ -49,8 +49,8 @@ function my_initialize() {
       'DEV_ENV_IAC64_PATH_ETC_SHARED'
 }
 
-bl64_lib_script_version_set '3.0.1'
-bl64_msg_help_about_set 'Build runtime environment for OpenTofu'
+bl64_lib_script_version_set '3.0.3'
+bl64_msg_help_about_set 'Build runtime environment using OpenTofu driver'
 dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+./test/lib/check.bash &&
+  source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+echo '_xxx_syntax_error export _LOCAL_ENV_TEST="TEST_VALUE"' >"$DEV_BASE_LOCAL"
+
+! source ./bin/dev-set &&
+  [[ -z "$_LOCAL_ENV_TEST" ]]

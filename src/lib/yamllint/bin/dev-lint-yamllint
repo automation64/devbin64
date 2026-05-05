@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -33,7 +33,7 @@ function dev_lint_yamllint_local() {
     --config-file "${DEV_PATH_ROOT}/${DEV_LIB_YAMLLINT_CFG}" \
     --format "$DEV_LINT_YAMLLINT_FORMAT" \
     --strict \
-    "$target" >> "$DEV_LINT_YAMLLINT_PATH_REPORT"
+    "$target" >>"$DEV_LINT_YAMLLINT_PATH_REPORT"
 }
 
 function dev_lint_yamllint_container() {
@@ -50,7 +50,7 @@ function dev_lint_yamllint_container() {
     --config-file "${DEV_ENV_YAMLLINT_CONTAINER_PATH_ROOT}/${DEV_LIB_YAMLLINT_CFG}" \
     --format "$DEV_LINT_YAMLLINT_FORMAT" \
     --strict \
-    "$target" >> "$DEV_LINT_YAMLLINT_PATH_REPORT"
+    "$target" >>"$DEV_LINT_YAMLLINT_PATH_REPORT"
 }
 
 function my_lint() {

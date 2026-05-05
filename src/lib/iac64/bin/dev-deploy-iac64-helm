@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
@@ -58,8 +58,8 @@ function my_initialize() {
       'DEV_ENV_IAC64_PATH_SRC_MODULE'
 }
 
-bl64_lib_script_version_set '1.0.1'
-bl64_msg_help_about_set 'Deploy application using Helm'
+bl64_lib_script_version_set '1.0.2'
+bl64_msg_help_about_set 'Deploy application using Helm driver'
 dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"

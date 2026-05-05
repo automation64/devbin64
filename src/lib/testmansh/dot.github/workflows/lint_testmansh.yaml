@@ -1,6 +1,9 @@
 ---
-# template: 4.11.0
+# template: 4.12.0
 name: "Lint/TestManSH"
+
+permissions:
+  contents: read
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -56,6 +59,6 @@ jobs:
       #   run: "X_BUILD_PLACEHOLDER_X"
 
       - name: "Lint app"
-        shell: 'script -q -e -c "bash {0}"' # Required to avoid no TTY error
+        shell: "script -q -e -c \"bash {0}\"" # Required to avoid no TTY error
         run: "./bin/dev-lint-testmansh"
 ...

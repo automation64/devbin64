@@ -1,6 +1,9 @@
 ---
-# template: 1.0.0
+# template: 1.1.0
 name: "DAST/Nuclei"
+
+permissions:
+  contents: read
 
 env:
   DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}

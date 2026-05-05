@@ -14,7 +14,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
@@ -27,7 +27,7 @@ function my_download() {
   bl64_dbg_app_show_function
   bl64_lib_flag_is_enabled "$DEV_LIB_NODEJS_SKIP" && return 0
   INST64_NODEJS_VERSION="$DEV_LIB_NODEJS_VERSION" \
-  INST64_NODEJS_TARGET="$DEV_LIB_NODEJS_TARGET" \
+    INST64_NODEJS_TARGET="$DEV_LIB_NODEJS_TARGET" \
     "${DEV_LIB_NODEJS_INSTALLER}"
 }
 

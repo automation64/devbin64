@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+./test/lib/check.bash &&
+  source test/lib/runtime.bash &&
+  ./test/lib/install.bash &&
+  cd "$TEST_TARGET" ||
+  exit $?
+
+source ./bin/dev-set || exit 1
+source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
+  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+
+function my_task() {
+  bl64_dbg_app_show_function
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  dev_bin64_task_initialize
+}
+
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Task Test'
+dev_bin64_initialize && my_initialize || exit $?
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+my_task
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

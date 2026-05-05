@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-hlm.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -54,10 +54,10 @@ function my_deploy() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
   bl64_lib_var_is_default "$MY_VALUES_FILE_ETC" && MY_VALUES_FILE_ETC=''
   bl64_lib_var_is_default "$MY_VALUES_FILE_SRC" && MY_VALUES_FILE_SRC=''
-  bl64_lib_script_minver_check '22.5.0' &&
+  dev_bin64_task_initialize &&
+    bl64_lib_script_minver_check "$DEV_LIB_KUBECTL_REQUIRED_BASHLIB64" &&
     bl64_hlm_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_HELM_BIN")" &&
     bl64_check_parameter 'MY_CHART' &&
     bl64_check_parameter 'MY_NAMESPACE' &&
@@ -71,8 +71,8 @@ function my_initialize() {
       'MY_VALUES_FILE_SRC'
 }
 
-bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_about_set 'Deploy Helm chart'
+bl64_lib_script_version_set '1.0.3'
+bl64_msg_help_about_set 'Run deployment scripts'
 dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"

@@ -13,7 +13,7 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || { echo 'dev-set:Error: unable to load dev environment' 2>&1 && exit 1; }
+source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-tf.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -51,12 +51,9 @@ function my_initialize() {
   DEV_BUILD_OPENTOFU_STAGING="$MY_STAGING"
   DEV_DEPLOY_OPENTOFU_PATH_LOG="${DEV_ENV_OPENTOFU_PATH_LOGS}/${DEV_DEPLOY_OPENTOFU_FILE_LOG}"
   DEV_TEST_OPENTOFU_PATH_PLAN="${DEV_BUILD_OPENTOFU_STAGING}/${DEV_TEST_OPENTOFU_FILE_PLAN}"
+
   dev_bin64_task_initialize &&
-    if bl64_lib_flag_is_enabled "$DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED"; then
-      bl64_msg_show_fatal 'Guardrail is enabled, cancelling deployment'
-      return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
-    fi
-  bl64_lib_script_minver_check "$DEV_ENV_OPENTOFU_VERSION_BL64" &&
+    bl64_lib_script_minver_check "$DEV_LIB_OPENTOFU_REQUIRED_BASHLIB64" &&
     bl64_check_directory "$DEV_BUILD_OPENTOFU_STAGING" &&
     bl64_check_file "$DEV_TEST_OPENTOFU_PATH_PLAN" &&
     dev_bin64_log_setup "$BL64_VAR_OFF" "$DEV_ENV_OPENTOFU_PATH_LOGS" &&
@@ -67,12 +64,19 @@ function my_initialize() {
       'DEV_ENV_OPENTOFU_PATH_LOGS' \
       'DEV_DEPLOY_OPENTOFU_PATH_LOG' \
       'DEV_TEST_OPENTOFU_PATH_PLAN' \
-      'DEV_LIB_OPENTOFU_SET_LOG' &&
+      'DEV_LIB_OPENTOFU_SET_LOG' ||
+    return $?
+
+  if bl64_lib_flag_is_enabled "$DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED"; then
+    bl64_msg_show_fatal 'Guardrail is enabled, cancelling deployment'
+    return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
+  else
     bl64_msg_show_warning 'Guardrail is disabled. The deployment will proceed without further confirmation (DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED=NO)'
+  fi
 }
 
-bl64_lib_script_version_set '4.0.0'
-bl64_msg_help_about_set 'Deploy infrastructure'
+bl64_lib_script_version_set '4.0.3'
+bl64_msg_help_about_set 'Run deployment scripts'
 dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
