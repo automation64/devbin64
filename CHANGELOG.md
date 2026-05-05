@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - dev-bootstrap: do not remove dot.local.env and dot.secrent.env if present
 - IAC64
   - dev-build-iac64-opentofu: force cleanup of shared module
+- Act
+  - Docker in docker socker access
 
 ## [14.2.0]
 
