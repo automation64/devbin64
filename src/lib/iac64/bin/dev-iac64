@@ -13,6 +13,7 @@
 # limitations under the License.
 #######################################
 
+export DEV_PROFILE='none'
 source ./bin/dev-set || exit 1
 source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
@@ -23,21 +24,21 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
 source ./bin/dev-env-iac64 || exit 1
 
 declare MY_COMMAND="${1:-}"
-declare MY_OPTION=''
-declare MY_MODULE=''
-declare MY_VERSION=''
-declare MY_SHARED='0.1.0'
-declare MY_GLOBAL='0.1.0'
+declare MY_CONFIRMATION='NONE'
 declare MY_DRIVER_NAME=''
 declare MY_DRIVER_TAG=''
-declare MY_CONFIRMATION='NONE'
+declare MY_GLOBAL='0.1.0'
+declare MY_MODULE=''
+declare MY_OPTION=''
+declare MY_PROFILE=''
+declare MY_SHARED='0.1.0'
+declare MY_VERSION=''
 
 declare MY_COMMAND_BLT='blt'
 declare MY_COMMAND_BUILD='build'
 declare MY_COMMAND_CONSOLE='console'
 declare MY_COMMAND_DEPLOY='deploy'
 declare MY_COMMAND_HELP='help'
-declare MY_COMMAND_INIT='init'
 declare MY_COMMAND_LINT='lint'
 declare MY_COMMAND_NONE='none'
 declare MY_COMMAND_REMOVE='remove'
@@ -142,8 +143,10 @@ function my_run() {
 
 function my_env_export() {
   bl64_dbg_app_show_function
+
   bl64_dbg_app_show_info 'DevBin64 settings'
-  source ./bin/dev-set || return $?
+  source "${DEV_PATH_BIN}/dev-profile-set" "$MY_PROFILE" ||
+    return $?
 
   bl64_dbg_app_show_info 'IAC64 settings'
   DEV_ENV_IAC64_PROFILE="$MY_PROFILE"
@@ -181,10 +184,6 @@ function my_initialize() {
     { bl64_msg_help_show && return 1; }
 
   case "$MY_COMMAND" in
-    "$MY_COMMAND_INIT")
-      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
-        MY_COMMAND="$MY_COMMAND_NONE"
-      ;;
     "$MY_COMMAND_BUILD")
       [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
@@ -223,7 +222,7 @@ function my_initialize() {
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
     bl64_check_parameter 'MY_DRIVER_NAME' &&
-    dev_bin64_task_show_setup \
+    bl64_msg_show_setup "$BL64_VAR_DEFAULT" \
       'MY_PROFILE' \
       'MY_DRIVER_NAME' \
       'MY_MODULE' \
@@ -232,7 +231,7 @@ function my_initialize() {
       'MY_GLOBAL'
 }
 
-bl64_lib_script_version_set '3.0.1'
+bl64_lib_script_version_set '3.0.2'
 bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-D Debug] [-h]'
 bl64_msg_help_about_set 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
 bl64_msg_help_parameters_set \
@@ -274,7 +273,7 @@ shift
 # shellcheck disable=SC2249
 while getopts ':p:m:v:s:g:Z:V:D:ABHKO' MY_OPTION; do
   case "${MY_OPTION:-}" in
-    p) DEV_PROFILE="$OPTARG" ;;
+    p) MY_PROFILE="$OPTARG" ;;
     m) MY_MODULE="$OPTARG" ;;
     v) MY_VERSION="$OPTARG" ;;
     s) MY_SHARED="$OPTARG" ;;

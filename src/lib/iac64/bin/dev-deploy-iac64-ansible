@@ -24,9 +24,15 @@ source ./bin/dev-env-iac64 || exit 1
 
 function my_deploy() {
   bl64_dbg_app_show_function
+  local shared_inventory='/dev/null'
+
+  [[ -f "${DEV_ENV_IAC64_PATH_ETC_SHARED}/inventory.ini" ]] &&
+    shared_inventory="${DEV_ENV_IAC64_PATH_ETC_SHARED}/inventory.ini"
+
   "$DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE" \
     "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml" \
-    "${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini"
+    "${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini" \
+    "$shared_inventory"
 }
 
 function my_initialize() {
@@ -37,10 +43,11 @@ function my_initialize() {
     bl64_check_command "$DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE" &&
     dev_bin64_task_show_setup \
       'DEV_ENV_IAC64_PATH_SRC_MODULE' \
-      'DEV_ENV_IAC64_PATH_ETC_MODULE'
+      'DEV_ENV_IAC64_PATH_ETC_MODULE' \
+      'DEV_ENV_IAC64_PATH_ETC_SHARED'
 }
 
-bl64_lib_script_version_set '3.0.3'
+bl64_lib_script_version_set '3.1.0'
 bl64_msg_help_about_set 'Deploy application using Ansible driver'
 dev_bin64_initialize && my_initialize || exit $?
 

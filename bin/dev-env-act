@@ -38,7 +38,7 @@
   export DEV_LIB_ACT_PATH_CACHE_SERVER="${DEV_PATH_TMP}/${DEV_ENV_ACT_ID}/cache-server"
   export DEV_LIB_ACT_PATH_ARTIFACT="${DEV_PATH_TMP}/${DEV_ENV_ACT_ID}/artifact"
   export DEV_LIB_ACT_PORT_ARTIFACT='18080'
-  export DEV_LIB_ACT_DOCKER_HOST='unix:///var/run/docker.sock'
+  export DEV_LIB_ACT_DOCKER_SOCKET='/var/run/docker.sock'
 
   # Test / Act / Format
   export DEV_TEST_ACT_FORMAT='log'

@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.4.0]
+
+### Added
+
+- Ansible
+  - Shared inventory support
+
+### Changed
+
+- BashLib64
+  - Upgraded BashLib64 to 23.1.1
+
+### Fixed
+
+- DevBin64
+  - dev-profile-set: namespace
+- IAC64
+  - dev-iac64: profile setting
+
 ## [14.3.0]
 
 ### Added

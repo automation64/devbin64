@@ -18,10 +18,6 @@
   declare DEV_SET_VERSION='12.0.0'
 }
 
-#
-# Internal Functions
-#
-
 function _dev_set_define_paths() {
   dev_bin64_msg_show_task 'dev-set' 'set project paths'
   DEV_PATH_SRC="${DEV_PATH_ROOT}/${DEV_BASE_SRC}"
@@ -245,10 +241,7 @@ function _dev_set_legacy() {
   return 0
 }
 
-#
-# Main
-#
-
+# Warning: keep the namespace to avoid source conflicts
 _dev_set_initialize &&
   dev_bin64_lib_trace_start &&
   _dev_set_load_local &&

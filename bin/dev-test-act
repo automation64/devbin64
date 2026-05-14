@@ -29,7 +29,7 @@ function my_test() {
   local job=''
   local docker_group_id=''
 
-  docker_group_id="$(stat -c '%g' /var/run/docker.sock)" &&
+  docker_group_id="$(stat -c '%g' "$DEV_LIB_ACT_DOCKER_SOCKET")" &&
     [[ -n "$docker_group_id" ]] ||
     return $?
 
