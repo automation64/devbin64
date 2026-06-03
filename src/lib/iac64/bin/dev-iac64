@@ -231,8 +231,8 @@ function my_initialize() {
       'MY_GLOBAL'
 }
 
-bl64_lib_script_version_set '3.0.2'
-bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-D Debug] [-h]'
+bl64_lib_script_version_set '3.0.3'
+bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-Z confirm] [-V format] [-D Debug] [-h]'
 bl64_msg_help_about_set 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
 bl64_msg_help_parameters_set \
   "Commands:
@@ -300,6 +300,11 @@ while getopts ':p:m:v:s:g:Z:V:D:ABHKO' MY_OPTION; do
     O)
       MY_DRIVER_NAME="$DEV_ENV_IAC64_DRIVER_NAME_OPENTOFU"
       MY_DRIVER_TAG="$DEV_ENV_IAC64_DRIVER_TAG_OPENTOFU"
+      ;;
+    *)
+      bl64_msg_show_error "invalid option ($OPTARG)"
+      bl64_msg_help_show
+      exit 1
       ;;
   esac
 done

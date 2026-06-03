@@ -25,13 +25,11 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
 source ./bin/dev-env-ansible || exit 1
 
 declare MY_PLAYBOOK="${1:-}"
-declare MY_INVENTORY="${2:-}"
 
 function my_test() {
   bl64_dbg_app_show_function
   bl64_msg_show_phase 'Test deployment'
-  bl64_ans_run_ansible_playbook \
-    --inventory "$MY_INVENTORY" \
+  dev_ansible_run_playbook \
     --check \
     --diff \
     "$MY_PLAYBOOK"
@@ -40,17 +38,17 @@ function my_test() {
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-    bl64_ans_setup "$BL64_VAR_DEFAULT" &&
+    bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_LIB_ANSIBLE_CONFIG" &&
     bl64_check_parameter 'MY_PLAYBOOK' &&
-    bl64_check_parameter 'MY_INVENTORY' &&
     bl64_check_file "$MY_PLAYBOOK" &&
-    bl64_check_file "$MY_INVENTORY" &&
     dev_bin64_task_show_setup \
-      'MY_PLAYBOOK' \
-      'MY_INVENTORY'
+      'DEV_LIB_ANSIBLE_CONFIG' \
+      'DEV_LIB_ANSIBLE_INVENTORY_SHARED' \
+      'DEV_LIB_ANSIBLE_INVENTORY_MAIN' \
+      'MY_PLAYBOOK'
 }
 
-bl64_lib_script_version_set '1.0.0'
+bl64_lib_script_version_set '2.0.0'
 bl64_msg_help_about_set 'Test source code'
 dev_bin64_initialize && my_initialize || exit $?
 

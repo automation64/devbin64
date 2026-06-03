@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 1.9.0
+# template-lib-inst64: 1.4.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -20,27 +20,24 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-iac64 || exit 1
+source ./bin/dev-env-ansiblelint || exit 1
 
-function my_deploy() {
+function my_download() {
   bl64_dbg_app_show_function
-  "$DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE" \
-    "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml"
+  bl64_lib_flag_is_enabled "$DEV_LIB_ANSIBLELINT_SKIP" && return 0
+  "${DEV_LIB_ANSIBLELINT_INSTALLER}"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-    dev_bin64_profile_check_set &&
-    dev_iac64_check_guardrail_deploy &&
-    dev_iac64_ansible_initialize &&
-    bl64_check_command "$DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE"
+    bl64_check_file "$DEV_LIB_ANSIBLELINT_INSTALLER"
 }
 
-bl64_lib_script_version_set '4.0.0'
-bl64_msg_help_about_set 'Deploy application using Ansible driver'
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_about_set 'Prepare module resources'
 dev_bin64_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
-my_deploy
+my_download
 bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

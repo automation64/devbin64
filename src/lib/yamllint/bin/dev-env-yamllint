@@ -36,7 +36,7 @@
   # Lib / YAMLLint / Target
   export DEV_LIB_YAMLLINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_YAMLLINT_ID}"
   # Lib / YAMLLint / Configuration
-  export DEV_LIB_YAMLLINT_CFG='.yamllint.yaml'
+  export DEV_LIB_YAMLLINT_CFG="${DEV_PATH_ROOT}/.yamllint.yaml"
 
   # Env / YAMLLint / Container Registry for tools
   export DEV_ENV_YAMLLINT_REGISTRY='ghcr.io/automation64'

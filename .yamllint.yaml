@@ -1,5 +1,10 @@
 ---
-# template: 1.0.0
+#
+# YAMLLint / Configuration / Generic
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
 
 yaml-files:
   - "*.yaml"
@@ -8,6 +13,7 @@ yaml-files:
 
 ignore-from-file:
   - ".gitignore"
+  - ".yamlignore"
 
 rules:
   anchors: enable
@@ -38,4 +44,7 @@ rules:
   trailing-spaces: enable
   truthy:
     level: "warning"
-...
+
+#
+# Project settings
+#
