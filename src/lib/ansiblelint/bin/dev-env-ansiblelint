@@ -31,6 +31,8 @@
   export DEV_LIB_ANSIBLELINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansiblelint"
   # Lib / AnsibleLint / Skip installation?
   export DEV_LIB_ANSIBLELINT_SKIP='YES'
+  # Lib / AnsibleLint / Target
+  export DEV_LIB_ANSIBLELINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_ANSIBLELINT_ID}"
   # Lib / AnsibleLint / Configuration
   export DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT="${DEV_PATH_ROOT}/.ansible-lint.yml"
   export DEV_LIB_ANSIBLELINT_CFG_YAMLLINT="${DEV_PATH_ROOT}/.yamllint-ansible.yml"
