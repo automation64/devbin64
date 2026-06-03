@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# * Version: 1.0.1
+# template-env: 1.2.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -14,19 +14,47 @@
 #######################################
 
 #
-# Globals
+# Module variables
+#
+# * Shared internal variables for module tasks
+#
+
+# shellcheck disable=SC2154
+{
+  # Env / AnsibleLint / Module environment definition version
+  export DEV_ENV_ANSIBLELINT_ID='ansible-lint'
+  export DEV_ENV_ANSIBLELINT_VERSION='2.0.0'
+  # Env / AnsibleLint / Log path
+  export DEV_ENV_ANSIBLELINT_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_ANSIBLELINT_ID}"
+
+  # Lib / AnsibleLint / Installer
+  export DEV_LIB_ANSIBLELINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansiblelint"
+  # Lib / AnsibleLint / Skip installation?
+  export DEV_LIB_ANSIBLELINT_SKIP='YES'
+  # Lib / AnsibleLint / Target
+  export DEV_LIB_ANSIBLELINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_ANSIBLELINT_ID}"
+  # Lib / AnsibleLint / Configuration
+  export DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT="${DEV_PATH_ROOT}/.ansible-lint.yml"
+  export DEV_LIB_ANSIBLELINT_CFG_YAMLLINT="${DEV_PATH_ROOT}/.yamllint-ansible.yml"
+
+  # Lint / AnsibleLint / Format
+  export DEV_LINT_ANSIBLELINT_FORMAT='sarif'
+  # Lint / AnsibleLint / Report
+  export DEV_LINT_ANSIBLELINT_PATH_REPORT="${DEV_ENV_ANSIBLELINT_PATH_LOGS}/${DEV_ENV_ANSIBLELINT_ID}.${DEV_LINT_ANSIBLELINT_FORMAT}"
+}
+
+#
+# Module parameters
 #
 # * Use .dev.env file to override values
 #
 
 # shellcheck disable=SC2154
 {
-  # Lib / AnsibleLint / Configuration name
-  export DEV_LIB_ANSIBLELINT_CFG='.ansible-lint'
-  # Lint / AnsibleLint / Base path for collections
-  export DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS="${DEV_LINT_ANSIBLELINT_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
-  # Lint / AnsibleLint / Collection Catalog
-  export DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS="${DEV_LINT_ANSIBLELINT_CATALOG_COLLECTIONS:-}"
+  # Lint / AnsibleLint / Linting profile
+  export DEV_LINT_ANSIBLELINT_PROFILE="${DEV_LINT_ANSIBLELINT_PROFILE:-production}"
+  # Lint / AnsibleLint / Playbooks
+  export DEV_LINT_ANSIBLELINT_TARGET="${DEV_LINT_ANSIBLELINT_TARGET:-${DEV_PATH_SRC}}"
 }
 
 #
@@ -38,5 +66,16 @@
 # shellcheck disable=SC2154
 {
   # Lib / AnsibleLint / Command
-  export DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_BIN:-${HOME}/.local/bin/ansible-lint}"
+  export DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_BIN:-}"
+  if [[ -z "$DEV_LIB_ANSIBLELINT_BIN" ]]; then
+    DEV_LIB_ANSIBLELINT_BIN="$(dev_bin64_lib_locate 'ansible-lint')"
+    if [[ -z "$DEV_LIB_ANSIBLELINT_BIN" ]]; then
+      DEV_LIB_ANSIBLELINT_BIN="${DEV_LIB_ANSIBLELINT_TARGET}/ansible-lint"
+      if [[ ! -x "${DEV_LIB_ANSIBLELINT_BIN}" ]]; then
+        DEV_LIB_ANSIBLELINT_SKIP='NO'
+      fi
+    else
+      DEV_LIB_ANSIBLELINT_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_ANSIBLELINT_BIN")"
+    fi
+  fi
 }

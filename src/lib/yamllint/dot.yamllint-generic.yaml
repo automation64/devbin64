@@ -1,6 +1,6 @@
 ---
 #
-# YAMLLint / Configuration
+# YAMLLint / Configuration / Generic
 #
 # * Version: 1.0.0
 # * Template: 1.0.0
@@ -13,6 +13,7 @@ yaml-files:
 
 ignore-from-file:
   - ".gitignore"
+  - ".yamlignore"
 
 rules:
   anchors: enable

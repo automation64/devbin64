@@ -22,36 +22,31 @@ source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
   source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-kustomize || exit 1
+source ./bin/dev-env-ansible || exit 1
 
 declare MY_PLAYBOOK="${1:-}"
-declare MY_INVENTORY_PRIMARY="${2:-/dev/null}"
-declare MY_INVENTORY_SHARED="${3:-/dev/null}"
 
 function my_deploy() {
   bl64_dbg_app_show_function
   bl64_msg_show_phase 'Deploy application'
-  bl64_ans_run_ansible_playbook \
-    --inventory "$MY_INVENTORY_PRIMARY" \
-    --inventory "$MY_INVENTORY_SHARED" \
+  dev_ansible_run_playbook \
     "$MY_PLAYBOOK"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_bin64_task_initialize &&
-    bl64_ans_setup "$BL64_VAR_DEFAULT" &&
+    bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_LIB_ANSIBLE_CONFIG" &&
     bl64_check_parameter 'MY_PLAYBOOK' &&
     bl64_check_file "$MY_PLAYBOOK" &&
-    bl64_check_file "$MY_INVENTORY_PRIMARY" &&
-    bl64_check_file "$MY_INVENTORY_SHARED" &&
     dev_bin64_task_show_setup \
-      'MY_PLAYBOOK' \
-      'MY_INVENTORY_PRIMARY' \
-      'MY_INVENTORY_SHARED'
+      'DEV_LIB_ANSIBLE_CONFIG' \
+      'DEV_LIB_ANSIBLE_INVENTORY_SHARED' \
+      'DEV_LIB_ANSIBLE_INVENTORY_MAIN' \
+      'MY_PLAYBOOK'
 }
 
-bl64_lib_script_version_set '1.2.0'
+bl64_lib_script_version_set '2.0.0'
 bl64_msg_help_about_set 'Run deployment scripts'
 dev_bin64_initialize && my_initialize || exit $?
 

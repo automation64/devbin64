@@ -30,7 +30,7 @@ function dev_lint_yamllint_local() {
   bl64_dbg_app_show_function "$@"
   local target="$1"
   "$DEV_LIB_YAMLLINT_BIN" \
-    --config-file "${DEV_PATH_ROOT}/${DEV_LIB_YAMLLINT_CFG}" \
+    --config-file "${DEV_LIB_YAMLLINT_CFG}" \
     --format "$DEV_LINT_YAMLLINT_FORMAT" \
     --strict \
     "$target" >>"$DEV_LINT_YAMLLINT_PATH_REPORT"

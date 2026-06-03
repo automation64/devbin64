@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.5.0]
+
+### Added
+
+- Ansible
+  - Ansible toolset configuration definition
+- AsibleLint
+  - Tool installer
+
+### Changed
+
+- IAC64-Ansible
+  - Make shared inventory mandatory
+- BashLib64
+  - Upgraded to 23.2.0
+
+### Fixed
+
+- IAC64
+  - dev-iac64: missing invalid parameter check
+
 ## [14.4.0]
 
 ### Added

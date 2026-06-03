@@ -23,7 +23,7 @@
 {
   # Env / IaC64 / Module environment definition version
   export DEV_ENV_IAC64_ID='iac64'
-  export DEV_ENV_IAC64_VERSION='3.2.3'
+  export DEV_ENV_IAC64_VERSION='3.4.0'
 
   # Env / IaC64 / Driver Name
   export DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE='ansible'
@@ -79,6 +79,10 @@
 
   # Env / IaC64 / File names and extensions
   export DEV_ENV_IAC64_FILE_DOTENV='.iac64.env'
+
+  # Env / IaC64 / Driver specific file names
+  export DEV_ENV_IAC64_FILE_ANSIBLE_INVENTORY='inventory.ini'
+  export DEV_ENV_IAC64_FILE_ANSIBLE_CONFIG='ansible.cfg'
 
   # Env / IaC64 / Propagated module variables. Automatically set by dev-iac64
   export DEV_ENV_IAC64_PATH_ETC_GLOBAL="${DEV_ENV_IAC64_PATH_ETC_GLOBAL:-}"
@@ -149,4 +153,17 @@ function dev_iac64_check_guardrail_remove() {
     bl64_msg_show_fatal 'Guardrail is enabled. Removal request cancelled (DEV_REMOVE_IAC64_GUARDRAIL_ENABLED=YES)'
     return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
   fi
+}
+
+function dev_iac64_ansible_initialize() {
+  bl64_dbg_app_show_function
+
+  export DEV_LIB_ANSIBLE_INVENTORY_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED}/${DEV_ENV_IAC64_FILE_ANSIBLE_INVENTORY}"
+  export DEV_LIB_ANSIBLE_INVENTORY_MAIN="${DEV_ENV_IAC64_PATH_ETC_MODULE}/${DEV_ENV_IAC64_FILE_ANSIBLE_INVENTORY}"
+  export DEV_LIB_ANSIBLE_CONFIG="${DEV_ENV_IAC64_PATH_ETC_SHARED}/${DEV_ENV_IAC64_FILE_ANSIBLE_CONFIG}"
+
+  [[ -f "${DEV_LIB_ANSIBLE_INVENTORY_MAIN}" ]] || DEV_LIB_ANSIBLE_INVENTORY_MAIN="$BL64_VAR_DEFAULT"
+
+  bl64_check_file "$DEV_LIB_ANSIBLE_INVENTORY_SHARED" &&
+    bl64_check_file "$DEV_LIB_ANSIBLE_CONFIG"
 }

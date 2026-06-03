@@ -23,7 +23,7 @@
 {
   # Env / Ansible / Module environment definition version
   export DEV_ENV_ANSIBLE_ID='ansible'
-  export DEV_ENV_ANSIBLE_VERSION='3.0.1'
+  export DEV_ENV_ANSIBLE_VERSION='4.0.0'
   # Env / Ansible / Container path for project mounts
   export DEV_ENV_ANSIBLE_CONTAINER_PATH_SRC='/source'
   export DEV_ENV_ANSIBLE_CONTAINER_PATH_ROOT='/project'
@@ -53,8 +53,11 @@
   # Env / Ansible / Registry for lab and testing containers
   export DEV_ENV_ANSIBLE_REGISTRY="${DEV_ENV_ANSIBLE_REGISTRY:-ghcr.io/automation64}"
 
-  # Pack / Ansible / Configuration
-  export DEV_PACK_ANSIBLE_CFG="${DEV_PACK_ANSIBLE_CFG:-${DEV_PATH_ROOT}/.ansible.cfg}"
+  # Lib / Ansible / Configuration
+  export DEV_LIB_ANSIBLE_CONFIG="${DEV_LIB_ANSIBLE_CONFIG:-${DEV_PATH_ROOT}/.ansible.cfg}"
+  export DEV_LIB_ANSIBLE_INVENTORY_MAIN="${DEV_LIB_ANSIBLE_INVENTORY_MAIN:-$BL64_VAR_DEFAULT}"
+  export DEV_LIB_ANSIBLE_INVENTORY_SHARED="${DEV_LIB_ANSIBLE_INVENTORY_SHARED:-$BL64_VAR_DEFAULT}"
+
   # Pack / Ansible / Base path for collections
   export DEV_PACK_ANSIBLE_BASE_COLLECTIONS="${DEV_PACK_ANSIBLE_BASE_COLLECTIONS:-${DEV_PATH_SRC}}"
   # Pack / Ansible / Collection Catalog
@@ -87,4 +90,22 @@
       DEV_LIB_ANSIBLE_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_ANSIBLE_BIN")"
     fi
   fi
+}
+
+#
+# Module functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_ansible_run_playbook() {
+  bl64_dbg_app_show_function "$@"
+
+  bl64_lib_var_is_default "$DEV_LIB_ANSIBLE_INVENTORY_SHARED" && DEV_LIB_ANSIBLE_INVENTORY_SHARED=''
+  bl64_lib_var_is_default "$DEV_LIB_ANSIBLE_INVENTORY_MAIN" && DEV_LIB_ANSIBLE_INVENTORY_MAIN=''
+
+  bl64_ans_run_ansible_playbook \
+    ${DEV_LIB_ANSIBLE_INVENTORY_SHARED:+--inventory "$DEV_LIB_ANSIBLE_INVENTORY_SHARED"} \
+    ${DEV_LIB_ANSIBLE_INVENTORY_MAIN:+--inventory "$DEV_LIB_ANSIBLE_INVENTORY_MAIN"} \
+    "$@"
 }
