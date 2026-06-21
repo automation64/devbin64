@@ -23,9 +23,7 @@
 {
   # Env / ShFmt / Module environment definition version
   export DEV_ENV_SHFMT_ID='shfmt'
-  export DEV_ENV_SHFMT_VERSION='1.0.0'
-  # Env / ShFmt / Log path
-  export DEV_ENV_SHFMT_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_SHFMT_ID}"
+  export DEV_ENV_SHFMT_VERSION='1.1.0'
 
   # Lib / ShFmt / Installer
   export DEV_LIB_SHFMT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-shfmt"
@@ -36,8 +34,6 @@
 
   # Lint / ShFmt / Format
   export DEV_LINT_SHFMT_FORMAT='txt'
-  # Lint / ShFmt / Report
-  export DEV_LINT_SHFMT_PATH_REPORT="${DEV_ENV_SHFMT_PATH_LOGS}/${DEV_ENV_SHFMT_ID}-lint.${DEV_LINT_SHFMT_FORMAT}"
 }
 
 #
@@ -48,6 +44,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / ShFmt / Log path
+  export DEV_ENV_SHFMT_PATH_LOGS="${DEV_ENV_SHFMT_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_SHFMT_ID}}"
+
+  # Lint / ShFmt / Report
+  export DEV_LINT_SHFMT_PATH_REPORT="${DEV_ENV_SHFMT_PATH_LOGS}/${DEV_ENV_SHFMT_ID}-lint.${DEV_LINT_SHFMT_FORMAT}"
   # Lint / ShFmt / Target
   export DEV_LINT_SHFMT_TARGET="${DEV_LINT_SHFMT_TARGET:-${DEV_PATH_SRC}}"
 }

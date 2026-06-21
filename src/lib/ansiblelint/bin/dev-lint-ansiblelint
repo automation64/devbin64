@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-lint: 1.2.0
+# template-lint: 1.3.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -13,48 +13,39 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || exit 1
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-ansiblelint || exit 1
+source ./bin/dev-set &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-ansiblelint || exit 1
 
 declare MY_TARGET="${*:-${DEV_LINT_ANSIBLELINT_TARGET}}"
 
 function my_lint() {
   bl64_dbg_app_show_function
-  "$DEV_LIB_ANSIBLELINT_BIN" \
-    -q \
+  bl64_dbg_lib_trace_start
+  dev_ansiblelint_run_ansiblelint \
     --strict \
-    --nocolor \
     --show-relpath \
     --sarif-file "$DEV_LINT_ANSIBLELINT_PATH_REPORT" \
     --profile "$DEV_LINT_ANSIBLELINT_PROFILE" \
-    --yamllint-file "$DEV_LIB_ANSIBLELINT_CFG_YAMLLINT" \
-    --config-file "$DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT" \
-    --project-dir "$DEV_PATH_ROOT" \
     "${MY_TARGET}"
+  bl64_dbg_lib_trace_stop
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
-    dev_bin64_log_setup "$BL64_VAR_ON" "$DEV_ENV_ANSIBLELINT_PATH_LOGS" &&
-    bl64_check_command "$DEV_LIB_ANSIBLELINT_BIN" &&
-    dev_bin64_task_show_setup \
+  dev_base_task_initialize &&
+    dev_base_var_setup "$BL64_VAR_ON" "$DEV_LIB_ANSIBLELINT_RUNTIME" &&
+    dev_base_log_setup "$BL64_VAR_ON" "$DEV_ENV_ANSIBLELINT_PATH_LOGS" &&
+    dev_base_lib_check_command "$DEV_ENV_ANSIBLELINT_ID" "$DEV_LIB_ANSIBLELINT_BIN" &&
+    dev_base_task_show_setup \
       'DEV_LINT_ANSIBLELINT_PATH_REPORT' \
       'DEV_LINT_ANSIBLELINT_PROFILE' \
-      'DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT' \
-      'DEV_LIB_ANSIBLELINT_CFG_YAMLLINT' \
       'MY_TARGET'
 }
 
-bl64_lib_script_version_set '2.0.0'
-bl64_msg_help_about_set 'Lint source code'
-dev_bin64_initialize && my_initialize || exit $?
+bl64_lib_script_version_set '2.1.0'
+bl64_msg_help_set_about 'Lint source code'
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_lint

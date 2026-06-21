@@ -23,9 +23,7 @@
 {
   # Env / GoLangCI / Module environment definition version
   export DEV_ENV_GOLANGCI_ID='golangci'
-  export DEV_ENV_GOLANGCI_VERSION='1.0.2'
-  # Env / GoLangCI / Log path
-  export DEV_ENV_GOLANGCI_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_GOLANGCI_ID}"
+  export DEV_ENV_GOLANGCI_VERSION='1.1.0'
 
   # Lib / GoLangCI / Installer
   export DEV_LIB_GOLANGCI_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-golangci"
@@ -38,8 +36,6 @@
 
   # Lint / GoLangCI / Format
   export DEV_LINT_GOLANGCI_FORMAT='sarif'
-  # Lint / GoLangCI / Report
-  export DEV_LINT_GOLANGCI_PATH_REPORT="${DEV_ENV_GOLANGCI_PATH_LOGS}/${DEV_ENV_GOLANGCI_ID}-lint.${DEV_LINT_GOLANGCI_FORMAT}"
 }
 
 #
@@ -50,6 +46,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / GoLangCI / Log path
+  export DEV_ENV_GOLANGCI_PATH_LOGS="${DEV_ENV_GOLANGCI_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_GOLANGCI_ID}}"
+
+  # Lint / GoLangCI / Report
+  export DEV_LINT_GOLANGCI_PATH_REPORT="${DEV_ENV_GOLANGCI_PATH_LOGS}/${DEV_ENV_GOLANGCI_ID}-lint.${DEV_LINT_GOLANGCI_FORMAT}"
   # Lint / GoLangCI / Target
   export DEV_LINT_GOLANGCI_TARGET="${DEV_LINT_GOLANGCI_TARGET:-${DEV_PATH_SRC}}"
 }

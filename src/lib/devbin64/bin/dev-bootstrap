@@ -108,7 +108,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBootstrap / Current version
-declare DEV_BOOTSTRAP_VERSION='9.0.1'
+declare DEV_BOOTSTRAP_VERSION='9.1.0'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -138,6 +138,7 @@ DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-create
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-remove"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-list"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
+DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-source-base"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
 
@@ -179,6 +180,21 @@ declare -i MY_STATUS=0
 #
 # Functions
 #
+
+function my_msg_show_warning() {
+  local msg="$1"
+  echo "devbin64:Warning: ${msg}" 2>&1
+}
+
+function my_msg_show_error() {
+  local msg="$1"
+  echo "devbin64:Error: ${msg}" 2>&1
+}
+
+function my_msg_show_task() {
+  local msg="$1"
+  echo "devbin64:Task: ${msg}"
+}
 
 function my_file_is_same() {
   local file_old="$1"
@@ -371,21 +387,6 @@ function my_legacy() {
   done
 }
 
-function my_msg_show_warning() {
-  local msg="$1"
-  echo "devbin64:Warning: ${msg}" 2>&1
-}
-
-function my_msg_show_error() {
-  local msg="$1"
-  echo "devbin64:Error: ${msg}" 2>&1
-}
-
-function my_msg_show_task() {
-  local msg="$1"
-  echo "devbin64:Task: ${msg}"
-}
-
 function my_initialize() {
 
   my_msg_show_task "initialize bootstrap (v${DEV_BOOTSTRAP_VERSION})"
@@ -420,7 +421,7 @@ function my_initialize() {
 
 [[ -n "$DEV_CICD_DEBUG_BASH" ]] && set -x
 
-echo "Process: [${MY_PROCESS}] started"
+echo "dev_bootstrap:Process: [${MY_PROCESS}] started"
 my_initialize &&
   my_env_create &&
   my_bin_populate_base &&

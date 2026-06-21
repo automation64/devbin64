@@ -13,18 +13,10 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || exit 1
-# shellcheck source=lib/bl64/bashlib64-core.bash
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-py.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-ans.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-# shellcheck source=bin/dev-env-ansible
-source ./bin/dev-env-ansible || exit 1
+source ./bin/dev-set &&
+  source ./bin/dev-source-ansible &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-ansible || exit 1
 
 declare MY_TARGET="${*:-${DEV_PACK_ANSIBLE_CATALOG_COLLECTIONS}}"
 
@@ -45,13 +37,13 @@ function my_pack() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
-    dev_bin64_pack_setup "$DEV_PACK_ANSIBLE_PATH_TARGET" &&
+  dev_base_task_initialize &&
+    dev_base_pack_setup "$DEV_PACK_ANSIBLE_PATH_TARGET" &&
     bl64_check_parameter 'MY_TARGET' &&
     bl64_check_export 'DEV_PACK_ANSIBLE_GALAXY_NAMESPACE' &&
     bl64_check_directory "$DEV_PACK_ANSIBLE_BASE_COLLECTIONS" &&
     bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_LIB_ANSIBLE_CONFIG" &&
-    dev_bin64_task_show_setup \
+    dev_base_task_show_setup \
       'DEV_LIB_ANSIBLE_CONFIG' \
       'DEV_PACK_ANSIBLE_PATH_TARGET' \
       'DEV_PACK_ANSIBLE_GALAXY_NAMESPACE' \
@@ -60,8 +52,8 @@ function my_initialize() {
 }
 
 bl64_lib_script_version_set '4.0.0'
-bl64_msg_help_about_set 'Pack application for release'
-dev_bin64_initialize && my_initialize || exit $?
+bl64_msg_help_set_about 'Pack application for release'
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_pack

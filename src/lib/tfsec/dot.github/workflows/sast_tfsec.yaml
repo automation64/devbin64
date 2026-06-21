@@ -1,5 +1,5 @@
 ---
-# template: 1.7.0
+# template: 1.8.0
 name: "SAST/TFSec"
 
 permissions:
@@ -8,8 +8,6 @@ permissions:
 env:
   DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}
   DEV_CICD_DEBUG_BASH: ${{ vars.DEV_CICD_DEBUG_BASH || '' }}
-  BL64_LIB_CICD: ${{ vars.BL64_LIB_CICD || 'YES' }}
-  DEV_TEST_BASH_RUNNER_ENVIRONMENT: ${{ vars.DEV_TEST_BASH_RUNNER_ENVIRONMENT || 'ON' }}
 
 # yamllint disable-line rule:truthy
 on:
@@ -28,7 +26,6 @@ jobs:
   sast-tfsec:
     runs-on: "ubuntu-latest"
     steps:
-
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 1.9.0
+# template-remove: 1.0.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -13,15 +13,10 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || exit 1
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-k8s.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-kustomize &&
+source ./bin/dev-set &&
+  source ./bin/dev-source-kubectl &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-kustomize &&
   source ./bin/dev-env-kubectl || exit 1
 
 declare MY_STAGING="${1:-}"
@@ -31,24 +26,26 @@ function my_remove() {
   bl64_k8s_run_kubectl \
     delete \
     --wait='true' \
-    --kustomize="$MY_STAGING"
+    --kustomize="$MY_STAGING" >"$DEV_REMOVE_KUSTOMIZE_PATH_LOG" 2>&1
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
+  dev_base_task_initialize &&
+    dev_base_log_setup "$BL64_VAR_OFF" "$DEV_ENV_KUSTOMIZE_PATH_LOGS" &&
     bl64_lib_script_minver_check "$DEV_LIB_KUBECTL_REQUIRED_BASHLIB64" &&
     bl64_k8s_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_KUBECTL_BIN")" &&
-    bl64_k8s_set_kubeconfig "$DEV_ENV_KUBECTL_PATH_KUBECONF" &&
+    bl64_k8s_set_kubeconfig "$DEV_LIB_KUBECTL_CFG_KUBECONF" &&
     bl64_check_parameter 'MY_STAGING' &&
     bl64_check_directory "$MY_STAGING" &&
-    dev_bin64_task_show_setup \
-      'MY_STAGING'
+    dev_base_task_show_setup \
+      'MY_STAGING' \
+      'DEV_REMOVE_KUSTOMIZE_PATH_LOG'
 }
 
-bl64_lib_script_version_set '2.0.2'
-bl64_msg_help_about_set 'Run deployment removal scripts'
-dev_bin64_initialize && my_initialize || exit $?
+bl64_lib_script_version_set '2.1.0'
+bl64_msg_help_set_about 'Remove deployed application'
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_remove

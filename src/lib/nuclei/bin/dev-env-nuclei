@@ -23,9 +23,7 @@
 {
   # Env / Nuclei / Module environment definition version
   export DEV_ENV_NUCLEI_ID='nuclei'
-  export DEV_ENV_NUCLEI_VERSION='1.0.0'
-  # Env / Nuclei / Log path
-  export DEV_ENV_NUCLEI_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_NUCLEI_ID}"
+  export DEV_ENV_NUCLEI_VERSION='1.1.0'
 
   # Lib / Nuclei / Installer
   export DEV_LIB_NUCLEI_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-nuclei"
@@ -38,8 +36,6 @@
 
   # DAST / Nuclei / Format
   export DEV_DAST_NUCLEI_FORMAT='sarif'
-  # DAST / Nuclei / Report
-  export DEV_DAST_NUCLEI_PATH_REPORT="${DEV_ENV_NUCLEI_PATH_LOGS}/${DEV_ENV_NUCLEI_ID}-dast.${DEV_DAST_NUCLEI_FORMAT}"
 }
 
 #
@@ -50,6 +46,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / Nuclei / Log path
+  export DEV_ENV_NUCLEI_PATH_LOGS="${DEV_ENV_NUCLEI_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_NUCLEI_ID}}"
+
+  # DAST / Nuclei / Report
+  export DEV_DAST_NUCLEI_PATH_REPORT="${DEV_ENV_NUCLEI_PATH_LOGS}/${DEV_ENV_NUCLEI_ID}-dast.${DEV_DAST_NUCLEI_FORMAT}"
   # DAST / Nuclei / Target
   export DEV_DAST_NUCLEI_TARGET="${DEV_DAST_NUCLEI_TARGET:-}"
 }

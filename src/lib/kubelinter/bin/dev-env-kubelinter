@@ -23,9 +23,7 @@
 {
   # Env / Kubelinter / Module environment definition version
   export DEV_ENV_KUBELINTER_ID='kubelinter'
-  export DEV_ENV_KUBELINTER_VERSION='1.1.0'
-  # Env / Kubelinter / Container path for project mounts
-  export DEV_ENV_KUBELINTER_CONTAINER_PATH_ROOT='/project'
+  export DEV_ENV_KUBELINTER_VERSION='2.0.0'
 
   # Lib / Kubelinter / Installer
   export DEV_LIB_KUBELINTER_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubelinter"
@@ -33,6 +31,11 @@
   export DEV_LIB_KUBELINTER_SKIP='YES'
   # Lib / Kubelinter / Target
   export DEV_LIB_KUBELINTER_TARGET="${DEV_PATH_LIB}/${DEV_ENV_KUBELINTER_ID}"
+  # Lib / Kubelinter / Configuration
+  export DEV_LIB_KUBELINTER_CFG="${DEV_PATH_ROOT}/.kube-linter.yaml"
+
+  # Lint / Kubelinter / Format
+  export DEV_LINT_KUBELINTER_FORMAT='sarif'
 }
 
 #
@@ -45,6 +48,11 @@
 {
   # Env / Kubelinter / Container Registry for tools
   export DEV_ENV_KUBELINTER_REGISTRY="${DEV_ENV_KUBELINTER_REGISTRY:-ghcr.io/automation64}"
+  # Env / Kubelinter / Log path
+  export DEV_ENV_KUBELINTER_PATH_LOGS="${DEV_ENV_KUBELINTER_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_KUBELINTER_ID}}"
+
+  # Lint / Kubelinter / Report
+  export DEV_LINT_KUBELINTER_PATH_REPORT="${DEV_ENV_KUBELINTER_PATH_LOGS}/${DEV_ENV_KUBELINTER_ID}-lint.${DEV_LINT_KUBELINTER_FORMAT}"
   # Lint / Kubelinter / Target
   export DEV_LINT_KUBELINTER_TARGET="${DEV_LINT_KUBELINTER_TARGET:-${DEV_BASE_SRC}}"
   # Lint / Kubelinter / Container with linting tool
@@ -74,4 +82,36 @@
       DEV_LIB_KUBELINTER_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_KUBELINTER_BIN")"
     fi
   fi
+}
+
+#
+# Module functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_kubelinter_run_kubelinter() {
+  bl64_dbg_app_show_function "$@"
+  bl64_dbg_lib_trace_start
+  "$DEV_LIB_KUBELINTER_BIN" \
+    --config "$DEV_LIB_KUBELINTER_CFG" \
+    "$@"
+  bl64_dbg_lib_trace_stop
+}
+
+function dev_kubelinter_run_container() {
+  bl64_dbg_app_show_function "$@"
+  local entrypoint="${1:-}"
+  local image="${2:-}"
+
+  bl64_check_parameter 'entrypoint' &&
+    bl64_check_parameter 'image' &&
+    shift 2 ||
+    return $?
+
+  dev_base_lib_run_container \
+    "$entrypoint" \
+    "$image" \
+    --config "$DEV_LIB_KUBELINTER_CFG" \
+    "$@"
 }

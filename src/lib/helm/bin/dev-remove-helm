@@ -13,15 +13,10 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || exit 1
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-hlm.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-kubectl &&
+source ./bin/dev-set &&
+  source ./bin/dev-source-helm &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-kubectl &&
   source ./bin/dev-env-helm || exit 1
 
 declare MY_CHART="${1:-}"
@@ -40,21 +35,21 @@ function my_remove() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
+  dev_base_task_initialize &&
     bl64_lib_script_minver_check "$DEV_LIB_KUBECTL_REQUIRED_BASHLIB64" &&
     bl64_hlm_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_HELM_BIN")" &&
     bl64_check_parameter 'MY_CHART' &&
     bl64_check_parameter 'MY_NAMESPACE' &&
     bl64_check_parameter 'MY_REPOSITORY_NAME' &&
-    dev_bin64_task_show_setup \
+    dev_base_task_show_setup \
       'MY_CHART' \
       'MY_NAMESPACE' \
       'MY_REPOSITORY_NAME'
 }
 
 bl64_lib_script_version_set '1.0.2'
-bl64_msg_help_about_set 'Run deployment removal scripts'
-dev_bin64_initialize && my_initialize || exit $?
+bl64_msg_help_set_about 'Run deployment removal scripts'
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_remove

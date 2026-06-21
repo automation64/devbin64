@@ -14,14 +14,10 @@
 #######################################
 
 export DEV_PROFILE='none'
-source ./bin/dev-set || exit 1
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-iac64 || exit 1
+source ./bin/dev-set &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-pkllang &&
+  source ./bin/dev-env-iac64 || exit 1
 
 declare MY_COMMAND="${1:-}"
 declare MY_CONFIRMATION='NONE'
@@ -34,7 +30,6 @@ declare MY_PROFILE=''
 declare MY_SHARED='0.1.0'
 declare MY_VERSION=''
 
-declare MY_COMMAND_BLT='blt'
 declare MY_COMMAND_BUILD='build'
 declare MY_COMMAND_CONSOLE='console'
 declare MY_COMMAND_DEPLOY='deploy'
@@ -49,6 +44,216 @@ declare MY_FLAG_CONFIRM_DEPLOY='CONFIRM_DEPLOY'
 declare MY_FLAG_CONFIRM_REMOVE='CONFIRM_REMOVE'
 
 declare MY_TASK=''
+
+function my_remove_helm() {
+  bl64_dbg_app_show_function
+  local parameters=''
+
+  # shellcheck disable=SC2086
+  parameters="$(bl64_xsv_run_pkl eval \
+    --module-path "$DEV_PATH_BIN/dev-env-iac64.pkl" \
+    --expression '"\(HELM_CHART) \(K8S_NAMESPACE) \(HELM_REPOSITORY_NAME)"' \
+    "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.pkl")" ||
+    return $?
+
+  # shellcheck disable=SC2086
+  "$DEV_LIB_IAC64_HELPER_REMOVE_HELM" \
+    $parameters
+}
+
+function my_deploy_helm() {
+  bl64_dbg_app_show_function
+  local parameters=''
+  local values_file_etc="${DEV_ENV_IAC64_PATH_ETC_MODULE}/values.yaml"
+  local values_file_src="${DEV_ENV_IAC64_PATH_SRC_MODULE}/values.yaml"
+
+  [[ -f "$values_file_etc" ]] || values_file_etc="$BL64_VAR_DEFAULT"
+  [[ -f "$values_file_src" ]] || values_file_src="$BL64_VAR_DEFAULT"
+
+  # shellcheck disable=SC2086
+  parameters="$(bl64_xsv_run_pkl eval \
+    --module-path "$DEV_PATH_BIN/dev-env-iac64.pkl" \
+    --expression '"\(HELM_CHART) \(K8S_NAMESPACE) \(HELM_REPOSITORY_NAME) \(HELM_REPOSITORY_URL)"' \
+    "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.pkl")" ||
+    return $?
+
+  # shellcheck disable=SC2086
+  "$DEV_LIB_IAC64_HELPER_DEPLOY_HELM" \
+    $parameters \
+    "$values_file_etc" \
+    "$values_file_src"
+}
+
+function my_setup_opentofu() {
+  bl64_dbg_app_show_function
+  export DEV_ENV_OPENTOFU_PATH_LOGS="$DEV_ENV_IAC64_PATH_LOGS_MODULE"
+  export DEV_ENV_TFSEC_PATH_LOGS="$DEV_ENV_IAC64_PATH_LOGS_MODULE"
+  export DEV_ENV_TFLINT_PATH_LOGS="$DEV_ENV_IAC64_PATH_LOGS_MODULE"
+  export TF_VAR_iac64__profile_name="$MY_PROFILE"
+}
+
+function my_build_opentofu() {
+  bl64_dbg_app_show_function
+  my_setup_opentofu || return $?
+
+  if [[ -d "$DEV_ENV_IAC64_PATH_SRC_SHARED" ]]; then
+    DEV_BUILD_OPENTOFU_CLEANUP='YES' "$DEV_LIB_IAC64_HELPER_BUILD_OPENTOFU" \
+      "$DEV_ENV_IAC64_PATH_SRC_SHARED" \
+      "$DEV_ENV_IAC64_PATH_VAR_MODULE" \
+      "$DEV_ENV_IAC64_PATH_ETC_SHARED"
+  fi
+  DEV_BUILD_OPENTOFU_CLEANUP='NO' "$DEV_LIB_IAC64_HELPER_BUILD_OPENTOFU" \
+    "$DEV_ENV_IAC64_PATH_SRC_MODULE" \
+    "$DEV_ENV_IAC64_PATH_VAR_MODULE" \
+    "$DEV_ENV_IAC64_PATH_ETC_MODULE"
+}
+
+function my_lint_opentofu() {
+  bl64_dbg_app_show_function
+  my_setup_opentofu &&
+    "$DEV_LIB_IAC64_HELPER_LINT_TFLINT" \
+      "$DEV_ENV_IAC64_PATH_VAR_MODULE"
+}
+
+function my_sast_opentofu() {
+  bl64_dbg_app_show_function
+  my_setup_opentofu &&
+    "$DEV_LIB_IAC64_HELPER_SAST_TFSEC" \
+      "$DEV_ENV_IAC64_PATH_VAR_MODULE"
+}
+
+function my_test_opentofu() {
+  bl64_dbg_app_show_function
+  my_setup_opentofu &&
+    "$DEV_LIB_IAC64_HELPER_TEST_OPENTOFU" \
+      "$DEV_ENV_IAC64_PATH_VAR_MODULE"
+}
+
+function my_deploy_opentofu() {
+  bl64_dbg_app_show_function
+  my_setup_opentofu &&
+    DEV_DEPLOY_OPENTOFU_GUARDRAIL_ENABLED='NO' \
+      "$DEV_LIB_IAC64_HELPER_DEPLOY_OPENTOFU" \
+      "$DEV_ENV_IAC64_PATH_VAR_MODULE"
+}
+
+function my_remove_opentofu() {
+  bl64_dbg_app_show_function
+  my_setup_opentofu &&
+    DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED='NO' \
+      "$DEV_LIB_IAC64_HELPER_REMOVE_OPENTOFU" \
+      "$DEV_ENV_IAC64_PATH_VAR_MODULE"
+}
+
+function my_lint_ansible() {
+  bl64_dbg_app_show_function
+  my_setup_ansible &&
+    "$DEV_LIB_IAC64_HELPER_LINT_ANSIBLE_LINT" \
+      "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml"
+}
+
+function my_test_ansible() {
+  bl64_dbg_app_show_function
+  my_setup_ansible &&
+    "$DEV_LIB_IAC64_HELPER_TEST_ANSIBLE" \
+      "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml"
+}
+
+function my_deploy_ansible() {
+  bl64_dbg_app_show_function
+  my_setup_ansible &&
+    "$DEV_LIB_IAC64_HELPER_DEPLOY_ANSIBLE" \
+      "${DEV_ENV_IAC64_PATH_SRC_MODULE}/main.yaml"
+}
+
+function my_setup_ansible() {
+  bl64_dbg_app_show_function
+  export DEV_ENV_ANSIBLE_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
+  export DEV_LIB_ANSIBLE_INVENTORY_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED}/inventory.ini"
+  export DEV_LIB_ANSIBLE_INVENTORY_MAIN="${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini"
+  export DEV_LIB_ANSIBLE_CONFIG="${DEV_ENV_IAC64_PATH_ETC_SHARED}/ansible.cfg"
+  [[ -f "${DEV_LIB_ANSIBLE_INVENTORY_MAIN}" ]] || DEV_LIB_ANSIBLE_INVENTORY_MAIN="$BL64_VAR_DEFAULT"
+
+  export DEV_ENV_ANSIBLELINT_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
+  return 0
+}
+
+function my_setup_bash() {
+  bl64_dbg_app_show_function
+  export DEV_ENV_BASH_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
+  export DEV_ENV_SHELLCHECK_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
+  return 0
+}
+
+function my_lint_bash() {
+  bl64_dbg_app_show_function
+  my_setup_bash &&
+    "$DEV_LIB_IAC64_HELPER_LINT_SHELLCHECK" \
+      "${DEV_ENV_IAC64_PATH_SRC_MODULE}"
+}
+
+function my_deploy_bash() {
+  bl64_dbg_app_show_function
+  my_setup_bash &&
+    "$DEV_LIB_IAC64_HELPER_DEPLOY_BASH" \
+      "${DEV_ENV_IAC64_PATH_SRC_MODULE}/deploy"
+}
+
+function my_remove_bash() {
+  bl64_dbg_app_show_function
+  my_setup_bash &&
+    "$DEV_LIB_IAC64_HELPER_REMOVE_BASH" \
+      "${DEV_ENV_IAC64_PATH_SRC_MODULE}/remove"
+}
+
+function my_setup_kustomize() {
+  bl64_dbg_app_show_function
+  export DEV_LIB_KUBECTL_CFG_BASE="${DEV_ENV_IAC64_PATH_VAULT}/kubectl"
+  export DEV_ENV_KUSTOMIZE_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
+  export DEV_ENV_KUBELINTER_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
+
+  bl64_fs_dir_create '0700' "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" \
+    "$DEV_LIB_KUBECTL_CFG_BASE"
+}
+
+function my_lint_kustomize() {
+  bl64_dbg_app_show_function
+  local manifest=''
+  local catalog=''
+  local targets=''
+
+  my_setup_kustomize &&
+    catalog="$(cd "$DEV_ENV_IAC64_PATH_SRC_MODULE" && bl64_bsh_pattern_match_file '*.yaml')" ||
+    return $?
+
+  for manifest in $catalog; do
+    [[ "$manifest" == 'kustomization.yaml' ]] && continue
+    targets+=" ${DEV_BASE_SRC}/${DEV_ENV_IAC64_MODULE_ID}/${DEV_ENV_IAC64_DRIVER_TAG_KUSTOMIZE}/${DEV_ENV_IAC64_MODULE_VERSION}/${manifest}"
+  done
+  # shellcheck disable=SC2086
+  "$DEV_LIB_IAC64_HELPER_LINT_KUBELINTER" $targets
+}
+
+function my_deploy_kustomize() {
+  bl64_dbg_app_show_function
+  my_setup_kustomize &&
+    "$DEV_LIB_IAC64_HELPER_DEPLOY_KUSTOMIZE" \
+      "$DEV_ENV_IAC64_PATH_ETC_MODULE"
+}
+
+function my_test_kustomize() {
+  bl64_dbg_app_show_function
+  my_setup_kustomize &&
+    "$DEV_LIB_IAC64_HELPER_TEST_KUSTOMIZE" \
+      "$DEV_ENV_IAC64_PATH_ETC_MODULE"
+}
+
+function my_remove_kustomize() {
+  bl64_dbg_app_show_function
+  my_setup_kustomize &&
+    "$DEV_LIB_IAC64_HELPER_REMOVE_KUSTOMIZE" \
+      "$DEV_ENV_IAC64_PATH_ETC_MODULE"
+}
 
 # shellcheck disable=SC1090,SC2086,SC2035
 function my_env_import() {
@@ -84,26 +289,16 @@ function my_env_import() {
 }
 
 function my_run_command() {
-  bl64_check_command "$MY_TASK" "the requested command for the driver is not available (${MY_TASK})" ||
-    return $?
+  bl64_dbg_app_show_function
+  if [[ $(type -t "$MY_TASK") != 'function' ]]; then
+    bl64_msg_show_error 'the command is not available for the current driver. No further action taken.'
+    return 1
+  fi
   "$MY_TASK"
 }
 
 function my_msg_task_not_implemented() {
   bl64_msg_show_warning 'the command is not available for the current driver. No further action taken.'
-}
-
-function my_run_blt() {
-  bl64_dbg_app_show_function
-  bl64_msg_show_phase "$MY_COMMAND_BUILD"
-  MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_BUILD}-iac64-${MY_DRIVER_NAME}"
-  my_run_command "$MY_COMMAND_BUILD" &&
-    bl64_msg_show_phase "$MY_COMMAND_LINT" &&
-    MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_LINT}-iac64-${MY_DRIVER_NAME}" &&
-    my_run_command &&
-    bl64_msg_show_phase "$MY_COMMAND_TEST" &&
-    MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND_TEST}-iac64-${MY_DRIVER_NAME}" &&
-    my_run_command
 }
 
 function my_run_console() {
@@ -122,20 +317,7 @@ function my_run() {
     return $?
 
   case "$MY_COMMAND" in
-    "$MY_COMMAND_DEPLOY")
-      if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
-        DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='NO'
-      fi
-      my_run_command
-      ;;
-    "$MY_COMMAND_REMOVE")
-      if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_REMOVE" ]]; then
-        DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='NO'
-      fi
-      my_run_command
-      ;;
     "$MY_COMMAND_CONSOLE") my_run_console ;;
-    "$MY_COMMAND_BLT") my_run_blt ;;
     "$MY_COMMAND_NONE") my_msg_task_not_implemented ;;
     *) my_run_command ;;
   esac
@@ -154,17 +336,15 @@ function my_env_export() {
   DEV_ENV_IAC64_MODULE_VERSION="$MY_VERSION"
   DEV_ENV_IAC64_MODULE_SHARED="$MY_SHARED"
 
-  DEV_ENV_IAC64_PATH_ETC_GLOBAL="${DEV_PATH_PROF_ETC}/${DEV_BUILD_IAC64_SHARED}/${DEV_ENV_IAC64_DRIVER_TAG_GLOBAL}/${MY_GLOBAL}"
+  DEV_ENV_IAC64_PATH_ETC_GLOBAL="${DEV_PATH_PROF_ETC}/${DEV_ENV_IAC64_DIR_SHARED}/${DEV_ENV_IAC64_DRIVER_TAG_GLOBAL}/${MY_GLOBAL}"
   DEV_ENV_IAC64_PATH_ETC_MODULE="${DEV_PATH_PROF_ETC}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
-  DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_PATH_PROF_ETC}/${DEV_BUILD_IAC64_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
+  DEV_ENV_IAC64_PATH_ETC_SHARED="${DEV_PATH_PROF_ETC}/${DEV_ENV_IAC64_DIR_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
   DEV_ENV_IAC64_PATH_LOGS_MODULE="${DEV_PATH_PROF_LOGS}/${MY_DRIVER_TAG}/${MY_MODULE}/${MY_VERSION}"
   DEV_ENV_IAC64_PATH_SRC_MODULE="${DEV_PATH_SRC}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
-  DEV_ENV_IAC64_PATH_SRC_SHARED="${DEV_PATH_SRC}/${DEV_BUILD_IAC64_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
+  DEV_ENV_IAC64_PATH_SRC_SHARED="${DEV_PATH_SRC}/${DEV_ENV_IAC64_DIR_SHARED}/${MY_DRIVER_TAG}/${MY_SHARED}"
   DEV_ENV_IAC64_PATH_TMP_MODULE="${DEV_PATH_PROF_TMP}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
   DEV_ENV_IAC64_PATH_VAR_MODULE="${DEV_PATH_PROF_VAR}/${MY_MODULE}/${MY_DRIVER_TAG}/${MY_VERSION}"
-
-  bl64_dbg_app_show_info 'OpenTofu settings'
-  TF_VAR_iac64__profile_name="$MY_PROFILE"
+  DEV_ENV_IAC64_PATH_VAULT="$DEV_PATH_PROF_VAULT"
 
   bl64_msg_show_setup 'Runtime environment paths' \
     'DEV_ENV_IAC64_PATH_ETC_GLOBAL' \
@@ -174,12 +354,13 @@ function my_env_export() {
     'DEV_ENV_IAC64_PATH_SRC_MODULE' \
     'DEV_ENV_IAC64_PATH_SRC_SHARED' \
     'DEV_ENV_IAC64_PATH_TMP_MODULE' \
-    'DEV_ENV_IAC64_PATH_VAR_MODULE'
+    'DEV_ENV_IAC64_PATH_VAR_MODULE' \
+    'DEV_ENV_IAC64_PATH_VAULT'
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
+  dev_base_task_initialize &&
     [[ -n "$MY_OPTION" && -n "$MY_COMMAND" ]] ||
     { bl64_msg_help_show && return 1; }
 
@@ -188,12 +369,8 @@ function my_initialize() {
       [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
-    "$MY_COMMAND_BLT")
-      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
-        MY_COMMAND="$MY_COMMAND_NONE"
-      ;;
     "$MY_COMMAND_LINT")
-      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
     "$MY_COMMAND_SAST")
@@ -207,8 +384,26 @@ function my_initialize() {
     "$MY_COMMAND_REMOVE")
       [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
+
+      if bl64_lib_flag_is_enabled "$DEV_REMOVE_IAC64_GUARDRAIL_ENABLED"; then
+        if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_REMOVE" ]]; then
+          DEV_REMOVE_IAC64_GUARDRAIL_ENABLED='NO'
+        else
+          bl64_msg_show_fatal 'Guardrail is enabled. Removal request cancelled.'
+          return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
+        fi
+      fi
       ;;
-    "$MY_COMMAND_DEPLOY") ;;
+    "$MY_COMMAND_DEPLOY")
+      if bl64_lib_flag_is_enabled "$DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED"; then
+        if [[ "$MY_CONFIRMATION" == "$MY_FLAG_CONFIRM_DEPLOY" ]]; then
+          DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED='NO'
+        else
+          bl64_msg_show_fatal 'Guardrail is enabled. Deployment request cancelled.'
+          return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
+        fi
+      fi
+      ;;
     "$MY_COMMAND_CONSOLE") ;;
     *)
       bl64_msg_show_error "invalid command name (${MY_COMMAND})"
@@ -216,8 +411,9 @@ function my_initialize() {
       ;;
   esac
 
-  MY_TASK="${DEV_PATH_BIN}/dev-${MY_COMMAND}-iac64-${MY_DRIVER_NAME}"
+  MY_TASK="my_${MY_COMMAND}_${MY_DRIVER_NAME}"
   bl64_lib_script_minver_check "$DEV_LIB_IAC64_REQUIRED_BASHLIB64" &&
+    bl64_xsv_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_PKLLANG_BIN")" &&
     bl64_check_parameter 'MY_PROFILE' &&
     bl64_check_parameter 'MY_MODULE' &&
     bl64_check_parameter 'MY_VERSION' &&
@@ -231,16 +427,15 @@ function my_initialize() {
       'MY_GLOBAL'
 }
 
-bl64_lib_script_version_set '3.0.3'
-bl64_msg_help_usage_set 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-Z confirm] [-V format] [-D Debug] [-h]'
-bl64_msg_help_about_set 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
-bl64_msg_help_parameters_set \
+bl64_lib_script_version_set '3.1.0'
+bl64_msg_help_set_usage 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-Z confirm] [-V format] [-D Debug] [-h]'
+bl64_msg_help_set_about 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
+bl64_msg_help_set_parameters \
   "Commands:
 
 ${MY_COMMAND_BUILD}      : Prepare the staging area from the module source code
 ${MY_COMMAND_LINT}       : Lint the source on the staging area
 ${MY_COMMAND_TEST}       : Test the source on the staging area
-${MY_COMMAND_BLT}        : Combine build, lint and test operations
 ${MY_COMMAND_SAST}       : Run static application security testing on the source code on the staging area
 ${MY_COMMAND_DEPLOY}     : Deploy source code from the staging area to the target infrastructure. WARNING: destructive action.
 ${MY_COMMAND_REMOVE}     : Remove deployed infrastructure. WARNING: destructive action.
@@ -308,7 +503,7 @@ while getopts ':p:m:v:s:g:Z:V:D:ABHKO' MY_OPTION; do
       ;;
   esac
 done
-dev_bin64_initialize && my_initialize || exit $?
+dev_base_initialize && my_initialize || exit $?
 bl64_msg_show_batch_start "${BL64_SCRIPT_ID}:$MY_COMMAND"
 my_run
 bl64_msg_show_batch_finish $? "${BL64_SCRIPT_ID}:$MY_COMMAND"

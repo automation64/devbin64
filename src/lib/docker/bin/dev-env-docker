@@ -23,9 +23,7 @@
 {
   # Env / Docker / Module environment definition version
   export DEV_ENV_DOCKER_ID='docker'
-  export DEV_ENV_DOCKER_VERSION='2.0.0'
-  # Env / Docker / Log path
-  export DEV_ENV_DOCKER_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_DOCKER_ID}"
+  export DEV_ENV_DOCKER_VERSION='2.1.0'
 
   # Pack / Docker / Paths
   export DEV_PACK_DOCKER_PATH_STAGING="${DEV_PATH_BUILD_STAGING}/${DEV_ENV_DOCKER_ID}"
@@ -39,6 +37,9 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / Docker / Log path
+  export DEV_ENV_DOCKER_PATH_LOGS="${DEV_ENV_DOCKER_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_DOCKER_ID}}"
+
   # Auth / Docker / Registry
   export DEV_AUTH_DOCKER_REGISTRY="${DEV_AUTH_DOCKER_REGISTRY:-}"
   # Auth / Docker / Registry Type

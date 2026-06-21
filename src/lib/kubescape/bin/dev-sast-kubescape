@@ -13,20 +13,11 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || exit 1
-# shellcheck source=bin/dev-env-kubescape
-source ./bin/dev-env-kubescape || exit 1
-# shellcheck source=lib/bl64/bashlib64-core.bash
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-cnt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+source ./bin/dev-set &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-kubescape || exit 1
 
-declare MY_TARGET="${*:-}"
-declare _DEV_LIB_RUN_IN_CONTAINER=''
+declare MY_TARGET="${*:-$DEV_SAST_KUBESCAPE_TARGET}"
 
 function my_lint_local() {
   bl64_dbg_app_show_function "$@"
@@ -57,11 +48,9 @@ function my_lint() {
   bl64_dbg_app_show_function
   local current=''
 
-  [[ -z "$MY_TARGET" ]] && MY_TARGET="$DEV_SAST_KUBESCAPE_TARGET"
-
   for current in $MY_TARGET; do
     bl64_msg_show_phase "lint K8S Manifest target (${current})"
-    if [[ -n "$_DEV_LIB_RUN_IN_CONTAINER" ]]; then
+    if dev_base_lib_is_mode_container; then
       my_lint_container "$current"
     else
       my_lint_local "$current"
@@ -71,19 +60,15 @@ function my_lint() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize &&
-    if ! bl64_bsh_command_is_executable "$DEV_LIB_KUBESCAPE_BIN"; then
-      _DEV_LIB_RUN_IN_CONTAINER='YES'
-      bl64_cnt_setup ||
-        return $?
-    fi
-  dev_bin64_task_show_setup \
-    'MY_TARGET'
+  dev_base_task_initialize &&
+    dev_base_lib_setup_container "$DEV_ENV_KUBESCAPE_ID" "$DEV_LIB_KUBESCAPE_BIN" &&
+    dev_base_task_show_setup \
+      'MY_TARGET'
 }
 
-bl64_lib_script_version_set '3.0.1'
-bl64_msg_help_about_set 'SAST source code'
-dev_bin64_initialize && my_initialize || exit $?
+bl64_lib_script_version_set '3.1.0'
+bl64_msg_help_set_about 'SAST source code'
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_lint
