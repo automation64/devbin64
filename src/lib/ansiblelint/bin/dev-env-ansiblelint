@@ -22,10 +22,8 @@
 # shellcheck disable=SC2154
 {
   # Env / AnsibleLint / Module environment definition version
-  export DEV_ENV_ANSIBLELINT_ID='ansible-lint'
-  export DEV_ENV_ANSIBLELINT_VERSION='2.0.0'
-  # Env / AnsibleLint / Log path
-  export DEV_ENV_ANSIBLELINT_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_ANSIBLELINT_ID}"
+  export DEV_ENV_ANSIBLELINT_ID='ansiblelint'
+  export DEV_ENV_ANSIBLELINT_VERSION='3.0.0'
 
   # Lib / AnsibleLint / Installer
   export DEV_LIB_ANSIBLELINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansiblelint"
@@ -34,13 +32,11 @@
   # Lib / AnsibleLint / Target
   export DEV_LIB_ANSIBLELINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_ANSIBLELINT_ID}"
   # Lib / AnsibleLint / Configuration
-  export DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT="${DEV_PATH_ROOT}/.ansible-lint.yml"
-  export DEV_LIB_ANSIBLELINT_CFG_YAMLLINT="${DEV_PATH_ROOT}/.yamllint-ansible.yml"
+  export DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT="${DEV_PATH_ROOT}/.ansible-lint.yaml"
+  export DEV_LIB_ANSIBLELINT_CFG_YAMLLINT="${DEV_PATH_ROOT}/.yamllint-ansible.yaml"
 
   # Lint / AnsibleLint / Format
   export DEV_LINT_ANSIBLELINT_FORMAT='sarif'
-  # Lint / AnsibleLint / Report
-  export DEV_LINT_ANSIBLELINT_PATH_REPORT="${DEV_ENV_ANSIBLELINT_PATH_LOGS}/${DEV_ENV_ANSIBLELINT_ID}.${DEV_LINT_ANSIBLELINT_FORMAT}"
 }
 
 #
@@ -51,6 +47,14 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / AnsibleLint / Log path
+  export DEV_ENV_ANSIBLELINT_PATH_LOGS="${DEV_ENV_ANSIBLELINT_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_ANSIBLELINT_ID}}"
+
+  # Lib / AnsibleLint / Runtime
+  export DEV_LIB_ANSIBLELINT_RUNTIME="${DEV_LIB_ANSIBLELINT_RUNTIME:-${DEV_PATH_PROF_VAR}/${DEV_ENV_ANSIBLELINT_ID}}"
+
+  # Lint / AnsibleLint / Report
+  export DEV_LINT_ANSIBLELINT_PATH_REPORT="${DEV_ENV_ANSIBLELINT_PATH_LOGS}/${DEV_ENV_ANSIBLELINT_ID}.${DEV_LINT_ANSIBLELINT_FORMAT}"
   # Lint / AnsibleLint / Linting profile
   export DEV_LINT_ANSIBLELINT_PROFILE="${DEV_LINT_ANSIBLELINT_PROFILE:-production}"
   # Lint / AnsibleLint / Playbooks
@@ -78,4 +82,23 @@
       DEV_LIB_ANSIBLELINT_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_ANSIBLELINT_BIN")"
     fi
   fi
+}
+
+#
+# Module functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_ansiblelint_run_ansiblelint() {
+  bl64_dbg_app_show_function "$@"
+  bl64_dbg_lib_trace_start
+  "$DEV_LIB_ANSIBLELINT_BIN" \
+    -q \
+    --nocolor \
+    --yamllint-file "$DEV_LIB_ANSIBLELINT_CFG_YAMLLINT" \
+    --config-file "$DEV_LIB_ANSIBLELINT_CFG_ANSIBLELINT" \
+    --project-dir "$DEV_LIB_ANSIBLELINT_RUNTIME" \
+    "$@"
+  bl64_dbg_lib_trace_stop
 }

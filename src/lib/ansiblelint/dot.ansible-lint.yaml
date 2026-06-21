@@ -1,0 +1,45 @@
+---
+#
+# Ansible-Lint / Configuration
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
+
+offline: true
+
+var_naming_pattern: "^[a-z_][a-z0-9_]*$"
+use_default_rules: true
+skip_action_validation: false
+
+mock_modules: []
+mock_roles: []
+extra_vars: {}
+
+kinds:
+  - tasks: "**/tasks/*.{yml,yaml}"
+  - vars: "**/vars/*.{yml,yaml}"
+  - meta: "**/meta/main.{yml,yaml}"
+
+exclude_paths:
+  - "molecule/"
+
+enable_list:
+  - "fqcn-builtins"
+  - "no-log-password"
+  - "no-same-owner"
+
+warn_list:
+  - "git-latest"
+  - "no-loop-var-prefix"
+  - "no-handler"
+  - "command-instead-of-module"
+  - "package-latest"
+
+#
+# Project settings
+#
+
+skip_list:
+  - "yaml"
+...

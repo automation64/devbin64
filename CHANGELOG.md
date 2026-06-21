@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [15.0.0]
+
+### Added
+
+- DevBin64
+  - Runtime area (var) setup
+  - External command check
+  - Runtime type auto-detect
+- Kubelinter
+  - Default configuration
+  - Logging
+- Kustomize
+  - Logging
+- Bash
+  - Logging
+- Ansible
+  - Logging
+
+### Changed
+
+- AnsibleLint: updated to use dedicated config and ignore file
+- YAMLLint: updated to use dedicated config and ignore file
+- BashLib64: upgraded BashLib64 to 23.3.0
+- Bash: upgraded runtime detection
+- GitLeaks: upgraded runtime detection
+- GoLangCI: upgraded runtime detection
+- GOSec: upgraded runtime detection
+- NodeJS: upgraded runtime detection
+- Nuclei: upgraded runtime detection
+- OpenTofu: upgraded runtime detection
+- SemGrep: upgraded runtime detection
+- TFSec: upgraded runtime detection
+- DevBin64 **breaking-change**
+  - dev_bin64_initialize: renamed to dev_base_initialize
+  - dev_bin64_task_initialize: renamed to dev_base_task_initialize
+
+### Deprecated
+
+- Kind: obsolete module
+- SysDen64: obsolete module
+
 ## [14.5.0]
 
 ### Added

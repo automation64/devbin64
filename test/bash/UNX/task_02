@@ -20,12 +20,12 @@ function my_task() {
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  dev_bin64_task_initialize
+  dev_base_task_initialize
 }
 
 bl64_lib_script_version_set '1.0.0'
 bl64_msg_help_about_set 'Task Test'
-dev_bin64_initialize && my_initialize || exit $?
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_task

@@ -52,37 +52,24 @@
   export DEV_LIB_IAC64_HELPER_DEPLOY_HELM="${DEV_PATH_BIN}/dev-deploy-helm"
   export DEV_LIB_IAC64_HELPER_DEPLOY_KUSTOMIZE="${DEV_PATH_BIN}/dev-deploy-kustomize"
   export DEV_LIB_IAC64_HELPER_DEPLOY_OPENTOFU="${DEV_PATH_BIN}/dev-deploy-opentofu"
+  export DEV_LIB_IAC64_HELPER_LINT_ANSIBLE_LINT="${DEV_PATH_BIN}/dev-lint-ansible-lint"
+  export DEV_LIB_IAC64_HELPER_LINT_SHELLCHECK="${DEV_PATH_BIN}/dev-lint-shellcheck"
+  export DEV_LIB_IAC64_HELPER_LINT_KUBELINTER="${DEV_PATH_BIN}/dev-lint-kubelinter"
+  export DEV_LIB_IAC64_HELPER_LINT_TFLINT="${DEV_PATH_BIN}/dev-lint-tflint"
   export DEV_LIB_IAC64_HELPER_REMOVE_BASH="${DEV_PATH_BIN}/dev-remove-bash"
   export DEV_LIB_IAC64_HELPER_REMOVE_HELM="${DEV_PATH_BIN}/dev-remove-helm"
   export DEV_LIB_IAC64_HELPER_REMOVE_KUSTOMIZE="${DEV_PATH_BIN}/dev-remove-kustomize"
   export DEV_LIB_IAC64_HELPER_REMOVE_OPENTOFU="${DEV_PATH_BIN}/dev-remove-opentofu"
+  export DEV_LIB_IAC64_HELPER_SAST_TFSEC="${DEV_PATH_BIN}/dev-sast-tfsec"
   export DEV_LIB_IAC64_HELPER_TEST_ANSIBLE="${DEV_PATH_BIN}/dev-test-ansible"
   export DEV_LIB_IAC64_HELPER_TEST_KUSTOMIZE="${DEV_PATH_BIN}/dev-test-kustomize"
   export DEV_LIB_IAC64_HELPER_TEST_OPENTOFU="${DEV_PATH_BIN}/dev-test-opentofu"
 
-  # Lib / IaC64 / Tools
-  export DEV_LIB_IAC64_TOOL_LIB_ANSIBLE="${DEV_PATH_BIN}/dev-lib-ansible"
-  export DEV_LIB_IAC64_TOOL_LIB_HELM="${DEV_PATH_BIN}/dev-lib-helm"
-  export DEV_LIB_IAC64_TOOL_LIB_KUBELINTER="${DEV_PATH_BIN}/dev-lib-kubelinter"
-  export DEV_LIB_IAC64_TOOL_LIB_KUBESCAPE="${DEV_PATH_BIN}/dev-lib-kubescape"
-  export DEV_LIB_IAC64_TOOL_LIB_KUBECTL="${DEV_PATH_BIN}/dev-lib-kubectl"
-  export DEV_LIB_IAC64_TOOL_LIB_OPENTOFU="${DEV_PATH_BIN}/dev-lib-opentofu"
-  export DEV_LIB_IAC64_TOOL_LIB_PKLLANG="${DEV_PATH_BIN}/dev-lib-pkllang"
-  export DEV_LIB_IAC64_TOOL_LIB_TFLINT="${DEV_PATH_BIN}/dev-lib-tflint"
-  export DEV_LIB_IAC64_TOOL_LIB_TFSEC="${DEV_PATH_BIN}/dev-lib-tfsec"
-  export DEV_LIB_IAC64_TOOL_LINT_TFLINT="${DEV_PATH_BIN}/dev-lint-tflint"
-  export DEV_LIB_IAC64_TOOL_LINT_KUBELINTER="${DEV_PATH_BIN}/dev-lint-kubelinter"
-  export DEV_LIB_IAC64_TOOL_SAST_TFSEC="${DEV_PATH_BIN}/dev-sast-tfsec"
-
   # Build / IaC64 / Source module
-  export DEV_BUILD_IAC64_SHARED='shared'
+  export DEV_ENV_IAC64_DIR_SHARED='shared'
 
   # Env / IaC64 / File names and extensions
   export DEV_ENV_IAC64_FILE_DOTENV='.iac64.env'
-
-  # Env / IaC64 / Driver specific file names
-  export DEV_ENV_IAC64_FILE_ANSIBLE_INVENTORY='inventory.ini'
-  export DEV_ENV_IAC64_FILE_ANSIBLE_CONFIG='ansible.cfg'
 
   # Env / IaC64 / Propagated module variables. Automatically set by dev-iac64
   export DEV_ENV_IAC64_PATH_ETC_GLOBAL="${DEV_ENV_IAC64_PATH_ETC_GLOBAL:-}"
@@ -93,6 +80,7 @@
   export DEV_ENV_IAC64_PATH_SRC_SHARED="${DEV_ENV_IAC64_PATH_SRC_SHARED:-}"
   export DEV_ENV_IAC64_PATH_TMP_MODULE="${DEV_ENV_IAC64_PATH_TMP_MODULE:-}"
   export DEV_ENV_IAC64_PATH_VAR_MODULE="${DEV_ENV_IAC64_PATH_VAR_MODULE:-}"
+  export DEV_ENV_IAC64_PATH_VAULT="${DEV_ENV_IAC64_PATH_VAULT:-}"
   export DEV_ENV_IAC64_PROFILE="${DEV_ENV_IAC64_PROFILE:-}"
   export DEV_ENV_IAC64_MODULE_ID="${DEV_ENV_IAC64_MODULE_ID:-}"
   export DEV_ENV_IAC64_MODULE_VERSION="${DEV_ENV_IAC64_MODULE_VERSION:-}"
@@ -117,53 +105,4 @@
 
   # Remove / IaC64 / Enable guardrail to prevent unintended removal
   export DEV_REMOVE_IAC64_GUARDRAIL_ENABLED="${DEV_REMOVE_IAC64_GUARDRAIL_ENABLED:-YES}"
-}
-
-#
-# External
-#
-# * External tools only. Use to declare configuration env-vars
-#
-
-# shellcheck disable=SC2154
-{
-  # External / OpenTofu / IAC64 runtime
-  export TF_VAR_iac64__profile_name
-}
-
-#
-# Module functions
-#
-# * Shared internal functions for module tasks
-#
-
-function dev_iac64_check_guardrail_deploy() {
-  bl64_dbg_app_show_function
-  bl64_dbg_app_show_vars 'DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED'
-  if bl64_lib_flag_is_enabled "$DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED"; then
-    bl64_msg_show_fatal 'Guardrail is enabled. Deployment request cancelled (DEV_DEPLOY_IAC64_GUARDRAIL_ENABLED=YES)'
-    return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
-  fi
-}
-
-function dev_iac64_check_guardrail_remove() {
-  bl64_dbg_app_show_function
-  bl64_dbg_app_show_vars 'DEV_REMOVE_IAC64_GUARDRAIL_ENABLED'
-  if bl64_lib_flag_is_enabled "$DEV_REMOVE_IAC64_GUARDRAIL_ENABLED"; then
-    bl64_msg_show_fatal 'Guardrail is enabled. Removal request cancelled (DEV_REMOVE_IAC64_GUARDRAIL_ENABLED=YES)'
-    return "$BL64_LIB_ERROR_TASK_REQUIREMENTS"
-  fi
-}
-
-function dev_iac64_ansible_initialize() {
-  bl64_dbg_app_show_function
-
-  export DEV_LIB_ANSIBLE_INVENTORY_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED}/${DEV_ENV_IAC64_FILE_ANSIBLE_INVENTORY}"
-  export DEV_LIB_ANSIBLE_INVENTORY_MAIN="${DEV_ENV_IAC64_PATH_ETC_MODULE}/${DEV_ENV_IAC64_FILE_ANSIBLE_INVENTORY}"
-  export DEV_LIB_ANSIBLE_CONFIG="${DEV_ENV_IAC64_PATH_ETC_SHARED}/${DEV_ENV_IAC64_FILE_ANSIBLE_CONFIG}"
-
-  [[ -f "${DEV_LIB_ANSIBLE_INVENTORY_MAIN}" ]] || DEV_LIB_ANSIBLE_INVENTORY_MAIN="$BL64_VAR_DEFAULT"
-
-  bl64_check_file "$DEV_LIB_ANSIBLE_INVENTORY_SHARED" &&
-    bl64_check_file "$DEV_LIB_ANSIBLE_CONFIG"
 }

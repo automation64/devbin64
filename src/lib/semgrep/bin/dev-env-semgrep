@@ -23,9 +23,7 @@
 {
   # Env / Semgrep / Module environment definition version
   export DEV_ENV_SEMGREP_ID='semgrep'
-  export DEV_ENV_SEMGREP_VERSION='1.1.0'
-  # Env / Semgrep / Log path
-  export DEV_ENV_SEMGREP_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_SEMGREP_ID}"
+  export DEV_ENV_SEMGREP_VERSION='1.2.0'
 
   # Lib / Semgrep / Installer
   export DEV_LIB_SEMGREP_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-semgrep"
@@ -36,8 +34,6 @@
 
   # SAST / Semgrep / Format
   export DEV_SAST_SEMGREP_FORMAT='sarif'
-  # SAST / Semgrep / Report
-  export DEV_SAST_SEMGREP_PATH_REPORT="${DEV_ENV_SEMGREP_PATH_LOGS}/${DEV_ENV_SEMGREP_ID}-sast.${DEV_SAST_SEMGREP_FORMAT}"
 }
 
 #
@@ -48,6 +44,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / Semgrep / Log path
+  export DEV_ENV_SEMGREP_PATH_LOGS="${DEV_ENV_SEMGREP_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_SEMGREP_ID}}"
+
+  # SAST / Semgrep / Report
+  export DEV_SAST_SEMGREP_PATH_REPORT="${DEV_ENV_SEMGREP_PATH_LOGS}/${DEV_ENV_SEMGREP_ID}-sast.${DEV_SAST_SEMGREP_FORMAT}"
   # SAST / Semgrep / Target
   export DEV_SAST_SEMGREP_TARGET="${DEV_SAST_SEMGREP_TARGET:-$DEV_PATH_SRC}"
   # SAST / Semgrep / Severity

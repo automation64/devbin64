@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-task: 1.9.0
+# template-remove: 1.1.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -13,18 +13,12 @@
 # limitations under the License.
 #######################################
 
-source ./bin/dev-set || exit 1
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-tf.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
-source ./bin/dev-env-opentofu || exit 1
+source ./bin/dev-set &&
+  source ./bin/dev-source-opentofu &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-opentofu || exit 1
 
 declare MY_STAGING="${1:-${DEV_BUILD_OPENTOFU_STAGING}}"
-declare MY_LOGS="${2:-${DEV_ENV_OPENTOFU_PATH_LOGS}}"
 
 function my_plan() {
   bl64_dbg_app_show_function
@@ -37,9 +31,10 @@ function my_plan() {
     bl64_tf_run_tofu \
       plan \
       -destroy \
+      -no-color \
       -concise \
       -input=false \
-      -out="$DEV_REMOVE_OPENTOFU_PATH_PLAN"
+      -out="$DEV_REMOVE_OPENTOFU_PATH_PLAN" >"$DEV_REMOVE_OPENTOFU_PATH_STDOUT" 2>"$DEV_REMOVE_OPENTOFU_PATH_STDERR"
 }
 
 function my_remove() {
@@ -50,31 +45,29 @@ function my_remove() {
     bl64_tf_run_tofu \
       apply \
       -destroy \
+      -no-color \
       -concise \
       -input=false \
       -auto-approve \
-      "$DEV_REMOVE_OPENTOFU_PATH_PLAN"
+      "$DEV_REMOVE_OPENTOFU_PATH_PLAN" >"$DEV_REMOVE_OPENTOFU_PATH_STDOUT" 2>>"$DEV_REMOVE_OPENTOFU_PATH_STDERR"
 }
 
 function my_initialize() {
   bl64_dbg_app_show_function
-  DEV_ENV_OPENTOFU_PATH_LOGS="$MY_LOGS"
   DEV_BUILD_OPENTOFU_STAGING="$MY_STAGING"
-  DEV_REMOVE_OPENTOFU_PATH_LOG="${DEV_ENV_OPENTOFU_PATH_LOGS}/${DEV_REMOVE_OPENTOFU_FILE_LOG}"
   DEV_REMOVE_OPENTOFU_PATH_PLAN="${DEV_BUILD_OPENTOFU_STAGING}/${DEV_REMOVE_OPENTOFU_FILE_PLAN}"
 
-  dev_bin64_task_initialize &&
+  dev_base_task_initialize &&
     bl64_lib_script_minver_check "$DEV_LIB_OPENTOFU_REQUIRED_BASHLIB64" &&
     bl64_check_directory "$DEV_BUILD_OPENTOFU_STAGING" &&
-    dev_bin64_log_setup "$BL64_VAR_OFF" "$DEV_ENV_OPENTOFU_PATH_LOGS" &&
+    dev_base_log_setup "$BL64_VAR_OFF" "$DEV_ENV_OPENTOFU_PATH_LOGS" &&
     bl64_tf_setup "$(bl64_fmt_path_get_dirname "$DEV_LIB_OPENTOFU_BIN")" &&
-    bl64_tf_log_set "$DEV_REMOVE_OPENTOFU_PATH_LOG" "$DEV_LIB_OPENTOFU_SET_LOG" &&
-    dev_bin64_task_show_setup \
+    bl64_tf_set_logging "$DEV_REMOVE_OPENTOFU_PATH_LOG" "$DEV_LIB_OPENTOFU_SET_LOG" &&
+    dev_base_task_show_setup \
       'DEV_BUILD_OPENTOFU_STAGING' \
-      'DEV_ENV_OPENTOFU_PATH_LOGS' \
-      'DEV_REMOVE_OPENTOFU_PATH_LOG' \
-      'DEV_REMOVE_OPENTOFU_PATH_PLAN' \
-      'DEV_LIB_OPENTOFU_SET_LOG' ||
+      'DEV_REMOVE_OPENTOFU_PATH_STDOUT' \
+      'DEV_REMOVE_OPENTOFU_PATH_STDERR' \
+      'DEV_REMOVE_OPENTOFU_PATH_LOG' ||
     return $?
 
   if bl64_lib_flag_is_enabled "$DEV_REMOVE_OPENTOFU_GUARDRAIL_ENABLED"; then
@@ -85,9 +78,9 @@ function my_initialize() {
   fi
 }
 
-bl64_lib_script_version_set '3.0.3'
-bl64_msg_help_about_set 'Run deployment removal scripts'
-dev_bin64_initialize && my_initialize || exit $?
+bl64_lib_script_version_set '4.0.0'
+bl64_msg_help_set_about 'Run deployment removal scripts'
+dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
 my_plan &&

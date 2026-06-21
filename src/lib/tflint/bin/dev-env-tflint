@@ -13,7 +13,6 @@
 # limitations under the License.
 #######################################
 
-
 #
 # Module variables
 #
@@ -24,7 +23,7 @@
 {
   # Env / TFLint / Module environment definition version
   export DEV_ENV_TFLINT_ID='tflint'
-  export DEV_ENV_TFLINT_VERSION='1.2.0'
+  export DEV_ENV_TFLINT_VERSION='1.4.0'
 
   # Lib / TFLint / Installer
   export DEV_LIB_TFLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tflint"
@@ -32,6 +31,11 @@
   export DEV_LIB_TFLINT_SKIP='YES'
   # Lib / TFLint / Target
   export DEV_LIB_TFLINT_TARGET="${DEV_PATH_LIB}/${DEV_ENV_TFLINT_ID}"
+  # Lib / TFLint / Configuration
+  export DEV_LIB_TFLINT_CFG="${DEV_PATH_ROOT}/.tflint.hcl"
+
+  # Lint / TFLint / Format
+  export DEV_LINT_TFLINT_FORMAT='sarif'
 }
 
 #
@@ -42,10 +46,13 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / TFLint / Log path
+  export DEV_ENV_TFLINT_PATH_LOGS="${DEV_ENV_TFLINT_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_TFLINT_ID}}"
+
   # Lint / TFLint / Target
   export DEV_LINT_TFLINT_TARGET="${DEV_LINT_TFLINT_TARGET:-${DEV_PATH_SRC}}"
-  # Lint / TFLint / Format
-  export DEV_LINT_TFLINT_FORMAT="${DEV_LINT_TFLINT_FORMAT:-compact}"
+  # Lint / TFLint / Report
+  export DEV_LINT_TFLINT_PATH_REPORT="${DEV_ENV_TFLINT_PATH_LOGS}/${DEV_ENV_TFLINT_ID}-lint.${DEV_LINT_TFLINT_FORMAT}"
 }
 
 #
@@ -69,4 +76,20 @@
       DEV_LIB_TFLINT_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_TFLINT_BIN")"
     fi
   fi
+}
+
+#
+# Module functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_tflint_run_tflint() {
+  bl64_dbg_app_show_function "$@"
+  bl64_dbg_lib_trace_start
+  "$DEV_LIB_TFLINT_BIN" \
+    --no-color \
+    --config "$DEV_LIB_TFLINT_CFG" \
+    "$@"
+  bl64_dbg_lib_trace_stop
 }

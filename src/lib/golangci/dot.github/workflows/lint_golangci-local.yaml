@@ -1,5 +1,5 @@
 ---
-# template: 1.5.0
+# template: 1.6.0
 name: "Lint/GoLangCI"
 
 permissions:
@@ -8,8 +8,6 @@ permissions:
 env:
   DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}
   DEV_CICD_DEBUG_BASH: ${{ vars.DEV_CICD_DEBUG_BASH || '' }}
-  BL64_LIB_CICD: ${{ vars.BL64_LIB_CICD || 'YES' }}
-  DEV_TEST_BASH_RUNNER_ENVIRONMENT: ${{ vars.DEV_TEST_BASH_RUNNER_ENVIRONMENT || 'ON' }}
 
 # yamllint disable-line rule:truthy
 on:
@@ -26,7 +24,6 @@ jobs:
   lint-golangci:
     runs-on: "ubuntu-latest"
     steps:
-
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 

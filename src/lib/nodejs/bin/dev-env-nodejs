@@ -23,10 +23,7 @@
 {
   # Env / NodeJS / Module environment definition version
   export DEV_ENV_NODEJS_ID='nodejs'
-  export DEV_ENV_NODEJS_VERSION='1.1.0'
-
-  # Env / NodeJS / Log path
-  export DEV_ENV_NODEJS_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_NODEJS_ID}"
+  export DEV_ENV_NODEJS_VERSION='1.2.0'
 
   # Lib / NodeJS / Installer
   export DEV_LIB_NODEJS_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-nodejs"
@@ -42,13 +39,9 @@
 
   # SBOM / NodeJS / Format
   export DEV_SBOM_NODEJS_FORMAT='spdx'
-  # SBOM / NodeJS / Report
-  export DEV_SBOM_NODEJS_PATH_REPORT="${DEV_ENV_NODEJS_PATH_LOGS}/${DEV_ENV_NODEJS_ID}-sbom.${DEV_SBOM_NODEJS_FORMAT}"
 
   # SCA / NodeJS / Format
   export DEV_SCA_NODEJS_FORMAT='json'
-  # SCA / NodeJS / Report
-  export DEV_SCA_NODEJS_PATH_REPORT="${DEV_ENV_NODEJS_PATH_LOGS}/${DEV_ENV_NODEJS_ID}-sca.${DEV_SCA_NODEJS_FORMAT}"
 }
 
 #
@@ -59,6 +52,9 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / NodeJS / Log path
+  export DEV_ENV_NODEJS_PATH_LOGS="${DEV_ENV_NODEJS_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_NODEJS_ID}}"
+
   # Lib / NodeJS / Version
   export DEV_LIB_NODEJS_VERSION="${DEV_LIB_NODEJS_VERSION:-latest}"
 
@@ -70,6 +66,12 @@
 
   # SAST / NodeJS / Severity
   export DEV_SCA_NODEJS_SEVERITY="${DEV_SCA_NODEJS_SEVERITY:-high}"
+
+  # SBOM / NodeJS / Report
+  export DEV_SBOM_NODEJS_PATH_REPORT="${DEV_ENV_NODEJS_PATH_LOGS}/${DEV_ENV_NODEJS_ID}-sbom.${DEV_SBOM_NODEJS_FORMAT}"
+
+  # SCA / NodeJS / Report
+  export DEV_SCA_NODEJS_PATH_REPORT="${DEV_ENV_NODEJS_PATH_LOGS}/${DEV_ENV_NODEJS_ID}-sca.${DEV_SCA_NODEJS_FORMAT}"
 
   # Run / NodeJS / Entrypoint
   export DEV_RUN_NODEJS_MAIN="${DEV_RUN_NODEJS_MAIN:-}"

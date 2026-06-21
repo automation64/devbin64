@@ -23,9 +23,7 @@
 {
   # Env / TFSec / Module environment definition version
   export DEV_ENV_TFSEC_ID='tfsec'
-  export DEV_ENV_TFSEC_VERSION='2.0.0'
-  # Env / TFSec / Log path
-  export DEV_ENV_TFSEC_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_TFSEC_ID}"
+  export DEV_ENV_TFSEC_VERSION='2.1.0'
 
   # Lib / TFSec / Installer
   export DEV_LIB_TFSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-tfsec"
@@ -38,8 +36,6 @@
   export DEV_SAST_TFSEC_CONFIG="${DEV_PATH_ROOT}/.tfsec.yml"
   # SAST / TFSec / Output format
   export DEV_SAST_TFSEC_FORMAT='sarif'
-  # SAST / TFSec / Report
-  export DEV_SAST_TFSEC_PATH_REPORT="${DEV_ENV_TFSEC_PATH_LOGS}/${DEV_ENV_TFSEC_ID}-sast.${DEV_SAST_TFSEC_FORMAT}"
 }
 
 #
@@ -50,6 +46,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / TFSec / Log path
+  export DEV_ENV_TFSEC_PATH_LOGS="${DEV_ENV_TFSEC_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_TFSEC_ID}}"
+
+  # SAST / TFSec / Report
+  export DEV_SAST_TFSEC_PATH_REPORT="${DEV_ENV_TFSEC_PATH_LOGS}/${DEV_ENV_TFSEC_ID}-sast.${DEV_SAST_TFSEC_FORMAT}"
   # SAST / TFSec / Target
   export DEV_SAST_TFSEC_TARGET="${DEV_SAST_TFSEC_TARGET:-${DEV_PATH_SRC}}"
 }
@@ -75,4 +76,19 @@
       DEV_LIB_TFSEC_TARGET="$(dev_bin64_lib_basename "$DEV_LIB_TFSEC_BIN")"
     fi
   fi
+}
+
+#
+# Module functions
+#
+# * Shared internal functions for module tasks
+#
+
+function dev_tfsec_run_tfsec() {
+  bl64_dbg_app_show_function "$@"
+  bl64_dbg_lib_trace_start
+  "$DEV_LIB_TFSEC_BIN" \
+    --config-file "$DEV_SAST_TFSEC_CONFIG" \
+    "$@"
+  bl64_dbg_lib_trace_stop
 }

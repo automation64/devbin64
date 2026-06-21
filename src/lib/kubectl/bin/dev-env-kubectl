@@ -44,7 +44,8 @@
 # shellcheck disable=SC2154
 {
   # Env / KubeCtl / Custom Kube Config (optional)
-  export DEV_ENV_KUBECTL_PATH_KUBECONF="${DEV_ENV_KUBECTL_PATH_KUBECONF:-${HOME}/.kube/config}"
+  export DEV_LIB_KUBECTL_CFG_BASE="${DEV_LIB_KUBECTL_CFG_BASE:-${HOME}/.kube}"
+  export DEV_LIB_KUBECTL_CFG_KUBECONF="${DEV_LIB_KUBECTL_CFG_BASE}/config"
 }
 
 #

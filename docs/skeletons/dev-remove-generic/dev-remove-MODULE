@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# template-remove: 1.1.0
+# template-task: 1.9.0
+#######################################
+# Copyright SerDigital64 - https://github.com/serdigital64
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#######################################
+
+source ./bin/dev-set &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-X_MODULE_X || exit 1
+
+declare MY_TARGET="${*:-}"
+
+function my_remove() {
+  bl64_dbg_app_show_function
+  # X_REMOVE_PLACEHOLDER_X
+  dev_X_MODULE_X_run_X_COMMAND_X
+}
+
+function my_initialize() {
+  bl64_dbg_app_show_function
+  dev_base_task_initialize &&
+    dev_base_log_setup "$BL64_VAR_OFF" "$DEV_ENV_X_MODULE_CAPS_X_PATH_LOGS" &&
+    dev_base_lib_check_command "$DEV_ENV_X_MODULE_CAPS_X_ID" "$DEV_LIB_X_MODULE_CAPS_X_BIN" &&
+    bl64_check_parameter 'MY_TARGET' &&
+    dev_base_task_show_setup \
+      'MY_TARGET' \
+      'DEV_REMOVE_X_MODULE_CAPS_X_PATH_LOG'
+}
+
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_set_about 'Remove application'
+dev_base_initialize && my_initialize || exit $?
+
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+my_remove
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

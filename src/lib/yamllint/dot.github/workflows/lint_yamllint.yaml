@@ -1,5 +1,5 @@
 ---
-# template: 1.12.0
+# template: 1.12.1
 name: "Lint/YAMLLint"
 
 permissions:
@@ -12,7 +12,6 @@ concurrency:
 env:
   DEV_CICD_DEBUG: ${{ vars.DEV_CICD_DEBUG || 'NONE' }}
   DEV_CICD_DEBUG_BASH: ${{ vars.DEV_CICD_DEBUG_BASH || '' }}
-  BL64_LIB_CICD: ${{ vars.BL64_LIB_CICD || 'YES' }}
 
 # yamllint disable-line rule:truthy
 on:
@@ -31,7 +30,6 @@ jobs:
   lint-yamllint:
     runs-on: "ubuntu-latest"
     steps:
-
       - name: "Check out repository code"
         uses: "actions/checkout@main"
 
@@ -56,7 +54,7 @@ jobs:
           ./bin/dev-lib-yamllint
 
       - name: "Run tests"
-        shell: "script -q -e -c \"bash {0}\""
+        shell: 'script -q -e -c "bash {0}"'
         run: "./bin/dev-lint-yamllint"
 
       - name: "Save report as repository artifact"

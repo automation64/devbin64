@@ -25,13 +25,6 @@
   export DEV_ENV_GO_ID='go'
   export DEV_ENV_GO_VERSION='1.1.0'
 
-  # Env / Go / Container path for project mounts
-  export DEV_ENV_GO_CONTAINER_PATH_SRC='/source'
-  export DEV_ENV_GO_CONTAINER_PATH_ROOT='/project'
-  export DEV_ENV_GO_CONTAINER_PATH_TEST='/test'
-  # Env / Go / Flag for marking container environment
-  export DEV_ENV_GO_CONTAINER_ENVIRONMENT="${DEV_ENV_GO_CONTAINER_ENVIRONMENT:-OFF}"
-
   # Lib / Go / Installer
   export DEV_LIB_GO_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-go"
   # Lib / Go / Skip installation?
@@ -79,7 +72,7 @@
 
   # Pack / Go / Target
   export DEV_PACK_GO_PATH_TARGET="${DEV_PATH_BUILD_PACK}/${DEV_ENV_GO_ID}"
-  export DEV_PACK_GO_PATH_CHECKSUM="${DEV_PACK_GO_PATH_TARGET}/${DEV_BUILD_GO_APP_NAME}${DEV_SUFFIX_CHECKSUM}"
+  export DEV_PACK_GO_PATH_CHECKSUM="${DEV_PACK_GO_PATH_TARGET}/${DEV_BUILD_GO_APP_NAME}${DEV_BASE_SUFFIX_CHECKSUM}"
 }
 
 #

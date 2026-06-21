@@ -24,12 +24,6 @@
   # Env / Ansible / Module environment definition version
   export DEV_ENV_ANSIBLE_ID='ansible'
   export DEV_ENV_ANSIBLE_VERSION='4.0.0'
-  # Env / Ansible / Container path for project mounts
-  export DEV_ENV_ANSIBLE_CONTAINER_PATH_SRC='/source'
-  export DEV_ENV_ANSIBLE_CONTAINER_PATH_ROOT='/project'
-  export DEV_ENV_ANSIBLE_CONTAINER_PATH_TEST='/test'
-  # Env / Ansible / Flag for marking container environment
-  export DEV_ENV_ANSIBLE_CONTAINER_ENVIRONMENT="${DEV_ENV_ANSIBLE_CONTAINER_ENVIRONMENT:-OFF}"
 
   # Lib / Ansible / Installer
   export DEV_LIB_ANSIBLE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansible"
@@ -37,6 +31,9 @@
   export DEV_LIB_ANSIBLE_SKIP='YES'
   # Lib / Ansible / Target
   export DEV_LIB_ANSIBLE_TARGET="${DEV_PATH_LIB}/${DEV_ENV_ANSIBLE_ID}"
+
+  # Test / Ansible / Format
+  export DEV_LIB_ANSIBLE_SET_STDOUT_CALLBACK='ansible.posix.debug'
 
   # Pack / Ansible / Paths
   export DEV_PACK_ANSIBLE_PATH_TARGET="${DEV_PATH_BUILD_PACK}/${DEV_ENV_ANSIBLE_ID}"
@@ -52,6 +49,8 @@
 {
   # Env / Ansible / Registry for lab and testing containers
   export DEV_ENV_ANSIBLE_REGISTRY="${DEV_ENV_ANSIBLE_REGISTRY:-ghcr.io/automation64}"
+  # Env / Ansible / Log path
+  export DEV_ENV_ANSIBLE_PATH_LOGS="${DEV_ENV_ANSIBLE_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_ANSIBLE_ID}}"
 
   # Lib / Ansible / Configuration
   export DEV_LIB_ANSIBLE_CONFIG="${DEV_LIB_ANSIBLE_CONFIG:-${DEV_PATH_ROOT}/.ansible.cfg}"
@@ -66,7 +65,13 @@
   export DEV_PACK_ANSIBLE_GALAXY_NAMESPACE="${DEV_PACK_ANSIBLE_GALAXY_NAMESPACE:-}"
 
   # Lab / Ansible / Default image
-  export DEV_LAB_ANSIBLE_IMAGE="${DEV_LAB_ANSIBLE_IMAGE:-ansible-test/ubuntu-21.4-ansible-test}"
+  export DEV_LAB_ANSIBLE_CONTAINER="${DEV_LAB_ANSIBLE_CONTAINER:-ansible-test/ubuntu-21.4-ansible-test}"
+
+  # Test / Ansible / Report
+  export DEV_TEST_ANSIBLE_PATH_REPORT="${DEV_ENV_ANSIBLE_PATH_LOGS}/${DEV_ENV_ANSIBLE_ID}-test.log"
+
+  # Deploy / Ansible / Log file path
+  export DEV_DEPLOY_ANSIBLE_PATH_LOG="${DEV_ENV_ANSIBLE_PATH_LOGS}/${DEV_ENV_ANSIBLE_ID}-deploy.log"
 }
 
 #
@@ -98,13 +103,18 @@
 # * Shared internal functions for module tasks
 #
 
+function dev_ansible_setup() {
+  bl64_dbg_app_show_function
+  bl64_ans_setup "$BL64_VAR_DEFAULT" "$DEV_LIB_ANSIBLE_CONFIG"
+}
+
 function dev_ansible_run_playbook() {
   bl64_dbg_app_show_function "$@"
 
   bl64_lib_var_is_default "$DEV_LIB_ANSIBLE_INVENTORY_SHARED" && DEV_LIB_ANSIBLE_INVENTORY_SHARED=''
   bl64_lib_var_is_default "$DEV_LIB_ANSIBLE_INVENTORY_MAIN" && DEV_LIB_ANSIBLE_INVENTORY_MAIN=''
 
-  bl64_ans_run_ansible_playbook \
+  ANSIBLE_STDOUT_CALLBACK="$DEV_LIB_ANSIBLE_SET_STDOUT_CALLBACK" bl64_ans_run_ansible_playbook \
     ${DEV_LIB_ANSIBLE_INVENTORY_SHARED:+--inventory "$DEV_LIB_ANSIBLE_INVENTORY_SHARED"} \
     ${DEV_LIB_ANSIBLE_INVENTORY_MAIN:+--inventory "$DEV_LIB_ANSIBLE_INVENTORY_MAIN"} \
     "$@"

@@ -23,9 +23,7 @@
 {
   # Env / GoSEc / Module environment definition version
   export DEV_ENV_GOSEC_ID='gosec'
-  export DEV_ENV_GOSEC_VERSION='2.0.0'
-  # Env / GoSEc / Log path
-  export DEV_ENV_GOSEC_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_GOSEC_ID}"
+  export DEV_ENV_GOSEC_VERSION='2.1.0'
 
   # Lib / GoSEc / Installer
   export DEV_LIB_GOSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-gosec"
@@ -36,8 +34,6 @@
 
   # SAST / GoSEc / Format
   export DEV_SAST_GOSEC_FORMAT='sarif'
-  # SAST / GoSEc / Report
-  export DEV_SAST_GOSEC_PATH_REPORT="${DEV_ENV_GOSEC_PATH_LOGS}/${DEV_ENV_GOSEC_ID}-sast.${DEV_SAST_GOSEC_FORMAT}"
 }
 
 #
@@ -48,6 +44,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / GoSEc / Log path
+  export DEV_ENV_GOSEC_PATH_LOGS="${DEV_ENV_GOSEC_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_GOSEC_ID}}"
+
+  # SAST / GoSEc / Report
+  export DEV_SAST_GOSEC_PATH_REPORT="${DEV_ENV_GOSEC_PATH_LOGS}/${DEV_ENV_GOSEC_ID}-sast.${DEV_SAST_GOSEC_FORMAT}"
   # SAST / GoSEc / Target
   export DEV_SAST_GOSEC_TARGET="${DEV_SAST_GOSEC_TARGET:-${DEV_PATH_SRC}}"
 }

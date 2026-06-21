@@ -1,0 +1,20 @@
+---
+#
+# Kubelinter / Configuration
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
+
+checks:
+  addAllBuiltIn: true
+  ignorePaths:
+    - "/bin/**"
+    - "/build/**"
+    - "/docs/**"
+    - "/lib/**"
+    - "/logs/**"
+    - "/test/**"
+    - "/tmp/**"
+    - "/vault/**"
+  exclude:

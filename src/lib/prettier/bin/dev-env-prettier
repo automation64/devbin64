@@ -23,9 +23,7 @@
 {
   # Env / Prettier / Module environment definition version
   export DEV_ENV_PRETTIER_ID='prettier'
-  export DEV_ENV_PRETTIER_VERSION='1.0.0'
-  # Env / Prettier / Log path
-  export DEV_ENV_PRETTIER_PATH_LOGS="${DEV_PATH_LOGS}/${DEV_ENV_PRETTIER_ID}"
+  export DEV_ENV_PRETTIER_VERSION='1.1.0'
 
   # Lib / Prettier / Installer
   export DEV_LIB_PRETTIER_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-prettier"
@@ -38,8 +36,6 @@
 
   # Lint / Prettier / Format
   export DEV_LINT_PRETTIER_FORMAT='log'
-  # Lint / Prettier / Report
-  export DEV_LINT_PRETTIER_PATH_REPORT="${DEV_ENV_PRETTIER_PATH_LOGS}/${DEV_ENV_PRETTIER_ID}-lint.${DEV_LINT_PRETTIER_FORMAT}"
 }
 
 #
@@ -50,6 +46,11 @@
 
 # shellcheck disable=SC2154
 {
+  # Env / Prettier / Log path
+  export DEV_ENV_PRETTIER_PATH_LOGS="${DEV_ENV_PRETTIER_PATH_LOGS:-${DEV_PATH_PROF_LOGS}/${DEV_ENV_PRETTIER_ID}}"
+
+  # Lint / Prettier / Report
+  export DEV_LINT_PRETTIER_PATH_REPORT="${DEV_ENV_PRETTIER_PATH_LOGS}/${DEV_ENV_PRETTIER_ID}-lint.${DEV_LINT_PRETTIER_FORMAT}"
   # Lint / Prettier / Target
   export DEV_LINT_PRETTIER_TARGET="${DEV_LINT_PRETTIER_TARGET:-${DEV_PATH_SRC}}"
 }

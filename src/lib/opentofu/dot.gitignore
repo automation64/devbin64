@@ -1,2 +1,3 @@
-# OpenTofu / Staging
+# OpenTofu / Runtime
 var/opentofu/
+var/prof/**/opentofu/
