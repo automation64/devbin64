@@ -22,7 +22,7 @@
 # shellcheck disable=SC2154
 {
   # Lib / ArgoCD / Installer
-  export DEV_LIB_ARGOCD_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-argocdcli"
+  export DEV_LIB_ARGOCD_INSTALLER="argocdcli"
   # Lib / ArgoCD / Target
   export DEV_LIB_ARGOCD_TARGET="${DEV_PATH_LIB}/argocd"
 }

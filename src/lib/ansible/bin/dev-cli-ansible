@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# template-cli: 1.2.0
+# template-task: 1.9.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -12,28 +14,21 @@
 # limitations under the License.
 #######################################
 
-#
-# Imports
-#
+source ./bin/dev-set &&
+  source ./bin/dev-source-ansible &&
+  source ./bin/dev-source-base &&
+  source ./bin/dev-env-ansible || exit 1
 
-source ./bin/dev-set || exit 1
+function my_initialize() {
+  bl64_dbg_app_show_function
+  dev_base_task_initialize &&
+    dev_ansible_setup
+}
 
-#
-# Main
-#
+bl64_lib_script_version_set '1.0.0'
+bl64_msg_help_set_about 'Run dev time tool'
+dev_base_initialize && my_initialize || exit $?
 
-[[ -n "$DEV_CICD_DEBUG_BASH" ]] && set -x
-if [[ "$DEV_LIB_BASHLIB64_SKIP" == 'YES' ]]; then
-  exit 0
-fi
-
-[[ ! -d "$DEV_LIB_INSTALLER64_TARGET" ]] &&
-  dev_bin64_msg_show_error 'dev-lib-bashlib64' 'installer not found, please run ./bin/dev-lib-base and try again' &&
-  exit 1
-
-dev_bin64_msg_show_task 'dev-lib-bashlib64: Task: download BashLib64'
-INST64_BASHLIB64_VERSION="$DEV_LIB_BASHLIB64_VERSION" \
-  "${DEV_LIB_INSTALLER64_TARGET}/install-bashlib64" ||
-  exit $?
-[[ -n "$DEV_CICD_DEBUG_BASH" ]] && set +x
-:
+bl64_msg_show_batch_start "$BL64_SCRIPT_ID"
+bl64_ans_run_ansible "$@"
+bl64_msg_show_batch_finish $? "$BL64_SCRIPT_ID"

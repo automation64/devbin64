@@ -26,7 +26,7 @@
   export DEV_ENV_KUBESCAPE_VERSION='2.0.0'
 
   # Lib / Kubescape / Installer
-  export DEV_LIB_KUBESCAPE_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubescape"
+  export DEV_LIB_KUBESCAPE_INSTALLER="kubescape"
   # Lib / Kubescape / Skip installation?
   export DEV_LIB_KUBESCAPE_SKIP='YES'
   # Lib / Kubescape / Target

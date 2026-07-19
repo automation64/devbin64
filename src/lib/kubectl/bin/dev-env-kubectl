@@ -26,7 +26,7 @@
   export DEV_ENV_KUBECTL_VERSION='1.1.0'
 
   # Lib / KubeCtl / Installer
-  export DEV_LIB_KUBECTL_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-kubectl"
+  export DEV_LIB_KUBECTL_INSTALLER="kubectl"
   # Lib / KubeCtl / Skip installation?
   export DEV_LIB_KUBECTL_SKIP='YES'
   # Lib / KubeCtl / Target

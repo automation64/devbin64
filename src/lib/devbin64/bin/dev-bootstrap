@@ -108,7 +108,7 @@ export DEV_CICD_DEBUG="${DEV_CICD_DEBUG:-}"
 #
 
 # DevBootstrap / Current version
-declare DEV_BOOTSTRAP_VERSION='9.1.0'
+declare DEV_BOOTSTRAP_VERSION='9.2.0'
 
 # DevBootstrap / Base libs
 declare DEV_BOOTSTRAP_BASHLIB64_NAME='bl64'
@@ -129,8 +129,6 @@ declare DEV_BOOTSTRAP_PATH_LIB="${DEV_BOOTSTRAP_PATH_ROOT}/lib"
 
 # DevBootstrap / List of module files for the initial bin/
 declare DEV_BOOTSTRAP_FILES=''
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-env-bashlib64"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/bashlib64/bin/dev-lib-bashlib64"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-set"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-env"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-lib-base"
@@ -139,8 +137,6 @@ DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-remove
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-profile-list"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-set"
 DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/devbin64/bin/dev-source-base"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-env-installer64"
-DEV_BOOTSTRAP_FILES+=" ${DEV_BOOTSTRAP_PATH_LIB}/installer64/bin/dev-lib-installer64"
 
 # DevBootstrap / OS Commands
 declare DEV_CMD_CAT='cat'
@@ -161,17 +157,12 @@ export DEV_BASE_GITKEEP=".gitkeep"
 export DEV_BASE_LOCAL=".local.env"
 export DEV_BASE_POST=".post.env"
 export DEV_BASE_SECRETS=".secrets.env"
-export DEV_LIB_BASHLIB64_TARGET=''
 export DEV_LIB_INSTALLER64_OWNER='automation64/installer64'
-export DEV_LIB_INSTALLER64_TARGET=''
 export DEV_PATH_BIN=''
 export DEV_PATH_LIB=''
 export DEV_PATH_ROOT=''
 export DEV_PATH_TMP=''
 export DEV_PROFILE=''
-
-# Installer64 / Parameters
-export INST64_BASHLIB64_TARGET=''
 
 # DevBootstrap / Status
 declare MY_PROCESS='dev-bootstrap'
@@ -402,12 +393,6 @@ function my_initialize() {
   DEV_PATH_ROOT="$(pwd)"
   DEV_PATH_BIN="${DEV_PATH_ROOT}/bin"
   DEV_PATH_LIB="${DEV_PATH_ROOT}/lib"
-  DEV_LIB_BASHLIB64_TARGET="${DEV_PATH_LIB}/${DEV_BOOTSTRAP_BASHLIB64_NAME}"
-  DEV_LIB_INSTALLER64_TARGET="${DEV_PATH_LIB}/${DEV_BOOTSTRAP_INSTALLER64_NAME}"
-
-  # Initialize Installer64 parameters
-  INST64_INSTALLER64_TARGET="$DEV_LIB_INSTALLER64_TARGET"
-  INST64_BASHLIB64_TARGET="$DEV_LIB_BASHLIB64_TARGET"
 
   if [[ ! -d "$DEV_BOOTSTRAP_PATH_LIB" ]]; then
     my_msg_show_error "unable to locate module library (${DEV_BOOTSTRAP_PATH_LIB}). Verify or update DEV_BOOTSTRAP_PATH_LIB with the correct path location" 2>&1

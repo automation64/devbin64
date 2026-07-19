@@ -28,7 +28,7 @@
   export DEV_ENV_YAMLLINT_CONTAINER_PATH_ROOT='/project'
 
   # Lib / YAMLLint / Installer
-  export DEV_LIB_YAMLLINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-yamllint"
+  export DEV_LIB_YAMLLINT_INSTALLER="yamllint"
   # Lib / YAMLLint / Skip installation?
   export DEV_LIB_YAMLLINT_SKIP='YES'
   # Lib / YAMLLint / Target

@@ -26,7 +26,7 @@
   export DEV_ENV_GOLANGCI_VERSION='1.1.0'
 
   # Lib / GoLangCI / Installer
-  export DEV_LIB_GOLANGCI_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-golangci"
+  export DEV_LIB_GOLANGCI_INSTALLER="golangci"
   # Lib / GoLangCI / Skip installation?
   export DEV_LIB_GOLANGCI_SKIP='YES'
   # Lib / GoLangCI / Target

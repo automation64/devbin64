@@ -35,7 +35,9 @@ declare MY_COMMAND_CONSOLE='console'
 declare MY_COMMAND_DEPLOY='deploy'
 declare MY_COMMAND_HELP='help'
 declare MY_COMMAND_LINT='lint'
+declare MY_COMMAND_LOGS='logs'
 declare MY_COMMAND_NONE='none'
+declare MY_COMMAND_PREP='prep'
 declare MY_COMMAND_REMOVE='remove'
 declare MY_COMMAND_SAST='sast'
 declare MY_COMMAND_TEST='test'
@@ -145,6 +147,12 @@ function my_remove_opentofu() {
       "$DEV_ENV_IAC64_PATH_VAR_MODULE"
 }
 
+function my_prep_ansible() {
+  bl64_dbg_app_show_function
+  my_setup_ansible &&
+    "$DEV_LIB_IAC64_HELPER_PREP_ANSIBLE"
+}
+
 function my_lint_ansible() {
   bl64_dbg_app_show_function
   my_setup_ansible &&
@@ -169,9 +177,12 @@ function my_deploy_ansible() {
 function my_setup_ansible() {
   bl64_dbg_app_show_function
   export DEV_ENV_ANSIBLE_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
-  export DEV_LIB_ANSIBLE_INVENTORY_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED}/inventory.ini"
-  export DEV_LIB_ANSIBLE_INVENTORY_MAIN="${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini"
+  export DEV_ENV_ANSIBLE_PATH_TMP="${DEV_ENV_IAC64_PATH_TMP_MODULE}"
+  export DEV_ENV_ANSIBLE_PATH_VAR="${DEV_ENV_IAC64_PATH_VAR_MODULE}"
   export DEV_LIB_ANSIBLE_CONFIG="${DEV_ENV_IAC64_PATH_ETC_SHARED}/ansible.cfg"
+  export DEV_LIB_ANSIBLE_INVENTORY_MAIN="${DEV_ENV_IAC64_PATH_ETC_MODULE}/inventory.ini"
+  export DEV_LIB_ANSIBLE_INVENTORY_SHARED="${DEV_ENV_IAC64_PATH_ETC_SHARED}/inventory.ini"
+  export DEV_LIB_ANSIBLE_REQUIREMENTS="${DEV_ENV_IAC64_PATH_ETC_SHARED}/requirements.yaml"
   [[ -f "${DEV_LIB_ANSIBLE_INVENTORY_MAIN}" ]] || DEV_LIB_ANSIBLE_INVENTORY_MAIN="$BL64_VAR_DEFAULT"
 
   export DEV_ENV_ANSIBLELINT_PATH_LOGS="${DEV_ENV_IAC64_PATH_LOGS_MODULE}"
@@ -297,16 +308,22 @@ function my_run_command() {
   "$MY_TASK"
 }
 
-function my_msg_task_not_implemented() {
-  bl64_msg_show_warning 'the command is not available for the current driver. No further action taken.'
-}
-
 function my_run_console() {
   bl64_dbg_app_show_function
   bl64_fs_dir_create "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$BL64_VAR_DEFAULT" "$DEV_ENV_IAC64_PATH_VAR_MODULE" &&
     cd "$DEV_ENV_IAC64_PATH_VAR_MODULE" &&
     bl64_msg_show_info 'Starting interactive console in the staging area. To exit, type "exit" or press Ctrl+D.' &&
     /usr/bin/env "$SHELL"
+}
+
+function my_run_logs() {
+  bl64_dbg_app_show_function
+  local log_file=''
+
+  for log_file in $(bl64_bsh_pattern_match_file "${DEV_ENV_IAC64_PATH_LOGS_MODULE}"/*"$DEV_BASE_SUFFIX_LOG"); do
+    bl64_msg_show_separator "$log_file"
+    bl64_os_run_cat "$log_file"
+  done
 }
 
 function my_run() {
@@ -318,6 +335,7 @@ function my_run() {
 
   case "$MY_COMMAND" in
     "$MY_COMMAND_CONSOLE") my_run_console ;;
+    "$MY_COMMAND_LOGS") my_run_logs ;;
     "$MY_COMMAND_NONE") my_msg_task_not_implemented ;;
     *) my_run_command ;;
   esac
@@ -358,6 +376,10 @@ function my_env_export() {
     'DEV_ENV_IAC64_PATH_VAULT'
 }
 
+function my_msg_task_not_implemented() {
+  bl64_msg_show_warning 'the command is not available for the current driver. No further action taken.'
+}
+
 function my_initialize() {
   bl64_dbg_app_show_function
   dev_base_task_initialize &&
@@ -366,7 +388,7 @@ function my_initialize() {
 
   case "$MY_COMMAND" in
     "$MY_COMMAND_BUILD")
-      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+      [[ "$MY_DRIVER_NAME" != "$DEV_ENV_IAC64_DRIVER_NAME_OPENTOFU" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
     "$MY_COMMAND_LINT")
@@ -374,7 +396,7 @@ function my_initialize() {
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
     "$MY_COMMAND_SAST")
-      [[ "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_HELM" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_KUSTOMIZE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" || "$MY_DRIVER_NAME" == "$DEV_ENV_IAC64_DRIVER_NAME_BASH" ]] &&
+      [[ "$MY_DRIVER_NAME" != "$DEV_ENV_IAC64_DRIVER_NAME_OPENTOFU" ]] &&
         MY_COMMAND="$MY_COMMAND_NONE"
       ;;
     "$MY_COMMAND_TEST")
@@ -404,7 +426,12 @@ function my_initialize() {
         fi
       fi
       ;;
+    "$MY_COMMAND_PREP")
+      [[ "$MY_DRIVER_NAME" != "$DEV_ENV_IAC64_DRIVER_NAME_ANSIBLE" ]] &&
+        MY_COMMAND="$MY_COMMAND_NONE"
+      ;;
     "$MY_COMMAND_CONSOLE") ;;
+    "$MY_COMMAND_LOGS") ;;
     *)
       bl64_msg_show_error "invalid command name (${MY_COMMAND})"
       return 1
@@ -427,41 +454,44 @@ function my_initialize() {
       'MY_GLOBAL'
 }
 
-bl64_lib_script_version_set '3.1.0'
+bl64_lib_script_version_set '3.2.0'
 bl64_msg_help_set_usage 'iac64 <COMMAND> <-p profile> <-m module> <-v version> <-A|-B|-H|-K|-O> [-s shared] [-g global] [-Z confirm] [-V format] [-D Debug] [-h]'
 bl64_msg_help_set_about 'Opinionated Infrastructure-as-Code (IaC) development and deployment tool.'
 bl64_msg_help_set_parameters \
-  "Commands:
+  "Pipeline Commands:
+  ${MY_COMMAND_PREP}       : Prepare the staging area
+  ${MY_COMMAND_BUILD}      : Build deployable components in the staging area.
+  ${MY_COMMAND_LINT}       : Lint components source code in the staging area
+  ${MY_COMMAND_SAST}       : Run static application security testing on the source code in the staging area
+  ${MY_COMMAND_TEST}       : Test the source code in the staging area
+  ${MY_COMMAND_DEPLOY}     : Deploy components from the staging area to the target infrastructure.
+  ${MY_COMMAND_REMOVE}     : Destroy deployed infrastructure.
 
-${MY_COMMAND_BUILD}      : Prepare the staging area from the module source code
-${MY_COMMAND_LINT}       : Lint the source on the staging area
-${MY_COMMAND_TEST}       : Test the source on the staging area
-${MY_COMMAND_SAST}       : Run static application security testing on the source code on the staging area
-${MY_COMMAND_DEPLOY}     : Deploy source code from the staging area to the target infrastructure. WARNING: destructive action.
-${MY_COMMAND_REMOVE}     : Remove deployed infrastructure. WARNING: destructive action.
-${MY_COMMAND_CONSOLE}    : Run interactive console in the staging area.
-${MY_COMMAND_HELP}       : Show this help message.
+Independent Commands:
+  ${MY_COMMAND_CONSOLE}    : Run interactive console in the staging area.
+  ${MY_COMMAND_LOGS}       : Show activity logs
+  ${MY_COMMAND_HELP}       : Show this help message.
 
-Target
--p profile : configuration profile name
--m module  : module name
--v version : module version
--s shared  : (optional) shared module version
--g global  : (optional) global configuration version
+Target:
+  -p profile : configuration profile name
+  -m module  : module name
+  -v version : module version
+  -s shared  : (optional) shared module version
+  -g global  : (optional) global configuration version
 
 Driver
--A         : Ansible driver
--B         : Bash driver
--H         : Helm driver
--K         : Kustomize driver
--O         : OpenTofu driver
+  -A         : Ansible driver
+  -B         : Bash driver
+  -H         : Helm driver
+  -K         : Kustomize driver
+  -O         : OpenTofu driver
 
 Guardrail
--Z confirm : confirm destructive actions (deploy/remove). Valid values: ${MY_FLAG_CONFIRM_DEPLOY}, ${MY_FLAG_CONFIRM_REMOVE}
+  -Z confirm : confirm destructive actions (deploy/remove). Valid values: ${MY_FLAG_CONFIRM_DEPLOY}, ${MY_FLAG_CONFIRM_REMOVE}
 
 Options
--V format  : verbose message format. Format: BL64_MSG_FORMAT_*
--D Debug   : Enable debugging mode. Format: BL64_DBG_TARGET_*"
+  -V format  : verbose message format. Format: BL64_MSG_FORMAT_*
+  -D Debug   : Enable debugging mode. Format: BL64_DBG_TARGET_*"
 
 [[ "$MY_COMMAND" == "$MY_COMMAND_HELP" ]] && bl64_msg_help_show && exit 0
 shift

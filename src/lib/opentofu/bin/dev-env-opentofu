@@ -23,10 +23,10 @@
 {
   # Env / OpenTofu / Module environment definition version
   export DEV_ENV_OPENTOFU_ID='opentofu'
-  export DEV_ENV_OPENTOFU_VERSION='2.0.1'
+  export DEV_ENV_OPENTOFU_VERSION='2.0.2'
 
   # Lib / OpenTofu / Installer
-  export DEV_LIB_OPENTOFU_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-opentofu"
+  export DEV_LIB_OPENTOFU_INSTALLER="opentofu"
   # Lib / OpenTofu / Skip installation?
   export DEV_LIB_OPENTOFU_SKIP='YES'
   # Lib / OpenTofu / Target path
@@ -41,18 +41,18 @@
 
   # Test / OpenTofu / File names
   export DEV_TEST_OPENTOFU_FILE_PLAN="${DEV_ENV_OPENTOFU_ID}-apply.plan"
-  export DEV_TEST_OPENTOFU_FILE_LOG="${DEV_ENV_OPENTOFU_ID}-test.log"
+  export DEV_TEST_OPENTOFU_FILE_LOG="${DEV_ENV_OPENTOFU_ID}-test${DEV_BASE_SUFFIX_LOG}"
   export DEV_TEST_OPENTOFU_FILE_STDOUT="${DEV_ENV_OPENTOFU_ID}-test.stdout"
   export DEV_TEST_OPENTOFU_FILE_STDERR="${DEV_ENV_OPENTOFU_ID}-test.stderr"
 
   # Deploy / OpenTofu / File names
-  export DEV_DEPLOY_OPENTOFU_FILE_LOG="${DEV_ENV_OPENTOFU_ID}-deploy.log"
+  export DEV_DEPLOY_OPENTOFU_FILE_LOG="${DEV_ENV_OPENTOFU_ID}-deploy${DEV_BASE_SUFFIX_LOG}"
   export DEV_DEPLOY_OPENTOFU_FILE_STDOUT="${DEV_ENV_OPENTOFU_ID}-deploy.stdout"
   export DEV_DEPLOY_OPENTOFU_FILE_STDERR="${DEV_ENV_OPENTOFU_ID}-deploy.stderr"
 
   # Remove / OpenTofu / File names
   export DEV_REMOVE_OPENTOFU_FILE_PLAN="${DEV_ENV_OPENTOFU_ID}-destroy.plan"
-  export DEV_REMOVE_OPENTOFU_FILE_LOG="${DEV_ENV_OPENTOFU_ID}-remove.log"
+  export DEV_REMOVE_OPENTOFU_FILE_LOG="${DEV_ENV_OPENTOFU_ID}-remove${DEV_BASE_SUFFIX_LOG}"
   export DEV_REMOVE_OPENTOFU_FILE_STDOUT="${DEV_ENV_OPENTOFU_ID}-remove.stdout"
   export DEV_REMOVE_OPENTOFU_FILE_STDERR="${DEV_ENV_OPENTOFU_ID}-remove.stderr"
 }

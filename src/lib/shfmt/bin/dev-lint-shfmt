@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# template-lint: 1.2.0
-# template-task: 1.9.0
+# template-lint: 1.3.0
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -32,7 +31,7 @@ function my_initialize() {
   bl64_dbg_app_show_function
   dev_base_task_initialize &&
     dev_base_log_setup "$BL64_VAR_ON" "$DEV_ENV_SHFMT_PATH_LOGS" &&
-    bl64_check_command "$DEV_LIB_SHFMT_BIN" &&
+    dev_base_lib_check_command 'shfmt' "$DEV_LIB_SHFMT_BIN" &&
     dev_base_task_show_setup \
       'DEV_LINT_SHFMT_PATH_REPORT' \
       'MY_TARGET'

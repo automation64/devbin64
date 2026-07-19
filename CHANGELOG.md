@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.0.0]
+
+### Added
+
+- DevBin64
+  - Support for custom Installer64 and Bashlib64 paths
+- Ansible
+  - Runtime options support
+  - Native logging
+  - Prepare task to install collections
+- IAC64
+  - Show logs command
+  - Prepare staging command
+- SHFMT
+  - Build task with minimize
+
+### Changed
+
+- DevBin64 **breaking-change**
+  - Upgraded to BashLib64 23.4.0
+  - Imported Installer64 and BashLib64 modules
+    - DEV_LIB_BASHLIB64_VERSION: renamed to DEV_BASE_BASHLIB64
+    - DEV_LIB_BASHLIB64_TARGET: renamed to DEV_PATH_LIB_BASHLIB64
+    - DEV_LIB_INSTALLER64_TARGET: renamed to DEV_PATH_LIB_INSTALLER64
+
+### Deprecated
+
+- Installer64
+- BashLib64
+
 ## [15.0.0]
 
 ### Added

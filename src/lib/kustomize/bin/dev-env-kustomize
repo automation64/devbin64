@@ -23,7 +23,7 @@
 {
   # Env / Kustomize / Module environment definition version
   export DEV_ENV_KUSTOMIZE_ID='kustomize'
-  export DEV_ENV_KUSTOMIZE_VERSION='1.1.0'
+  export DEV_ENV_KUSTOMIZE_VERSION='1.1.1'
 
   # Test / Kustomize / Format
   export DEV_TEST_KUSTOMIZE_FORMAT='log'
@@ -44,8 +44,8 @@
   export DEV_TEST_KUSTOMIZE_PATH_REPORT="${DEV_ENV_KUSTOMIZE_PATH_LOGS}/${DEV_ENV_KUSTOMIZE_ID}-test.${DEV_TEST_KUSTOMIZE_FORMAT}"
 
   # Deploy / Kustomize / Log file path
-  export DEV_DEPLOY_KUSTOMIZE_PATH_LOG="${DEV_ENV_KUSTOMIZE_PATH_LOGS}/${DEV_ENV_KUSTOMIZE_ID}-deploy.log"
+  export DEV_DEPLOY_KUSTOMIZE_PATH_LOG="${DEV_ENV_KUSTOMIZE_PATH_LOGS}/${DEV_ENV_KUSTOMIZE_ID}-deploy${DEV_BASE_SUFFIX_LOG}"
 
   # Remove / Kustomize / Log file path
-  export DEV_REMOVE_KUSTOMIZE_PATH_LOG="${DEV_ENV_KUSTOMIZE_PATH_LOGS}/${DEV_ENV_KUSTOMIZE_ID}-remove.log"
+  export DEV_REMOVE_KUSTOMIZE_PATH_LOG="${DEV_ENV_KUSTOMIZE_PATH_LOGS}/${DEV_ENV_KUSTOMIZE_ID}-remove${DEV_BASE_SUFFIX_LOG}"
 }

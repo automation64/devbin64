@@ -26,7 +26,7 @@
   export DEV_ENV_NUCLEI_VERSION='1.1.0'
 
   # Lib / Nuclei / Installer
-  export DEV_LIB_NUCLEI_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-nuclei"
+  export DEV_LIB_NUCLEI_INSTALLER="nuclei"
   # Lib / Nuclei / Skip installation?
   export DEV_LIB_NUCLEI_SKIP='YES'
   # Lib / Nuclei / Target

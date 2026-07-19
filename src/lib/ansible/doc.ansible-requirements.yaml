@@ -1,0 +1,12 @@
+---
+#
+# Ansible / Collections Requirements
+#
+# * Version: 1.0.0
+# * Template: 1.0.0
+#
+
+# optional # roles:
+# optional # - X_ROLE_NAME_X
+# optional # collections:
+# optional # - X_COLLECTION_NAME_X

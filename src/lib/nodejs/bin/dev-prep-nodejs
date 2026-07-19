@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# template-prep: 1.1.0
+# template-prep: 1.1.1
 #######################################
 # Copyright SerDigital64 - https://github.com/serdigital64
 #
@@ -37,7 +37,7 @@ function my_initialize() {
 }
 
 bl64_lib_script_version_set '1.0.0'
-bl64_msg_help_set_about 'Prepare repository for module specific requirements'
+bl64_msg_help_set_about 'Run dev-time source code maintenance tasks'
 dev_base_initialize && my_initialize || exit $?
 
 bl64_msg_show_batch_start "$BL64_SCRIPT_ID"

@@ -26,7 +26,7 @@
   export DEV_ENV_ANSIBLELINT_VERSION='3.0.0'
 
   # Lib / AnsibleLint / Installer
-  export DEV_LIB_ANSIBLELINT_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-ansiblelint"
+  export DEV_LIB_ANSIBLELINT_INSTALLER="ansiblelint"
   # Lib / AnsibleLint / Skip installation?
   export DEV_LIB_ANSIBLELINT_SKIP='YES'
   # Lib / AnsibleLint / Target

@@ -1,7 +1,7 @@
 # X_PARAMETERS_PLACEHOLDER_X
 {
   # optional # # Pack / X_MODULE_TITLE_X / Paths
-  # optional # export DEV_PACK_X_MODULE_CAPS_X_PATH_LOG="${DEV_ENV_X_MODULE_CAPS_X_PATH_LOGS}/${DEV_ENV_X_MODULE_CAPS_X_ID}.log"
+  # optional # export DEV_PACK_X_MODULE_CAPS_X_PATH_LOG="${DEV_ENV_X_MODULE_CAPS_X_PATH_LOGS}/${DEV_ENV_X_MODULE_CAPS_X_ID}${DEV_BASE_SUFFIX_LOG}"
   # optional # # Pack / X_MODULE_TITLE_X / Bundle file name
   # optional # export DEV_PACK_X_MODULE_CAPS_X_BUNDLE="${DEV_PACK_X_MODULE_CAPS_X_BUNDLE:-X_FILE_NAME_X}"
   # optional # # Pack / X_MODULE_TITLE_X / Bundle location

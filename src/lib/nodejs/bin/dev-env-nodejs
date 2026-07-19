@@ -26,7 +26,7 @@
   export DEV_ENV_NODEJS_VERSION='1.2.0'
 
   # Lib / NodeJS / Installer
-  export DEV_LIB_NODEJS_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-nodejs"
+  export DEV_LIB_NODEJS_INSTALLER="nodejs"
   # Lib / NodeJS / Skip installation?
   export DEV_LIB_NODEJS_SKIP='YES'
   # Lib / NodeJS / Target

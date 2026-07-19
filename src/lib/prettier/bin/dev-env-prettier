@@ -26,7 +26,7 @@
   export DEV_ENV_PRETTIER_VERSION='1.1.0'
 
   # Lib / Prettier / Installer
-  export DEV_LIB_PRETTIER_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-prettier"
+  export DEV_LIB_PRETTIER_INSTALLER="prettier"
   # Lib / Prettier / Skip installation?
   export DEV_LIB_PRETTIER_SKIP='YES'
   # Lib / Prettier / Target

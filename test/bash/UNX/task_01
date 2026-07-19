@@ -7,12 +7,12 @@
   exit $?
 
 source ./bin/dev-set || exit 1
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fs.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-txt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-xsv.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-fmt.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-bsh.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-core.bash" || exit 1
+source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-fs.bash" &&
+  source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-txt.bash" &&
+  source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-xsv.bash" &&
+  source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-fmt.bash" &&
+  source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-bsh.bash" &&
+  source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-core.bash" || exit 1
 
 function my_task() {
   bl64_dbg_app_show_function

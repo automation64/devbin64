@@ -26,7 +26,7 @@
   export DEV_ENV_SEMGREP_VERSION='1.2.0'
 
   # Lib / Semgrep / Installer
-  export DEV_LIB_SEMGREP_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-semgrep"
+  export DEV_LIB_SEMGREP_INSTALLER="semgrep"
   # Lib / Semgrep / Skip installation?
   export DEV_LIB_SEMGREP_SKIP='YES'
   # Lib / Semgrep / Target

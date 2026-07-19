@@ -26,7 +26,7 @@
   export DEV_ENV_GO_VERSION='1.1.0'
 
   # Lib / Go / Installer
-  export DEV_LIB_GO_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-go"
+  export DEV_LIB_GO_INSTALLER="go"
   # Lib / Go / Skip installation?
   export DEV_LIB_GO_SKIP='YES'
   # Lib / Go / Target

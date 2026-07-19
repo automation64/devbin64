@@ -26,7 +26,7 @@
   export DEV_ENV_PKLLANG_VERSION='1.0.0'
 
   # Lib / PklLang / Installer
-  export DEV_LIB_PKLLANG_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-pkl"
+  export DEV_LIB_PKLLANG_INSTALLER="pkl"
   # Lib / PklLang / Skip installation?
   export DEV_LIB_PKLLANG_SKIP='YES'
   # Lib / PklLang / Target

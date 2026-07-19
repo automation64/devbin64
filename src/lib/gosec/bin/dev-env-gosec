@@ -26,7 +26,7 @@
   export DEV_ENV_GOSEC_VERSION='2.1.0'
 
   # Lib / GoSEc / Installer
-  export DEV_LIB_GOSEC_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-gosec"
+  export DEV_LIB_GOSEC_INSTALLER="gosec"
   # Lib / GoSEc / Skip installation?
   export DEV_LIB_GOSEC_SKIP='YES'
   # Lib / GoSEc / Target

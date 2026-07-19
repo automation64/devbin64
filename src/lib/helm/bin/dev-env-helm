@@ -26,7 +26,7 @@
   export DEV_ENV_HELM_VERSION='1.1.0'
 
   # Lib / Helm / Installer
-  export DEV_LIB_HELM_INSTALLER="${DEV_LIB_INSTALLER64_TARGET}/install-helm"
+  export DEV_LIB_HELM_INSTALLER="helm"
   # Lib / Helm / Skip installation?
   export DEV_LIB_HELM_SKIP='YES'
   # Lib / Helm / Target

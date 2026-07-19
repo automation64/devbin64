@@ -27,7 +27,7 @@ source ./bin/dev-set &&
 function dev_lib_download() {
   bl64_dbg_app_show_function
   INST64_TRIVY_TARGET="$DEV_LIB_TRIVY_TARGET" \
-    "${DEV_LIB_TRIVY_INSTALLER}"
+    dev_base_lib_install "$DEV_LIB_TRIVY_INSTALLER"
 }
 
 function dev_lib_initialize() {

@@ -16,8 +16,8 @@
 # Imports
 #
 
-source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-X_BL64_MODULE_X.bash" &&
-  source "${DEV_LIB_BASHLIB64_TARGET}/bashlib64-module-X_BL64_MODULE_X.bash" ||
+source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-X_BL64_MODULE_X.bash" &&
+  source "${DEV_PATH_LIB_BASHLIB64}/bashlib64-module-X_BL64_MODULE_X.bash" ||
   exit 1
 
 # shellcheck disable=SC2034
